@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InRoom | Services à la Chambre — Conciergerie Premium</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Fraunces:ital,wght@0,400;0,600;0,900;1,400;1,900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#ffdad8",
+                    "on-secondary-fixed": "#400107",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e5e2e1",
+                    "on-tertiary-container": "#003423",
+                    "on-tertiary-fixed": "#002115",
+                    "surface-variant": "#e5e2e1",
+                    "primary": "#b52330",
+                    "on-primary-container": "#61000e",
+                    "surface-container-low": "#f6f3f2",
+                    "tertiary-fixed-dim": "#59ddaa",
+                    "surface-dim": "#dcd9d9",
+                    "secondary-fixed-dim": "#ffb3b0",
+                    "secondary": "#994444",
+                    "surface": "#fcf9f8",
+                    "inverse-surface": "#303030",
+                    "on-surface-variant": "#5a403f",
+                    "primary-fixed-dim": "#ffb3b0",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fcf9f8",
+                    "inverse-primary": "#ffb3b0",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#762a2b",
+                    "on-error-container": "#93000a",
+                    "background": "#fcf9f8",
+                    "inverse-on-surface": "#f3f0ef",
+                    "surface-container-high": "#eae7e7",
+                    "surface-container": "#f0eded",
+                    "primary-container": "#ff5a5f",
+                    "tertiary-container": "#00a879",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#410007",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffdad8",
+                    "surface-tint": "#b52330",
+                    "outline-variant": "#e2bebc",
+                    "on-secondary-fixed-variant": "#7b2d2e",
+                    "on-surface": "#1b1c1c",
+                    "tertiary-fixed": "#78fac4",
+                    "on-background": "#1b1c1c",
+                    "secondary-container": "#fd9391",
+                    "outline": "#8e706f",
+                    "error": "#ba1a1a",
+                    "tertiary": "#006c4c",
+                    "on-primary-fixed-variant": "#92001b",
+                    "on-tertiary-fixed-variant": "#005139"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift { background-color: #f6f3f2; }
+        .tonal-shift-no-borders { background-color: #f0eded; }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .plus-jakarta-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .fraunces { font-family: 'Fraunces', serif; font-feature-settings: "ss01"; }
+        .logo-wordmark { letter-spacing: -0.04em; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-50 px-4 md:px-6 py-2.5 md:py-4 bg-white/80 dark:bg-stone-900/80 backdrop-blur-xl shadow-lg shadow-stone-900/5 transition-all duration-300">
+<nav class="flex justify-between items-center max-w-7xl mx-auto">
+<div class="flex items-center gap-6">
+<a href="#" class="flex items-baseline gap-0 hover:opacity-70 transition-opacity">
+<span class="text-xl md:text-2xl plus-jakarta-sans font-black text-on-surface tracking-[-0.04em]">InRoom</span><span class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary ml-1 self-center"></span>
+</a>
+<div class="hidden md:flex items-center gap-6 plus-jakarta-sans font-bold tracking-tight text-sm">
+<a class="text-stone-900 dark:text-stone-50 border-b-2 border-rose-700 pb-1" href="#">Services</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-stone-900 transition-all duration-300" href="#">Expériences</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-stone-900 transition-all duration-300" href="#">Conciergerie</a>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 text-stone-900 font-semibold text-xs bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-full transition-all">
+<span class="material-symbols-outlined text-base">bed</span>
+<span class="hidden sm:inline">Ch. </span>312
+</button>
+<div class="flex items-center gap-1 bg-stone-100 rounded-full px-2 py-1 hover:bg-stone-200 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-stone-700 text-lg">menu</span>
+<span class="material-symbols-outlined text-stone-700 text-lg" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+</div>
+</nav>
+</header>
+<main class="max-w-7xl mx-auto px-4 md:px-6">
+
+<!-- Hero / Welcome -->
+<section class="mt-6 mb-6">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-2 block">Chambre 312</span>
+<h1 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]">Bonsoir Monsieur Lucas, <span class="italic font-light">à votre service.</span></h1>
+</section>
+
+<!-- Search Widget -->
+<section class="mb-6">
+<div class="relative w-full max-w-4xl mx-auto">
+<div class="glass-nav bg-surface/70 shadow-xl rounded-full p-1.5 flex flex-row items-center gap-0">
+<button class="flex-1 text-left px-4 py-2 rounded-full hover:bg-surface-container-high transition-all">
+<p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant leading-tight">Service</p>
+<p class="text-xs text-on-surface">Rechercher</p>
+</button>
+<div class="w-px h-7 bg-outline-variant/30"></div>
+<button class="flex-1 text-left px-4 py-2 rounded-full hover:bg-surface-container-high transition-all hidden sm:block">
+<p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant leading-tight">Quand</p>
+<p class="text-xs text-stone-400">Ce soir</p>
+</button>
+<div class="w-px h-7 bg-outline-variant/30 hidden sm:block"></div>
+<button class="flex-1 text-left px-4 py-2 rounded-full hover:bg-surface-container-high transition-all hidden sm:block">
+<p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant leading-tight">Pour qui</p>
+<p class="text-xs text-stone-400">2 pers.</p>
+</button>
+<button class="bg-primary hover:bg-primary-container text-on-primary p-2.5 rounded-full flex items-center justify-center transition-all shadow-lg shadow-primary/20 active:scale-95">
+<span class="material-symbols-outlined text-xl">search</span>
+</button>
+</div>
+</div>
+</section>
+
+<!-- Category Filters -->
+<section class="mb-6 overflow-x-auto no-scrollbar -mx-4 md:-mx-6 px-4 md:px-6">
+<div class="flex items-center gap-6 whitespace-nowrap min-w-max">
+<button class="flex flex-col items-center gap-1 group border-b-2 border-on-surface pb-2">
+<span class="material-symbols-outlined text-on-surface text-xl">auto_awesome</span>
+<span class="text-[10px] font-semibold text-on-surface">Tout</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">spa</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Bien-être</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">content_cut</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Beauté</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">restaurant</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Gastronomie</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">local_taxi</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Transport</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">child_care</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Famille</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">fitness_center</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Fitness</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">local_florist</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Fleurs</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">photo_camera</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Souvenirs</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">pets</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Animaux</span>
+</button>
+<button class="flex flex-col items-center gap-1 group border-b-2 border-transparent hover:border-outline-variant pb-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-xl group-hover:text-on-surface transition-colors">diamond</span>
+<span class="text-[10px] font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Luxe</span>
+</button>
+</div>
+</section>
+
+<!-- Main Services Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-10">
+
+<!-- Card 1 : Massage -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Massage" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">45 min</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Massage Suédois</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.96</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Camille R. · Kiné DE · 60 min</p>
+</div>
+<p class="text-sm"><span class="font-bold">120 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
+</div>
+</div>
+
+<!-- Card 2 : Coiffeur -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Coiffeur" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">1h</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Coiffeur · Brushing</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.89</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Maison Théo · H/F · 45 min</p>
+</div>
+<p class="text-sm"><span class="font-bold">75 €</span><span class="text-[11px] text-on-surface-variant"> / presta.</span></p>
+</div>
+</div>
+
+<!-- Card 3 : Esthéticienne -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Soin visage" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Top</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Soin Visage Signature</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">5.00</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Élodie M. · CAP · 75 min</p>
+</div>
+<p class="text-sm"><span class="font-bold">95 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
+</div>
+</div>
+
+<!-- Card 4 : Chef -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Chef" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-on-surface text-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">★ Sign.</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Chef Privé · 4 services</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.94</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Raphaël Bonnet · 1 étoile</p>
+</div>
+<p class="text-sm"><span class="font-bold">185 €</span><span class="text-[11px] text-on-surface-variant"> / pers.</span></p>
+</div>
+</div>
+
+<!-- Card 5 : Taxi -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Chauffeur" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">15 min</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Chauffeur Privé</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.91</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">AG Taxi · Mercedes E · 1-3 pax</p>
+</div>
+<p class="text-sm"><span class="font-bold">55 €</span><span class="text-[11px] text-on-surface-variant"> · MRS aéroport</span></p>
+</div>
+</div>
+
+<!-- Card 6 : Babysitting -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Baby-sitter" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Vérifié</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Baby-sitter FR/EN</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.97</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Sarah L. · BAFA · dès 3 ans</p>
+</div>
+<p class="text-sm"><span class="font-bold">22 €</span><span class="text-[11px] text-on-surface-variant"> / heure</span></p>
+</div>
+</div>
+
+<!-- Card 7 : Coach sportif -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Coach" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">Matin</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Coach Sportif Privé</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.88</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Tom V. · BPJEPS · HIIT/Yoga</p>
+</div>
+<p class="text-sm"><span class="font-bold">70 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
+</div>
+</div>
+
+<!-- Card 8 : Pressing -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Pressing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Retour 2h</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Pressing Express</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.82</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Blanchisserie de l'Horloge</p>
+</div>
+<p class="text-sm"><span class="font-bold">dès 12 €</span><span class="text-[11px] text-on-surface-variant"> / pièce</span></p>
+</div>
+</div>
+
+<!-- Card 9 : Fleuriste -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Fleuriste" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Local</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Bouquet Sur-Mesure</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.95</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Atelier Fleur de Sel · Avignon</p>
+</div>
+<p class="text-sm"><span class="font-bold">dès 45 €</span></p>
+</div>
+</div>
+
+<!-- Card 10 : Photographe -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Photographe" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-on-surface text-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">★ Sign.</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Shooting Souvenir</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.93</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Julien A. · 1h · 30 photos</p>
+</div>
+<p class="text-sm"><span class="font-bold">220 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
+</div>
+</div>
+
+<!-- Card 11 : Dog-sitter -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Dog-sitter" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Ce soir</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Dog-Sitter & Balade</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.90</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Marion D. · ACACED</p>
+</div>
+<p class="text-sm"><span class="font-bold">18 €</span><span class="text-[11px] text-on-surface-variant"> / heure</span></p>
+</div>
+</div>
+
+<!-- Card 12 : Sommelier -->
+<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
+<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
+<img alt="Sommelier" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=400&q=80"/>
+<div class="absolute top-1.5 left-1.5 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Nouveau</div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
+<div>
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Sommelier Privé</h3>
+<div class="flex items-center gap-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-medium">4.98</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">Vincent P. · WSET 3 · 5 vins</p>
+</div>
+<p class="text-sm"><span class="font-bold">140 €</span><span class="text-[11px] text-on-surface-variant"> / pers.</span></p>
+</div>
+</div>
+
+</section>
+
+<!-- Module Banner: Le Chasseur -->
+<section class="mb-10 bg-surface-container-lowest rounded-lg overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+<div class="relative h-52 md:h-auto md:min-h-[340px] overflow-hidden">
+<img alt="Le Chasseur" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1000&q=80"/>
+<div class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary">Module Chasseur</span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 bg-black/40 backdrop-blur-md px-3 py-2 rounded-full flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-tertiary-fixed-dim rounded-full animate-pulse shrink-0"></span>
+<span class="text-[10px] font-semibold text-white uppercase tracking-widest">3 chasseurs en service · livraison 30 min</span>
+</div>
+</div>
+<div class="p-5 md:p-8 flex flex-col justify-center gap-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Service de coursier dédié</span>
+<h3 class="text-2xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]">Le Chasseur,<br/><span class="italic font-light">à toute heure.</span></h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Une requête imprévue, quelle qu'en soit la nature. Produits du quotidien, articles de pharmacie, accessoires oubliés, bouquet de dernière minute&nbsp;: formulez votre demande, elle sera honorée. Livraison discrète en chambre sous trente minutes en moyenne, facturation intégrée à votre note d'hôtel.</p>
+
+<!-- Exemples de courses avec icônes -->
+<div class="grid grid-cols-4 gap-2 my-1">
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">smoking_rooms</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">Tabac</span>
+</div>
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">wine_bar</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">Alcool</span>
+</div>
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">fastfood</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">À manger</span>
+</div>
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">medication</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">Pharmacie</span>
+</div>
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">checkroom</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">Vêtements</span>
+</div>
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">power</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">Électro</span>
+</div>
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">child_friendly</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">Bébé</span>
+</div>
+<div class="flex flex-col items-center gap-1 bg-surface-container-low rounded-md p-2">
+<span class="material-symbols-outlined text-primary text-lg">more_horiz</span>
+<span class="text-[9px] text-on-surface-variant font-semibold">Autre</span>
+</div>
+</div>
+
+<div class="flex items-center gap-3 mt-2">
+<button class="bg-primary hover:bg-primary-container text-on-primary px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-lg shadow-primary/20 flex items-center gap-1.5">
+Formuler une demande
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+<div class="flex flex-col">
+<span class="text-xs text-on-surface font-semibold">À partir de 40 €</span>
+<span class="text-[10px] text-on-surface-variant">Hors prix du produit</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Featured Experiences (Bento Style) -->
+<section class="mb-10">
+<div class="flex justify-between items-end mb-4">
+<h2 class="text-xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter">Rituels Signature</h2>
+<button class="text-xs font-bold border-b-2 border-on-surface pb-0.5">Tout voir</button>
+</div>
+<div class="grid grid-cols-3 md:grid-cols-12 gap-2 md:gap-3 h-[240px] md:h-[340px]">
+<div class="col-span-3 md:col-span-7 relative rounded-lg overflow-hidden group cursor-pointer">
+<img alt="Rituel couple" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-4 md:p-6">
+<span class="bg-primary/20 backdrop-blur-md text-primary-fixed text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full w-fit mb-1.5">Rituel Duo</span>
+<h3 class="text-lg md:text-2xl font-bold text-white">Escapade Romantique</h3>
+<p class="text-white/80 text-xs md:text-sm max-w-md line-clamp-1">Massage à quatre mains, bain aux pétales et dîner signature.</p>
+</div>
+</div>
+<div class="col-span-1 md:col-span-5 md:row-span-1 relative rounded-lg overflow-hidden group cursor-pointer">
+<img alt="Réveil musical" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-2.5 md:p-4">
+<h4 class="text-xs md:text-base font-bold text-white leading-tight">Réveil au Violoncelle</h4>
+<p class="text-white/70 text-[9px] md:text-xs">20 min · interprétation privée</p>
+</div>
+</div>
+<div class="col-span-1 md:col-span-5 md:col-start-8 md:row-start-2 hidden md:hidden relative rounded-lg overflow-hidden group cursor-pointer"></div>
+<div class="col-span-1 relative rounded-lg overflow-hidden group cursor-pointer md:hidden">
+<img alt="Yoga" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-2.5">
+<h4 class="text-xs font-bold text-white leading-tight">Yoga à l'aube</h4>
+<p class="text-white/70 text-[9px]">Terrasse</p>
+</div>
+</div>
+<div class="col-span-1 relative rounded-lg overflow-hidden group cursor-pointer md:hidden">
+<img alt="Bain" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-2.5">
+<h4 class="text-xs font-bold text-white leading-tight">Bain rituel</h4>
+<p class="text-white/70 text-[9px]">45 min</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- More services (scroll horizontal compact) -->
+<section class="mb-10">
+<div class="flex justify-between items-end mb-3">
+<h2 class="text-xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter">À la demande</h2>
+<button class="text-xs font-bold border-b-2 border-on-surface pb-0.5">Tout voir</button>
+</div>
+<div class="overflow-x-auto no-scrollbar -mx-4 md:-mx-6 px-4 md:px-6">
+<div class="flex gap-2 min-w-max">
+
+<!-- Chip 1 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">back_hand</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Manucure</p>
+<p class="text-[10px] text-on-surface-variant">45min · 55 €</p>
+</div>
+</div>
+
+<!-- Chip 2 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">palette</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Make-up soirée</p>
+<p class="text-[10px] text-on-surface-variant">1h · 85 €</p>
+</div>
+</div>
+
+<!-- Chip 3 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">local_bar</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Mixologue</p>
+<p class="text-[10px] text-on-surface-variant">2h · dès 160 €</p>
+</div>
+</div>
+
+<!-- Chip 4 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">confirmation_number</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Billetterie</p>
+<p class="text-[10px] text-on-surface-variant">Festival · VIP</p>
+</div>
+</div>
+
+<!-- Chip 5 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">accessibility_new</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Ostéopathe</p>
+<p class="text-[10px] text-on-surface-variant">45min · 90 €</p>
+</div>
+</div>
+
+<!-- Chip 6 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">self_improvement</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Yoga privé</p>
+<p class="text-[10px] text-on-surface-variant">60min · 65 €</p>
+</div>
+</div>
+
+<!-- Chip 7 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">map</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Guide privé</p>
+<p class="text-[10px] text-on-surface-variant">½ j · dès 180 €</p>
+</div>
+</div>
+
+<!-- Chip 8 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">face_6</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Barbier</p>
+<p class="text-[10px] text-on-surface-variant">45min · 45 €</p>
+</div>
+</div>
+
+<!-- Chip 9 -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2.5 rounded-full hover:shadow-md transition-all cursor-pointer shrink-0">
+<div class="w-9 h-9 bg-primary-fixed flex items-center justify-center rounded-full shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">directions_run</span>
+</div>
+<div class="pr-2">
+<p class="font-bold text-on-surface text-xs leading-tight">Chasseur</p>
+<p class="text-[10px] text-on-surface-variant">30 min · dès 8 €</p>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- Module Banner: Chef Privé (full-bleed hero) -->
+<section class="mb-10 relative rounded-lg overflow-hidden h-[360px] md:h-[420px] group cursor-pointer">
+<img alt="Chef privé" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=1600&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-tr from-black/85 via-black/40 to-transparent"></div>
+<div class="relative z-10 h-full flex flex-col justify-end p-5 md:p-10 max-w-2xl">
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">Module Gastronomie</span>
+<span class="bg-primary text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">★ Signature</span>
+</div>
+<h3 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-white tracking-tighter leading-[1.02] mb-3">Une table étoilée,<br/><span class="italic font-light">dans votre suite.</span></h3>
+<p class="text-white/80 text-sm md:text-base max-w-md leading-relaxed mb-4">Le Chef Raphaël Bonnet, une étoile Michelin, officie dans votre suite accompagné de sa brigade. Menu adapté à vos préférences et restrictions alimentaires, dressage en direct, commentaire de chaque service. Vaisselle, linge de table et mise en place sont intégralement assurés par la maison.</p>
+<div class="flex flex-wrap gap-2 mb-5">
+<div class="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-white text-sm">restaurant_menu</span>
+<span class="text-white text-[11px] font-semibold">4 à 7 services</span>
+</div>
+<div class="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-white text-sm">group</span>
+<span class="text-white text-[11px] font-semibold">2 à 12 convives</span>
+</div>
+<div class="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-white text-sm">eco</span>
+<span class="text-white text-[11px] font-semibold">Produits AOP locaux</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-white text-on-surface px-5 py-3 rounded-full text-sm font-bold hover:bg-primary hover:text-white transition-all shadow-xl flex items-center gap-2">
+Réserver · dès 185 €/pers.
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+<button class="text-white text-xs font-semibold border-b border-white/50 pb-0.5 hover:border-white">Voir le menu</button>
+</div>
+</div>
+</section>
+
+<!-- Concierge CTA section -->
+<section class="mb-10 p-5 md:p-8 bg-surface-container-low rounded-lg">
+<div class="flex flex-col md:flex-row items-center gap-5">
+<img alt="Concierge" class="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover shrink-0 ring-2 ring-white shadow-md" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80"/>
+<div class="flex-1 text-center md:text-left">
+<div class="flex items-center gap-2 justify-center md:justify-start mb-1">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-pulse"></span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary">Amélie · Chef Concierge · en ligne</span>
+</div>
+<h2 class="text-lg md:text-xl font-bold plus-jakarta-sans text-on-surface tracking-tight leading-tight">Une requête particulière&nbsp;?</h2>
+<p class="text-xs text-on-surface-variant mt-0.5">Notre conciergerie reste à votre disposition 24h/24. Réponse sous deux minutes.</p>
+</div>
+<div class="flex gap-2 shrink-0">
+<button class="bg-primary hover:bg-primary-container text-on-primary px-4 py-2.5 rounded-full text-xs font-bold transition-all shadow-lg shadow-primary/20 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">chat</span>
+Écrire
+</button>
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface p-2.5 rounded-full transition-all flex items-center justify-center">
+<span class="material-symbols-outlined text-base">call</span>
+</button>
+</div>
+</div>
+</section>
+
+<!-- Module Banner: Rituel Spa (inversé image droite) -->
+<section class="mb-10 bg-on-surface rounded-lg overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-5 gap-0">
+<div class="md:col-span-3 p-5 md:p-10 flex flex-col justify-center gap-3 order-2 md:order-1">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary-fixed-dim">Module Bien-être</span>
+<h3 class="text-2xl md:text-4xl font-black plus-jakarta-sans text-white tracking-tighter leading-[1.05]">Le Rituel du Soir<br/><span class="italic font-light text-primary-fixed-dim">en 3 temps.</span></h3>
+<p class="text-sm text-white/70 leading-relaxed max-w-md">Un protocole complet de deux heures trente, conçu pour dénouer les tensions accumulées. Immersion aromatique aux huiles essentielles de Provence, massage signature à quatre mains, puis infusion et méditation guidée. L'ensemble du matériel — table, linge, huiles, diffuseur sonore — est apporté et retiré par nos praticiennes.</p>
+
+<!-- Timeline des 3 temps -->
+<div class="flex flex-col gap-2 mt-2 mb-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim/20 flex items-center justify-center shrink-0">
+<span class="text-primary-fixed-dim font-bold text-xs">1</span>
+</div>
+<div class="flex-1">
+<p class="text-white text-xs font-semibold">Bain aromatique</p>
+<p class="text-white/50 text-[10px]">30 min · huiles de lavande &amp; romarin</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim/20 flex items-center justify-center shrink-0">
+<span class="text-primary-fixed-dim font-bold text-xs">2</span>
+</div>
+<div class="flex-1">
+<p class="text-white text-xs font-semibold">Massage 4 mains</p>
+<p class="text-white/50 text-[10px]">90 min · Camille &amp; Élodie · pression ajustée</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim/20 flex items-center justify-center shrink-0">
+<span class="text-primary-fixed-dim font-bold text-xs">3</span>
+</div>
+<div class="flex-1">
+<p class="text-white text-xs font-semibold">Infusion &amp; méditation</p>
+<p class="text-white/50 text-[10px]">30 min · verveine du jardin · guidée</p>
+</div>
+</div>
+</div>
+
+<div class="flex items-center gap-3 mt-1">
+<button class="bg-white text-on-surface px-5 py-2.5 rounded-full text-sm font-bold hover:bg-primary hover:text-white transition-all flex items-center gap-1.5">
+Réserver · 285 €
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+<span class="text-white/60 text-xs">Durée totale 2h30</span>
+</div>
+</div>
+<div class="md:col-span-2 relative h-52 md:h-auto md:min-h-[440px] overflow-hidden order-1 md:order-2">
+<img alt="Rituel spa" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80"/>
+<div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md px-2.5 py-1.5 rounded-full flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[11px] font-bold text-on-surface">4.98 · 127 avis</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Editorial: magazine -->
+<section class="mb-10">
+<div class="flex justify-between items-end mb-3">
+<h2 class="text-xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter">Le Carnet</h2>
+<button class="text-xs font-bold border-b-2 border-on-surface pb-0.5">Tout lire</button>
+</div>
+<div class="overflow-x-auto no-scrollbar -mx-4 md:-mx-6 px-4 md:px-6">
+<div class="flex gap-3 min-w-max">
+
+<article class="flex flex-col gap-2 w-56 md:w-64 shrink-0 cursor-pointer group">
+<div class="relative">
+<img alt="Massage" class="w-full h-36 md:h-40 object-cover rounded-md grayscale group-hover:grayscale-0 transition-all duration-700" src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80"/>
+<span class="absolute top-2 left-2 bg-primary text-white text-[9px] font-bold px-2 py-0.5 rounded-sm">01</span>
+</div>
+<div class="flex flex-col gap-1 px-1">
+<span class="text-[9px] font-bold uppercase tracking-widest text-primary">Bien-être</span>
+<h3 class="text-sm font-bold leading-tight line-clamp-2">L'art du soin à domicile : éloge de l'intimité retrouvée</h3>
+</div>
+</article>
+
+<article class="flex flex-col gap-2 w-56 md:w-64 shrink-0 cursor-pointer group">
+<div class="relative">
+<img alt="Chef" class="w-full h-36 md:h-40 object-cover rounded-md grayscale group-hover:grayscale-0 transition-all duration-700" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80"/>
+<span class="absolute top-2 left-2 bg-primary text-white text-[9px] font-bold px-2 py-0.5 rounded-sm">02</span>
+</div>
+<div class="flex flex-col gap-1 px-1">
+<span class="text-[9px] font-bold uppercase tracking-widest text-primary">Gastronomie</span>
+<h3 class="text-sm font-bold leading-tight line-clamp-2">La table privée, ou l'élégance d'une hospitalité inversée</h3>
+</div>
+</article>
+
+<article class="flex flex-col gap-2 w-56 md:w-64 shrink-0 cursor-pointer group">
+<div class="relative">
+<img alt="Famille" class="w-full h-36 md:h-40 object-cover rounded-md grayscale group-hover:grayscale-0 transition-all duration-700" src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80"/>
+<span class="absolute top-2 left-2 bg-primary text-white text-[9px] font-bold px-2 py-0.5 rounded-sm">03</span>
+</div>
+<div class="flex flex-col gap-1 px-1">
+<span class="text-[9px] font-bold uppercase tracking-widest text-primary">Famille</span>
+<h3 class="text-sm font-bold leading-tight line-clamp-2">La garde d'enfants en voyage : nos critères de sélection</h3>
+</div>
+</article>
+
+<article class="flex flex-col gap-2 w-56 md:w-64 shrink-0 cursor-pointer group">
+<div class="relative">
+<img alt="Vin" class="w-full h-36 md:h-40 object-cover rounded-md grayscale group-hover:grayscale-0 transition-all duration-700" src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80"/>
+<span class="absolute top-2 left-2 bg-primary text-white text-[9px] font-bold px-2 py-0.5 rounded-sm">04</span>
+</div>
+<div class="flex flex-col gap-1 px-1">
+<span class="text-[9px] font-bold uppercase tracking-widest text-primary">Sommelier</span>
+<h3 class="text-sm font-bold leading-tight line-clamp-2">Cinq crus de la Vallée du Rhône, commentés par nos sommeliers</h3>
+</div>
+</article>
+
+</div>
+</div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="w-full mt-10 pt-8 pb-6 px-4 md:px-8 bg-stone-50 dark:bg-stone-950 tonal-shift-no-borders">
+<div class="max-w-7xl mx-auto flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<div class="flex items-baseline gap-0">
+<span class="text-base plus-jakarta-sans font-black text-stone-900 dark:text-white tracking-[-0.04em]">InRoom</span><span class="w-1.5 h-1.5 rounded-full bg-primary ml-1 self-center"></span>
+</div>
+<div class="flex items-center gap-3">
+<a class="text-stone-400 hover:text-primary transition-all" href="#"><span class="material-symbols-outlined text-lg">public</span></a>
+<a class="text-stone-400 hover:text-primary transition-all" href="#"><span class="material-symbols-outlined text-lg">chat</span></a>
+<a class="text-stone-400 hover:text-primary transition-all" href="#"><span class="material-symbols-outlined text-lg">share</span></a>
+</div>
+</div>
+<div class="flex flex-wrap gap-x-5 gap-y-2 font-inter text-[10px] uppercase tracking-widest">
+<a class="text-stone-400 hover:text-rose-600 transition-colors" href="#">Confidentialité</a>
+<a class="text-stone-400 hover:text-rose-600 transition-colors" href="#">CGU</a>
+<a class="text-stone-400 hover:text-rose-600 transition-colors" href="#">Prestataires</a>
+<a class="text-stone-400 hover:text-rose-600 transition-colors" href="#">Hôtels</a>
+<a class="text-rose-700 font-bold hover:text-rose-600 transition-colors" href="#">24/7</a>
+</div>
+<p class="font-inter text-[9px] uppercase tracking-widest text-stone-400 dark:text-stone-600">© 2026 InRoom · Conciergerie en chambre.</p>
+</div>
+</footer>
+</body></html>
