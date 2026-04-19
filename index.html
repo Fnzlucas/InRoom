@@ -765,6 +765,272 @@ Réserver un service
 <!-- Ensure content isn't hidden behind sticky bar on mobile -->
 <div class="md:hidden h-20"></div>
 
+<!-- ═══════ AI CONCIERGE CHAT (floating bubble + panel) ═══════ -->
+<style>
+.ai-bubble{position:fixed;bottom:90px;right:16px;z-index:50;width:58px;height:58px;border-radius:50%;background:#b52330;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(181,35,48,0.35),0 2px 8px rgba(15,25,35,0.15);transition:transform 0.2s cubic-bezier(0.34,1.5,0.64,1);animation:aiEntry 0.6s cubic-bezier(0.34,1.5,0.64,1);}
+.ai-bubble:hover{transform:scale(1.06);}
+.ai-bubble:active{transform:scale(0.95);}
+@media (min-width:768px){.ai-bubble{bottom:24px;}}
+@keyframes aiEntry{from{transform:scale(0) rotate(-90deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+.ai-bubble .material-symbols-outlined{font-size:26px;font-variation-settings:'FILL' 1;}
+.ai-bubble::after{content:'';position:absolute;top:0;right:0;width:14px;height:14px;border-radius:50%;background:#00a879;border:2.5px solid #fff;animation:pulse-ai 2.5s ease-in-out infinite;}
+@keyframes pulse-ai{0%,100%{box-shadow:0 0 0 0 rgba(0,168,121,0.6);}50%{box-shadow:0 0 0 6px rgba(0,168,121,0);}}
+
+.ai-backdrop{position:fixed;inset:0;background:rgba(15,25,35,0.4);opacity:0;pointer-events:none;transition:opacity 0.25s;z-index:60;backdrop-filter:blur(2px);}
+.ai-backdrop.show{opacity:1;pointer-events:auto;}
+
+.ai-panel{position:fixed;bottom:0;right:0;left:0;margin:auto;z-index:70;background:#fff;border-radius:20px 20px 0 0;max-width:440px;height:min(78vh,640px);transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0.2,1);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -8px 40px rgba(15,25,35,0.15);}
+@media (min-width:768px){.ai-panel{right:16px;left:auto;bottom:24px;border-radius:20px;max-width:400px;height:600px;transform:translateY(calc(100% + 40px));}}
+.ai-panel.show{transform:translateY(0);}
+
+.ai-head{padding:16px 18px;background:#0f1923;color:#fff;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#b52330,#994444);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;letter-spacing:-0.02em;flex-shrink:0;}
+.ai-head-info{flex:1;min-width:0;}
+.ai-head-name{font-size:14px;font-weight:700;}
+.ai-head-status{font-size:11px;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:5px;}
+.ai-head-status::before{content:'';width:6px;height:6px;border-radius:50%;background:#00a879;}
+.ai-close{background:rgba(255,255,255,0.1);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ai-close:hover{background:rgba(255,255,255,0.18);}
+
+.ai-messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:10px;background:#fafaf9;}
+.ai-messages::-webkit-scrollbar{width:6px;}
+.ai-messages::-webkit-scrollbar-thumb{background:rgba(15,25,35,0.1);border-radius:3px;}
+
+.ai-msg{max-width:82%;padding:10px 14px;font-size:14px;line-height:1.45;border-radius:16px;animation:msgIn 0.3s ease-out;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.ai-msg.bot{align-self:flex-start;background:#fff;color:#0f1923;border-bottom-left-radius:4px;border:1px solid rgba(15,25,35,0.06);}
+.ai-msg.user{align-self:flex-end;background:#0f1923;color:#fff;border-bottom-right-radius:4px;}
+.ai-msg.typing{display:flex;gap:4px;padding:14px 16px;}
+.ai-msg.typing span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:typing 1.2s infinite ease-in-out;}
+.ai-msg.typing span:nth-child(2){animation-delay:0.15s;}
+.ai-msg.typing span:nth-child(3){animation-delay:0.3s;}
+@keyframes typing{0%,80%,100%{transform:scale(0.7);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
+
+.ai-handoff{align-self:flex-start;background:#fef3c7;border:1px solid #fde68a;border-radius:14px;padding:12px 14px;font-size:13px;color:#78350f;max-width:82%;margin-top:4px;animation:msgIn 0.4s ease-out;}
+.ai-handoff-head{font-weight:700;font-size:12px;margin-bottom:4px;display:flex;align-items:center;gap:5px;}
+.ai-handoff-head .material-symbols-outlined{font-size:14px;}
+.ai-handoff-btn{margin-top:10px;background:#b52330;color:#fff;border:none;padding:9px 14px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;transition:transform 0.08s;}
+.ai-handoff-btn:active{transform:scale(0.97);}
+.ai-handoff-btn .material-symbols-outlined{font-size:15px;}
+
+.ai-suggestions{padding:0 18px 10px;display:flex;gap:6px;flex-wrap:wrap;background:#fafaf9;flex-shrink:0;border-top:none;}
+.ai-chip{background:#fff;border:1px solid rgba(15,25,35,0.08);border-radius:18px;padding:7px 13px;font-family:inherit;font-size:12px;font-weight:600;color:#4b5563;cursor:pointer;transition:all 0.12s;}
+.ai-chip:hover{border-color:#0f1923;color:#0f1923;}
+
+.ai-input-bar{padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid rgba(15,25,35,0.06);background:#fff;display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.ai-input{flex:1;border:1px solid rgba(15,25,35,0.1);border-radius:22px;padding:10px 16px;font-family:inherit;font-size:14px;outline:none;background:#fafaf9;transition:border-color 0.15s;}
+.ai-input:focus{border-color:#0f1923;background:#fff;}
+.ai-send{background:#0f1923;color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.08s;}
+.ai-send:active{transform:scale(0.92);}
+.ai-send:disabled{opacity:0.3;cursor:not-allowed;}
+.ai-send .material-symbols-outlined{font-size:18px;}
+</style>
+
+<button class="ai-bubble" onclick="openAI()" aria-label="Concierge virtuel">
+  <span class="material-symbols-outlined">auto_awesome</span>
+</button>
+
+<div class="ai-backdrop" onclick="closeAI()"></div>
+
+<div class="ai-panel" id="ai-panel">
+  <div class="ai-head">
+    <div class="ai-avatar">AI</div>
+    <div class="ai-head-info">
+      <div class="ai-head-name">Amélie · Concierge virtuel</div>
+      <div class="ai-head-status">En ligne · réponse instantanée</div>
+    </div>
+    <button class="ai-close" onclick="closeAI()" aria-label="Fermer">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+
+  <div class="ai-messages" id="ai-messages">
+    <div class="ai-msg bot">Bonsoir M. Lucas 👋 Je suis Amélie, votre concierge virtuel. Comment puis-je vous aider ce soir ?</div>
+  </div>
+
+  <div class="ai-suggestions" id="ai-suggestions">
+    <button class="ai-chip" onclick="sendSuggestion('À quelle heure est le petit-déjeuner ?')">Petit-déjeuner ?</button>
+    <button class="ai-chip" onclick="sendSuggestion('Wifi ?')">Wifi ?</button>
+    <button class="ai-chip" onclick="sendSuggestion('Un bon restaurant à proximité ?')">Restaurants</button>
+    <button class="ai-chip" onclick="sendSuggestion('Je voudrais changer de chambre')">Changer de chambre</button>
+  </div>
+
+  <form class="ai-input-bar" onsubmit="event.preventDefault(); sendUserMessage();">
+    <input type="text" class="ai-input" id="ai-input" placeholder="Posez votre question…" autocomplete="off"/>
+    <button type="submit" class="ai-send" aria-label="Envoyer">
+      <span class="material-symbols-outlined">arrow_upward</span>
+    </button>
+  </form>
+</div>
+
+<script>
+// ─── AI Panel open/close ───
+function openAI(){
+  document.getElementById('ai-panel').classList.add('show');
+  document.querySelector('.ai-backdrop').classList.add('show');
+  setTimeout(() => document.getElementById('ai-input').focus(), 350);
+}
+function closeAI(){
+  document.getElementById('ai-panel').classList.remove('show');
+  document.querySelector('.ai-backdrop').classList.remove('show');
+}
+
+// ─── Knowledge base (hard-coded for demo) ───
+const aiKnowledge = {
+  'petit-dejeuner|petit déjeuner|breakfast|matin': {
+    answer: 'Le petit-déjeuner est servi en salle Les Tilleuls de <b>7h à 10h30</b> en semaine, et jusqu\'à 11h le week-end. Formule continentale, buffet chaud et à la carte.',
+    needsHuman: false
+  },
+  'wifi|internet|connexion|mot de passe wifi': {
+    answer: 'Le wifi est gratuit dans tout l\'établissement. Réseau : <b>InRoom-Guest</b> · Mot de passe : <b>villeneuve2026</b>. Le code fonctionne pour toute la durée de votre séjour.',
+    needsHuman: false
+  },
+  'parking|garer|voiture|stationnement': {
+    answer: 'Parking privé sécurisé disponible 24h/24 à 18€/nuit, accès direct depuis l\'avenue Paul Ravoux. Voituriers disponibles sur demande entre 17h et 23h.',
+    needsHuman: false
+  },
+  'piscine|spa|hammam|sauna': {
+    answer: 'La piscine et le spa sont ouverts de <b>7h à 22h</b>. Hammam et sauna de 10h à 21h. L\'accès est inclus pour les clients de l\'hôtel.',
+    needsHuman: false
+  },
+  'check.out|check out|depart|départ|partir': {
+    answer: 'Le check-out standard est à <b>11h</b>. Un late check-out jusqu\'à 14h est possible sous réserve de disponibilité (30€), ou gratuit pour nos clients VIP Or et Platine.',
+    needsHuman: false
+  },
+  'restaurant|manger|diner|dîner|ou sortir|bon resto': {
+    answer: 'À proximité immédiate je vous recommande : <b>Le Prieuré</b> (gastronomique, 5 min à pied), <b>La Magnanerie</b> (bistrot provençal, 3 min), et <b>L\'Atelier de Joël</b> (cuisine du marché, 7 min). Souhaitez-vous que je réserve pour vous ?',
+    needsHuman: false
+  },
+  'meteo|météo|temps|pluie|soleil': {
+    answer: 'À Villeneuve-lès-Avignon ce soir : 14°C, ciel dégagé, vent faible. Demain : 18°C en journée, ensoleillé. Parfait pour une promenade au Fort Saint-André.',
+    needsHuman: false
+  },
+  'horaires|ouverture|reception': {
+    answer: 'La réception est ouverte <b>24h/24</b>. La conciergerie physique est présente de 7h à 23h, et je prends le relais en dehors de ces horaires.',
+    needsHuman: false
+  },
+  'fort saint.andre|fort|pont|palais des papes|visite|touriste|visiter': {
+    answer: 'Villeneuve-lès-Avignon regorge de trésors : le <b>Fort Saint-André</b> (10 min à pied, vue sublime), la <b>Chartreuse du Val-de-Bénédiction</b>, et bien sûr le <b>Palais des Papes</b> d\'Avignon (20 min via le pont). Je peux vous réserver un guide si vous souhaitez approfondir.',
+    needsHuman: false
+  }
+};
+
+// ─── Detect if question needs human handoff ───
+const humanKeywords = [
+  'réclamation', 'reclamation', 'plainte', 'insatisfait', 'problème', 'probleme', 'bruit', 'bruyant',
+  'changer de chambre', 'surclasser', 'surclassement', 'upgrade',
+  'erreur facturation', 'facture', 'paiement', 'remboursement', 'rembourser',
+  'urgence', 'urgent', 'tout de suite', 'immediate', 'immédiatement',
+  'perdu', 'perdus', 'volé', 'volés', 'cassé', 'casse', 'ne marche pas', 'panne',
+  'annuler', 'annulation', 'modifier ma réservation',
+  'parler à quelqu\'un', 'parler a quelqu', 'parler a une personne', 'humain', 'personne réelle',
+  'réception', 'reception directement',
+  'fuite', 'inondation', 'eau chaude', 'chauffage', 'climatisation', 'serrure'
+];
+
+function needsHuman(text){
+  const lower = text.toLowerCase();
+  return humanKeywords.some(kw => lower.includes(kw));
+}
+
+function findAnswer(text){
+  const lower = text.toLowerCase();
+  for (const [pattern, data] of Object.entries(aiKnowledge)){
+    const keywords = pattern.split('|');
+    if (keywords.some(kw => lower.includes(kw.trim()))){
+      return data;
+    }
+  }
+  return null;
+}
+
+// ─── Messaging ───
+function appendMsg(html, who, extra){
+  const msgs = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + who + (extra ? ' ' + extra : '');
+  div.innerHTML = html;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function showTyping(){
+  const msgs = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg bot typing';
+  div.id = 'typing-indicator';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function hideTyping(){
+  document.getElementById('typing-indicator')?.remove();
+}
+
+function showHandoff(reason){
+  const msgs = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = 'ai-handoff';
+  div.innerHTML = `
+    <div class="ai-handoff-head"><span class="material-symbols-outlined">support_agent</span>Réception contactée</div>
+    Cette demande nécessite l'intervention de notre équipe. Je transmets votre message à la réception, qui vous répondra sous 2 minutes.
+    <button class="ai-handoff-btn" onclick="confirmHandoff(this)">
+      <span class="material-symbols-outlined">forward_to_inbox</span>
+      Transférer à la réception
+    </button>
+  `;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function confirmHandoff(btn){
+  btn.closest('.ai-handoff').innerHTML = `
+    <div class="ai-handoff-head" style="color:#065f46;"><span class="material-symbols-outlined">check_circle</span>Transféré à la réception</div>
+    Amélie (chef concierge) a été notifiée. Vous recevrez une réponse sous 2 minutes directement dans ce chat.
+  `;
+  document.querySelector('.ai-handoff').style.background = '#d1fae5';
+  document.querySelector('.ai-handoff').style.borderColor = '#6ee7b7';
+  document.querySelector('.ai-handoff').style.color = '#065f46';
+}
+
+// ─── Main send logic ───
+function sendUserMessage(){
+  const input = document.getElementById('ai-input');
+  const text = input.value.trim();
+  if (!text) return;
+  appendMsg(text, 'user');
+  input.value = '';
+  document.getElementById('ai-suggestions').style.display = 'none';
+  processMessage(text);
+}
+
+function sendSuggestion(text){
+  appendMsg(text, 'user');
+  document.getElementById('ai-suggestions').style.display = 'none';
+  processMessage(text);
+}
+
+function processMessage(text){
+  showTyping();
+  setTimeout(() => {
+    hideTyping();
+    const answer = findAnswer(text);
+    const mustEscalate = needsHuman(text);
+
+    if (answer && !mustEscalate){
+      appendMsg(answer.answer, 'bot');
+    } else if (mustEscalate){
+      appendMsg('Je comprends votre demande. Laissez-moi vous mettre en relation avec la réception — elle pourra traiter cela mieux que moi.', 'bot');
+      setTimeout(() => showHandoff(text), 500);
+    } else {
+      appendMsg('Je n\'ai pas d\'information précise sur ce point. Souhaitez-vous que je transmette votre demande à la réception ?', 'bot');
+      setTimeout(() => showHandoff(text), 500);
+    }
+  }, 900 + Math.random() * 500);
+}
+</script>
+
 <footer class="w-full mt-10 pt-8 pb-6 px-4 md:px-8 bg-stone-50 dark:bg-stone-950 tonal-shift-no-borders">
 <div class="max-w-7xl mx-auto flex flex-col gap-4">
 <div class="flex justify-between items-center">
@@ -782,7 +1048,7 @@ Réserver un service
 <a class="text-stone-400 hover:text-rose-600 transition-colors" href="#">CGU</a>
 <a class="text-stone-400 hover:text-rose-600 transition-colors" href="#">Prestataires</a>
 <a class="text-stone-400 hover:text-rose-600 transition-colors" href="#">Hôtels</a>
-<a class="text-rose-700 font-bold hover:text-rose-600 transition-colors" href="#">24/7</a>
+<a class="text-rose-700 font-bold hover:text-primary transition-colors" href="#">24/7</a>
 </div>
 <p class="font-inter text-[9px] uppercase tracking-widest text-stone-400 dark:text-stone-600">© 2026 InRoom · Conciergerie en chambre.</p>
 </div>
