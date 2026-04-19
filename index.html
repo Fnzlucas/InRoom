@@ -123,7 +123,7 @@
 <!-- Hero / Welcome -->
 <section class="mt-6 mb-6">
 <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-2 block">Chambre 312</span>
-<h1 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]">Bonsoir Monsieur Lucas, <span class="italic font-light">à votre service.</span></h1>
+<h1 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]">Bonsoir M. Lucas,<br class="sm:hidden"/> <span class="italic font-light">à votre service.</span></h1>
 </section>
 
 <!-- Search Widget -->
@@ -201,265 +201,159 @@
 </div>
 </section>
 
-<!-- Main Services Grid -->
-<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-10">
+<!-- Main Services Grid : Bento asymétrique -->
+<section class="mb-6 md:mb-10">
+<div class="grid grid-cols-2 gap-2 md:gap-3 lg:grid-cols-3">
 
-<!-- Card 1 : Massage -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Massage" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">45 min</div>
+<!-- BLOC 1 -->
+<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
+<img alt="Chef Privé" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-on-surface text-surface text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">★ Signature</div>
+<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">4.94</span>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Massage Suédois</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.96</span>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Raphaël Bonnet · 1 étoile</p>
+<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Chef Privé</h3>
+<p class="text-sm font-bold mt-1">185 €<span class="text-xs font-normal text-white/80"> / pers.</span></p>
 </div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Camille R. · Kiné DE · 60 min</p>
-</div>
-<p class="text-sm"><span class="font-bold">120 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 2 : Coiffeur -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Coiffeur" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">1h</div>
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Massage" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">45 min</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Massage Suédois</h3>
+<p class="text-xs font-bold mt-0.5">120 €<span class="text-[10px] font-normal text-white/80"> / séance</span></p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Coiffeur · Brushing</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.89</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Maison Théo · H/F · 45 min</p>
-</div>
-<p class="text-sm"><span class="font-bold">75 €</span><span class="text-[11px] text-on-surface-variant"> / presta.</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 3 : Esthéticienne -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Soin visage" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Top</div>
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Soin visage" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Top</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Soin Signature</h3>
+<p class="text-xs font-bold mt-0.5">95 €<span class="text-[10px] font-normal text-white/80"> / séance</span></p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Soin Visage Signature</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">5.00</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Élodie M. · CAP · 75 min</p>
-</div>
-<p class="text-sm"><span class="font-bold">95 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 4 : Chef -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Chef" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-on-surface text-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">★ Sign.</div>
+<!-- BLOC 2 -->
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Coiffeur" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">1h</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Coiffeur · Brushing</h3>
+<p class="text-xs font-bold mt-0.5">75 €<span class="text-[10px] font-normal text-white/80"> / presta.</span></p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Chef Privé · 4 services</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.94</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Raphaël Bonnet · 1 étoile</p>
-</div>
-<p class="text-sm"><span class="font-bold">185 €</span><span class="text-[11px] text-on-surface-variant"> / pers.</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 5 : Taxi -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Chauffeur" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">15 min</div>
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Chauffeur" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">15 min</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Chauffeur Privé</h3>
+<p class="text-xs font-bold mt-0.5">55 €<span class="text-[10px] font-normal text-white/80"> · aéroport</span></p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Chauffeur Privé</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.91</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">AG Taxi · Mercedes E · 1-3 pax</p>
-</div>
-<p class="text-sm"><span class="font-bold">55 €</span><span class="text-[11px] text-on-surface-variant"> · MRS aéroport</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 6 : Babysitting -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Baby-sitter" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Vérifié</div>
+<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
+<img alt="Shooting Souvenir" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-on-surface text-surface text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">★ Signature</div>
+<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">4.93</span>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Baby-sitter FR/EN</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.97</span>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Julien A. · 1h · 30 photos</p>
+<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Shooting Souvenir</h3>
+<p class="text-sm font-bold mt-1">220 €<span class="text-xs font-normal text-white/80"> / séance</span></p>
 </div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Sarah L. · BAFA · dès 3 ans</p>
-</div>
-<p class="text-sm"><span class="font-bold">22 €</span><span class="text-[11px] text-on-surface-variant"> / heure</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 7 : Coach sportif -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Coach" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">Matin</div>
+<!-- BLOC 3 -->
+<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
+<img alt="Sommelier Privé" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Nouveau</div>
+<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">4.98</span>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Coach Sportif Privé</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.88</span>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Vincent P. · WSET 3 · 5 vins</p>
+<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Sommelier Privé</h3>
+<p class="text-sm font-bold mt-1">140 €<span class="text-xs font-normal text-white/80"> / pers.</span></p>
 </div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Tom V. · BPJEPS · HIIT/Yoga</p>
-</div>
-<p class="text-sm"><span class="font-bold">70 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 8 : Pressing -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Pressing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Retour 2h</div>
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Baby-sitter" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Vérifié</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Baby-sitter FR/EN</h3>
+<p class="text-xs font-bold mt-0.5">22 €<span class="text-[10px] font-normal text-white/80"> / heure</span></p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Pressing Express</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.82</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Blanchisserie de l'Horloge</p>
-</div>
-<p class="text-sm"><span class="font-bold">dès 12 €</span><span class="text-[11px] text-on-surface-variant"> / pièce</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 9 : Fleuriste -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Fleuriste" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Local</div>
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Coach" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">Matin</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Coach Sportif</h3>
+<p class="text-xs font-bold mt-0.5">70 €<span class="text-[10px] font-normal text-white/80"> / séance</span></p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Bouquet Sur-Mesure</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.95</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Atelier Fleur de Sel · Avignon</p>
-</div>
-<p class="text-sm"><span class="font-bold">dès 45 €</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 10 : Photographe -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Photographe" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-on-surface text-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">★ Sign.</div>
+<!-- BLOC 4 -->
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Pressing" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Retour 2h</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Pressing Express</h3>
+<p class="text-xs font-bold mt-0.5">dès 12 €<span class="text-[10px] font-normal text-white/80"> / pièce</span></p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Shooting Souvenir</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.93</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Julien A. · 1h · 30 photos</p>
-</div>
-<p class="text-sm"><span class="font-bold">220 €</span><span class="text-[11px] text-on-surface-variant"> / séance</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 11 : Dog-sitter -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Dog-sitter" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Ce soir</div>
+<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
+<img alt="Fleuriste" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Local</div>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<h3 class="text-sm font-bold leading-tight">Bouquet Sur-Mesure</h3>
+<p class="text-xs font-bold mt-0.5">dès 45 €</p>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Dog-Sitter & Balade</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.90</span>
-</div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Marion D. · ACACED</p>
-</div>
-<p class="text-sm"><span class="font-bold">18 €</span><span class="text-[11px] text-on-surface-variant"> / heure</span></p>
-</div>
-</div>
+</a>
 
-<!-- Card 12 : Sommelier -->
-<div class="flex gap-3 bg-surface-container-lowest p-2 rounded-lg hover:shadow-md transition-all cursor-pointer group">
-<div class="relative w-28 h-28 shrink-0 overflow-hidden rounded-md bg-surface-container-low">
-<img alt="Sommelier" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=400&q=80"/>
-<div class="absolute top-1.5 left-1.5 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Nouveau</div>
+<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
+<img alt="Dog-Sitter" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Ce soir</div>
+<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">4.90</span>
 </div>
-<div class="flex-1 min-w-0 flex flex-col justify-between py-1 pr-2">
-<div>
-<div class="flex justify-between items-start gap-2">
-<h3 class="font-bold text-on-surface text-sm leading-tight truncate">Sommelier Privé</h3>
-<div class="flex items-center gap-0.5 shrink-0">
-<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-medium">4.98</span>
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Marion D. · ACACED</p>
+<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Dog-Sitter & Balade</h3>
+<p class="text-sm font-bold mt-1">18 €<span class="text-xs font-normal text-white/80"> / heure</span></p>
 </div>
-</div>
-<p class="text-[11px] text-on-surface-variant mt-0.5">Vincent P. · WSET 3 · 5 vins</p>
-</div>
-<p class="text-sm"><span class="font-bold">140 €</span><span class="text-[11px] text-on-surface-variant"> / pers.</span></p>
-</div>
-</div>
+</a>
 
+</div>
 </section>
 
 <!-- Module Banner: Le Chasseur -->
-<section class="mb-10 bg-surface-container-lowest rounded-lg overflow-hidden">
+<section class="mb-6 md:mb-10 bg-surface-container-lowest rounded-lg overflow-hidden">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
 <div class="relative h-52 md:h-auto md:min-h-[340px] overflow-hidden">
 <img alt="Le Chasseur" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1000&q=80"/>
@@ -474,7 +368,7 @@
 <div class="p-5 md:p-8 flex flex-col justify-center gap-3">
 <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Service de coursier dédié</span>
 <h3 class="text-2xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]">Le Chasseur,<br/><span class="italic font-light">à toute heure.</span></h3>
-<p class="text-sm text-on-surface-variant leading-relaxed">Une requête imprévue, quelle qu'en soit la nature. Produits du quotidien, articles de pharmacie, accessoires oubliés, bouquet de dernière minute&nbsp;: formulez votre demande, elle sera honorée. Livraison discrète en chambre sous trente minutes en moyenne, facturation intégrée à votre note d'hôtel.</p>
+<p class="text-sm text-on-surface-variant leading-relaxed">Formulez votre demande, livrée en chambre sous 30 min. Facturation sur votre note.</p>
 
 <!-- Exemples de courses avec icônes -->
 <div class="grid grid-cols-4 gap-2 my-1">
@@ -527,7 +421,7 @@ Formuler une demande
 </section>
 
 <!-- Featured Experiences (Bento Style) -->
-<section class="mb-10">
+<section class="mb-6 md:mb-10">
 <div class="flex justify-between items-end mb-4">
 <h2 class="text-xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter">Rituels Signature</h2>
 <button class="text-xs font-bold border-b-2 border-on-surface pb-0.5">Tout voir</button>
@@ -567,7 +461,7 @@ Formuler une demande
 </section>
 
 <!-- More services (scroll horizontal compact) -->
-<section class="mb-10">
+<section class="mb-6 md:mb-10">
 <div class="flex justify-between items-end mb-3">
 <h2 class="text-xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter">À la demande</h2>
 <button class="text-xs font-bold border-b-2 border-on-surface pb-0.5">Tout voir</button>
@@ -679,7 +573,7 @@ Formuler une demande
 </section>
 
 <!-- Module Banner: Chef Privé (full-bleed hero) -->
-<section class="mb-10 relative rounded-lg overflow-hidden h-[360px] md:h-[420px] group cursor-pointer">
+<section class="mb-6 md:mb-10 relative rounded-lg overflow-hidden h-[360px] md:h-[420px] group cursor-pointer">
 <img alt="Chef privé" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=1600&q=80"/>
 <div class="absolute inset-0 bg-gradient-to-tr from-black/85 via-black/40 to-transparent"></div>
 <div class="relative z-10 h-full flex flex-col justify-end p-5 md:p-10 max-w-2xl">
@@ -688,7 +582,7 @@ Formuler une demande
 <span class="bg-primary text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">★ Signature</span>
 </div>
 <h3 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-white tracking-tighter leading-[1.02] mb-3">Une table étoilée,<br/><span class="italic font-light">dans votre suite.</span></h3>
-<p class="text-white/80 text-sm md:text-base max-w-md leading-relaxed mb-4">Le Chef Raphaël Bonnet, une étoile Michelin, officie dans votre suite accompagné de sa brigade. Menu adapté à vos préférences et restrictions alimentaires, dressage en direct, commentaire de chaque service. Vaisselle, linge de table et mise en place sont intégralement assurés par la maison.</p>
+<p class="text-white/80 text-sm md:text-base max-w-md leading-relaxed mb-4">Le Chef Raphaël Bonnet, une étoile Michelin, officie dans votre suite. Menu sur mesure, dressage en direct.</p>
 <div class="flex flex-wrap gap-2 mb-5">
 <div class="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full">
 <span class="material-symbols-outlined text-white text-sm">restaurant_menu</span>
@@ -714,7 +608,7 @@ Réserver · dès 185 €/pers.
 </section>
 
 <!-- Concierge CTA section -->
-<section class="mb-10 p-5 md:p-8 bg-surface-container-low rounded-lg">
+<section class="mb-6 md:mb-10 p-5 md:p-8 bg-surface-container-low rounded-lg">
 <div class="flex flex-col md:flex-row items-center gap-5">
 <img alt="Concierge" class="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover shrink-0 ring-2 ring-white shadow-md" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80"/>
 <div class="flex-1 text-center md:text-left">
@@ -723,7 +617,7 @@ Réserver · dès 185 €/pers.
 <span class="text-[10px] font-bold uppercase tracking-widest text-tertiary">Amélie · Chef Concierge · en ligne</span>
 </div>
 <h2 class="text-lg md:text-xl font-bold plus-jakarta-sans text-on-surface tracking-tight leading-tight">Une requête particulière&nbsp;?</h2>
-<p class="text-xs text-on-surface-variant mt-0.5">Notre conciergerie reste à votre disposition 24h/24. Réponse sous deux minutes.</p>
+<p class="text-xs text-on-surface-variant mt-0.5">24h/24 · réponse sous 2 min.</p>
 </div>
 <div class="flex gap-2 shrink-0">
 <button class="bg-primary hover:bg-primary-container text-on-primary px-4 py-2.5 rounded-full text-xs font-bold transition-all shadow-lg shadow-primary/20 flex items-center gap-1.5">
@@ -738,12 +632,12 @@ Réserver · dès 185 €/pers.
 </section>
 
 <!-- Module Banner: Rituel Spa (inversé image droite) -->
-<section class="mb-10 bg-on-surface rounded-lg overflow-hidden">
+<section class="mb-6 md:mb-10 bg-on-surface rounded-lg overflow-hidden">
 <div class="grid grid-cols-1 md:grid-cols-5 gap-0">
 <div class="md:col-span-3 p-5 md:p-10 flex flex-col justify-center gap-3 order-2 md:order-1">
 <span class="text-[10px] font-bold uppercase tracking-widest text-primary-fixed-dim">Module Bien-être</span>
 <h3 class="text-2xl md:text-4xl font-black plus-jakarta-sans text-white tracking-tighter leading-[1.05]">Le Rituel du Soir<br/><span class="italic font-light text-primary-fixed-dim">en 3 temps.</span></h3>
-<p class="text-sm text-white/70 leading-relaxed max-w-md">Un protocole complet de deux heures trente, conçu pour dénouer les tensions accumulées. Immersion aromatique aux huiles essentielles de Provence, massage signature à quatre mains, puis infusion et méditation guidée. L'ensemble du matériel — table, linge, huiles, diffuseur sonore — est apporté et retiré par nos praticiennes.</p>
+<p class="text-sm text-white/70 leading-relaxed max-w-md">2h30 pour relâcher totalement. Tout le matériel apporté en chambre.</p>
 
 <!-- Timeline des 3 temps -->
 <div class="flex flex-col gap-2 mt-2 mb-2">
@@ -795,7 +689,7 @@ Réserver · 285 €
 </section>
 
 <!-- Editorial: magazine -->
-<section class="mb-10">
+<section class="mb-6 md:mb-10">
 <div class="flex justify-between items-end mb-3">
 <h2 class="text-xl md:text-3xl font-black plus-jakarta-sans text-on-surface tracking-tighter">Le Carnet</h2>
 <button class="text-xs font-bold border-b-2 border-on-surface pb-0.5">Tout lire</button>
@@ -854,6 +748,23 @@ Réserver · 285 €
 </main>
 
 <!-- Footer -->
+<!-- Sticky Mobile CTA Bar -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-stone-900/95 backdrop-blur-xl border-t border-stone-200/60 dark:border-stone-800 px-4 py-3 flex items-center gap-2 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+<button class="bg-surface-container-high text-on-surface p-3 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform" aria-label="Appeler">
+<span class="material-symbols-outlined text-xl">call</span>
+</button>
+<button class="bg-surface-container-high text-on-surface p-3 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform" aria-label="Message">
+<span class="material-symbols-outlined text-xl">chat</span>
+</button>
+<button class="flex-1 bg-primary text-on-primary py-3 rounded-full text-sm font-bold flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform shadow-lg shadow-primary/20">
+Réserver un service
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+</div>
+
+<!-- Ensure content isn't hidden behind sticky bar on mobile -->
+<div class="md:hidden h-20"></div>
+
 <footer class="w-full mt-10 pt-8 pb-6 px-4 md:px-8 bg-stone-50 dark:bg-stone-950 tonal-shift-no-borders">
 <div class="max-w-7xl mx-auto flex flex-col gap-4">
 <div class="flex justify-between items-center">
