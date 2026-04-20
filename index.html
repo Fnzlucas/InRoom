@@ -126,6 +126,54 @@
 <h1 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]">Bonsoir M. Lucas,<br class="sm:hidden"/> <span class="italic font-light">à votre service.</span></h1>
 </section>
 
+<!-- ============================================ -->
+<!-- CE SOIR CHEZ VOUS (contextuel dynamique)    -->
+<!-- ============================================ -->
+<section class="mb-6" id="ir-tonight-section">
+  <!-- Injected by JS based on time of day -->
+</section>
+
+<!-- ============================================ -->
+<!-- CHIPS D'INTENTION                            -->
+<!-- ============================================ -->
+<section class="mb-6 overflow-x-auto no-scrollbar -mx-4 md:-mx-6 px-4 md:px-6">
+  <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Je cherche…</p>
+  <div class="flex items-center gap-2 whitespace-nowrap min-w-max">
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-on-surface text-surface rounded-full text-xs font-bold shrink-0 ir-clickable" data-intent="detente">
+      <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">nights_stay</span>
+      Me détendre
+    </button>
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable" data-intent="impressionner">
+      <span class="material-symbols-outlined text-base">local_fire_department</span>
+      Impressionner quelqu'un
+    </button>
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable" data-intent="belle">
+      <span class="material-symbols-outlined text-base">auto_awesome</span>
+      Me sublimer
+    </button>
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable" data-intent="bien-manger">
+      <span class="material-symbols-outlined text-base">restaurant</span>
+      Bien manger
+    </button>
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable" data-intent="dormir">
+      <span class="material-symbols-outlined text-base">bedtime</span>
+      Mieux dormir
+    </button>
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable" data-intent="decouvrir">
+      <span class="material-symbols-outlined text-base">explore</span>
+      Découvrir Avignon
+    </button>
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable" data-intent="famille">
+      <span class="material-symbols-outlined text-base">family_restroom</span>
+      En famille
+    </button>
+    <button class="ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable" data-intent="urgent">
+      <span class="material-symbols-outlined text-base">bolt</span>
+      J'ai besoin maintenant
+    </button>
+  </div>
+</section>
+
 <!-- Search Widget -->
 <section class="mb-6">
 <div class="relative w-full max-w-4xl mx-auto">
@@ -1580,6 +1628,259 @@ window.InRoom = (function() {
     }, 350);
   }
 
+  // ========== CE SOIR CHEZ VOUS (contextuel selon l'heure) ==========
+  function renderTonightSection() {
+    const el = document.getElementById('ir-tonight-section');
+    if (!el) return;
+
+    const h = new Date().getHours();
+    let scenario;
+
+    if (h >= 6 && h < 10) {
+      scenario = {
+        badge: 'Ce matin',
+        title: 'Démarrez la journée en douceur',
+        subtitle: 'Yoga privé sur la terrasse, soleil levant sur les toits d\'Avignon',
+        cta: 'Réserver 7h30',
+        service: 'yoga',
+        bg: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1400&q=80',
+        icon: 'wb_sunny'
+      };
+    } else if (h >= 10 && h < 14) {
+      scenario = {
+        badge: 'Ce midi',
+        title: 'Un déjeuner qui sort de l\'ordinaire',
+        subtitle: 'Chef Raphaël peut dresser une table en chambre dans 90 min',
+        cta: 'Voir le menu',
+        service: 'chef',
+        bg: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1400&q=80',
+        icon: 'restaurant'
+      };
+    } else if (h >= 14 && h < 18) {
+      scenario = {
+        badge: 'Cet après-midi',
+        title: 'Il fait 22° à Avignon — profitez-en',
+        subtitle: 'Soin visage en terrasse ou balade guidée dans le Palais des Papes',
+        cta: 'Explorer',
+        service: 'guide',
+        bg: 'https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=1400&q=80',
+        icon: 'wb_twilight'
+      };
+    } else if (h >= 18 && h < 22) {
+      scenario = {
+        badge: 'Ce soir',
+        title: 'Le soleil se couche à 20h47',
+        subtitle: 'Chef Raphaël est disponible, terrasse dressée en 45 min',
+        cta: 'Réserver un dîner',
+        service: 'chef',
+        bg: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80',
+        icon: 'nights_stay'
+      };
+    } else {
+      scenario = {
+        badge: 'Cette nuit',
+        title: 'Retrouvez un sommeil profond',
+        subtitle: 'Massage relaxant 45 min, Elena est disponible dans 30 min',
+        cta: 'Réserver maintenant',
+        service: 'massage',
+        bg: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=1400&q=80',
+        icon: 'bedtime'
+      };
+    }
+
+    el.innerHTML = `
+      <div class="relative rounded-3xl overflow-hidden cursor-pointer group" onclick="InRoom.showService('${scenario.service}')">
+        <div class="aspect-[16/9] md:aspect-[21/9]">
+          <img src="${scenario.bg}" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10"></div>
+        </div>
+        <div class="absolute inset-0 p-5 md:p-7 flex flex-col justify-end">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="bg-white/15 backdrop-blur-md rounded-full w-8 h-8 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white text-lg" style="font-variation-settings: 'FILL' 1;">${scenario.icon}</span>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-white/90">${scenario.badge} chez vous</span>
+          </div>
+          <h2 class="plus-jakarta-sans font-black text-2xl md:text-4xl text-white tracking-tighter leading-[1.1] mb-1">${scenario.title}</h2>
+          <p class="text-sm md:text-base text-white/80 leading-snug max-w-xl">${scenario.subtitle}</p>
+          <div class="mt-4 flex items-center gap-3">
+            <button class="bg-white text-on-surface text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition flex items-center gap-2">
+              ${scenario.cta}
+              <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+            <button class="text-white/90 text-xs font-semibold underline underline-offset-2" onclick="event.stopPropagation(); InRoom.dismissTonight()">Pas maintenant</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function dismissTonight() {
+    const el = document.getElementById('ir-tonight-section');
+    if (el) el.style.display = 'none';
+  }
+
+  // ========== STATUTS LIVE (injection sur les cartes existantes) ==========
+  // Map des dispos simulées par service
+  const LIVE_STATUS = {
+    'chef': { label: 'Dispo ce soir 20h', urgent: false },
+    'massage': { label: 'Elena libre dans 30 min', urgent: true },
+    'soin-visage': { label: 'Sophie libre à 16h', urgent: false },
+    'coiffeur': { label: 'Libre dès 17h', urgent: false },
+    'chauffeur': { label: 'Dispo dans 15 min', urgent: true },
+    'shooting': { label: 'Demain matin 10h', urgent: false },
+    'sommelier': { label: 'Vincent dispo à 19h', urgent: false },
+    'babysitter': { label: 'Marion libre ce soir', urgent: false },
+    'coach': { label: 'Demain 7h', urgent: false },
+    'pressing': { label: 'Retour en 2h', urgent: true },
+    'fleuriste': { label: 'Livraison 2h', urgent: false },
+    'dogsitter': { label: 'Marion libre ce soir', urgent: false },
+    'yoga': { label: 'Camille libre dans 45 min', urgent: true },
+    'manucure': { label: 'Laura libre dans 30 min', urgent: true },
+    'makeup': { label: 'Mia libre à 18h', urgent: false },
+    'mixologue': { label: 'Thomas dispo ce soir', urgent: false },
+    'billetterie': { label: 'Réponse en 5 min', urgent: true },
+    'osteo': { label: 'Dispo dans 1h', urgent: true },
+    'guide': { label: 'Demain matin', urgent: false },
+    'barbier': { label: 'Antoine libre dans 20 min', urgent: true },
+    'chasseur': { label: 'Dispo maintenant', urgent: true }
+  };
+
+  function injectLiveStatus() {
+    // Pour chaque carte existante du bento qui a une durée affichée, on la remplace
+    document.querySelectorAll('a[href="javascript:void(0)"], a[href="#"]').forEach(card => {
+      if (!card.querySelector('img')) return;
+      if (card.dataset.irLive) return;
+      const service = findServiceFromCard(card);
+      if (!service || !LIVE_STATUS[service]) return;
+
+      // Trouve le badge temporel existant (top-left avec durée type "45 min", "15 min", "1h", "Retour 2h", "Matin", "Ce soir")
+      // On le remplace par le statut live
+      const topBadge = card.querySelector('.absolute.top-3.left-3');
+      if (topBadge && !topBadge.classList.contains('bg-on-surface') && !topBadge.textContent.includes('★')) {
+        const status = LIVE_STATUS[service];
+        const newClasses = status.urgent
+          ? 'absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold uppercase tracking-wide px-2 py-1 rounded-full flex items-center gap-1'
+          : 'absolute top-3 left-3 bg-white/90 backdrop-blur-md text-on-surface text-[9px] font-bold uppercase tracking-wide px-2 py-1 rounded-full flex items-center gap-1';
+        topBadge.className = newClasses;
+        topBadge.innerHTML = `
+          ${status.urgent ? '<span class="relative flex h-1.5 w-1.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-on-tertiary-container opacity-60"></span><span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-on-tertiary-container"></span></span>' : '<span class="material-symbols-outlined text-[10px]">schedule</span>'}
+          <span>${status.label}</span>
+        `;
+      }
+
+      card.dataset.irLive = '1';
+    });
+  }
+
+  // ========== BADGES "EN COURS" (services déjà réservés) ==========
+  // Dans une vraie app: viendrait de Supabase. Ici on simule 2 services en cours.
+  const IN_PROGRESS = {
+    'pressing': { label: 'En cours', detail: 'Retour prévu 16h30' },
+    'fleuriste': { label: 'En cours', detail: 'Livraison en route' }
+  };
+
+  function injectInProgressBadges() {
+    document.querySelectorAll('a[href="javascript:void(0)"], a[href="#"]').forEach(card => {
+      if (!card.querySelector('img')) return;
+      if (card.dataset.irProgress) return;
+      const service = findServiceFromCard(card);
+      if (!service || !IN_PROGRESS[service]) return;
+
+      // Ajoute un badge "En cours" en haut à droite
+      const topRight = document.createElement('div');
+      topRight.className = 'absolute top-3 right-3 bg-on-surface text-surface text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full flex items-center gap-1.5';
+      topRight.innerHTML = `
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary-container opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-tertiary-container"></span>
+        </span>
+        ${IN_PROGRESS[service].label}
+      `;
+      // Retirer l'ancien badge rating top-right s'il existe
+      const oldRating = card.querySelector('.absolute.top-3.right-3');
+      if (oldRating) oldRating.remove();
+      card.querySelector('.absolute.inset-0.bg-gradient-to-t')?.after(topRight);
+
+      // Ajouter un ruban bas avec le détail
+      const bottomBanner = document.createElement('div');
+      bottomBanner.className = 'absolute top-0 left-0 right-0 bg-on-surface/95 backdrop-blur-md text-surface text-[10px] font-semibold text-center py-1.5 flex items-center justify-center gap-1.5';
+      bottomBanner.innerHTML = `
+        <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+        ${IN_PROGRESS[service].detail}
+      `;
+      card.appendChild(bottomBanner);
+
+      card.dataset.irProgress = '1';
+    });
+  }
+
+  // ========== CHIPS D'INTENTION ==========
+  const INTENT_MAP = {
+    'detente': ['massage', 'yoga', 'soin-visage', 'osteo'],
+    'impressionner': ['chef', 'sommelier', 'fleuriste', 'mixologue'],
+    'belle': ['makeup', 'manucure', 'coiffeur', 'soin-visage'],
+    'bien-manger': ['chef', 'sommelier', 'mixologue'],
+    'dormir': ['massage', 'osteo', 'yoga'],
+    'decouvrir': ['guide', 'billetterie', 'chauffeur'],
+    'famille': ['babysitter', 'dogsitter', 'guide', 'shooting'],
+    'urgent': ['chasseur', 'pressing', 'chauffeur', 'barbier']
+  };
+
+  const INTENT_LABELS = {
+    'detente': 'Pour vous détendre',
+    'impressionner': 'Pour impressionner',
+    'belle': 'Pour vous sublimer',
+    'bien-manger': 'Pour bien manger',
+    'dormir': 'Pour mieux dormir',
+    'decouvrir': 'Pour découvrir Avignon',
+    'famille': 'Pour la famille',
+    'urgent': 'Besoin immédiat'
+  };
+
+  function handleIntentClick(intent) {
+    // Update chips style
+    document.querySelectorAll('.ir-intent-chip').forEach(chip => {
+      if (chip.dataset.intent === intent) {
+        chip.className = 'ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-on-surface text-surface rounded-full text-xs font-bold shrink-0 ir-clickable';
+      } else {
+        chip.className = 'ir-intent-chip flex items-center gap-1.5 px-4 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-full text-xs font-semibold shrink-0 ir-clickable';
+      }
+    });
+
+    // Ouvre un écran-liste avec les services correspondants (réutilise showService mais avec agrégation)
+    const serviceKeys = INTENT_MAP[intent] || [];
+    if (serviceKeys.length === 0) return;
+    showIntentResults(intent, serviceKeys);
+  }
+
+  function showIntentResults(intent, serviceKeys) {
+    document.getElementById('ir-cat-overline').textContent = 'Je cherche';
+    document.getElementById('ir-cat-title').textContent = INTENT_LABELS[intent];
+    // Agrège tous les pros featured de chaque service
+    const allPros = serviceKeys.flatMap(key => {
+      const s = SERVICES[key];
+      if (!s) return [];
+      return s.pros.filter(p => p.featured).map(p => ({ ...p, _serviceLabel: s.label, _serviceKey: key }));
+    });
+    document.getElementById('ir-cat-count').textContent = `${allPros.length} suggestion${allPros.length > 1 ? 's' : ''} pour vous`;
+    document.getElementById('ir-cat-filters').innerHTML = serviceKeys.map((key, i) => {
+      const s = SERVICES[key];
+      return `<button class="px-3.5 py-1.5 ${i === 0 ? 'bg-on-surface text-surface' : 'bg-surface-container-lowest border border-outline-variant'} rounded-full text-xs font-semibold shrink-0 ir-clickable" onclick="InRoom.showService('${key}')">${s.label}</button>`;
+    }).join('');
+    document.getElementById('ir-pros-list').innerHTML = allPros.map(renderProCard).join('');
+    document.getElementById('ir-category-screen').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function bindIntentChips() {
+    document.querySelectorAll('.ir-intent-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        handleIntentClick(chip.dataset.intent);
+      });
+    });
+  }
+
   // ========== AUTO-BINDING des cartes existantes ==========
   function autoBindCards() {
     // Les cartes du bento (aspect-[16/10], aspect-square) avec img
@@ -1615,14 +1916,22 @@ window.InRoom = (function() {
   document.addEventListener('DOMContentLoaded', () => {
     renderMenu();
     autoBindCards();
+    renderTonightSection();
+    injectLiveStatus();
+    injectInProgressBadges();
+    bindIntentChips();
   });
   // Au cas où DOMContentLoaded est déjà passé
   if (document.readyState !== 'loading') {
     renderMenu();
     autoBindCards();
+    renderTonightSection();
+    injectLiveStatus();
+    injectInProgressBadges();
+    bindIntentChips();
   }
 
-  return { openMenu, closeMenu, showService, closeCategory, openPro, closeSheet, updateSlot, confirmBooking };
+  return { openMenu, closeMenu, showService, closeCategory, openPro, closeSheet, updateSlot, confirmBooking, dismissTonight };
 })();
 </script>
 
