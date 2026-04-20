@@ -111,7 +111,7 @@
 <span class="material-symbols-outlined text-base">bed</span>
 <span class="hidden sm:inline">Ch. </span>312
 </button>
-<div class="flex items-center gap-1 bg-stone-100 rounded-full px-2 py-1 hover:bg-stone-200 transition-colors cursor-pointer">
+<div class="flex items-center gap-1 bg-stone-100 rounded-full px-2 py-1 hover:bg-stone-200 transition-colors cursor-pointer" onclick="InRoom.openMenu()">
 <span class="material-symbols-outlined text-stone-700 text-lg">menu</span>
 <span class="material-symbols-outlined text-stone-700 text-lg" style="font-variation-settings: 'FILL' 1;">account_circle</span>
 </div>
@@ -1053,4 +1053,577 @@ function processMessage(text){
 <p class="font-inter text-[9px] uppercase tracking-widest text-stone-400 dark:text-stone-600">© 2026 InRoom · Conciergerie en chambre.</p>
 </div>
 </footer>
+
+<!-- ============================================ -->
+<!-- INROOM SYSTEM — Fiches pros & navigation -->
+<!-- ============================================ -->
+<style>
+  .ir-no-scrollbar::-webkit-scrollbar { display: none; }
+  .ir-no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .ir-screen { position: fixed; inset: 0; background: #fcf9f8; z-index: 40; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); overflow-y: auto; }
+  .ir-screen.active { transform: translateX(0); }
+
+  .ir-drawer { position: fixed; top: 0; bottom: 0; left: 0; width: 85%; max-width: 340px; background: #fcf9f8; z-index: 60; transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); overflow-y: auto; }
+  .ir-drawer.open { transform: translateX(0); }
+  .ir-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 55; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .ir-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .ir-sheet { position: fixed; inset: 0; z-index: 50; pointer-events: none; }
+  .ir-sheet.open { pointer-events: auto; }
+  .ir-sheet-bd { position: absolute; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s; }
+  .ir-sheet.open .ir-sheet-bd { opacity: 1; }
+  .ir-sheet-panel { position: absolute; bottom: 0; left: 0; right: 0; max-width: 640px; margin: 0 auto; background: #fcf9f8; border-radius: 24px 24px 0 0; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); max-height: 92vh; overflow-y: auto; overscroll-behavior: contain; }
+  .ir-sheet.open .ir-sheet-panel { transform: translateY(0); }
+  .ir-grabber { width: 36px; height: 4px; border-radius: 99px; background: #d8c2c1; margin: 10px auto 0; }
+
+  .ir-toast { position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(200%); background: #1c1b1b; color: #fff; padding: 14px 20px; border-radius: 16px; font-size: 14px; font-weight: 500; z-index: 100; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .ir-toast.show { transform: translateX(-50%) translateY(0); }
+
+  .ir-slot-radio { position: absolute; opacity: 0; pointer-events: none; }
+  .ir-slot-label { transition: all 0.15s ease; }
+  .ir-slot-radio:checked + .ir-slot-label { background: #1c1b1b; color: #fff; border-color: #1c1b1b; }
+  .ir-slot-radio:disabled + .ir-slot-label { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+
+  .ir-pb-safe { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+  .ir-pt-safe { padding-top: max(12px, env(safe-area-inset-top)); }
+
+  .ir-clickable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+</style>
+
+<!-- Drawer menu -->
+<div class="ir-backdrop" id="ir-backdrop" onclick="InRoom.closeMenu()"></div>
+<div class="ir-drawer" id="ir-drawer">
+  <div class="ir-pt-safe px-5 pb-6">
+    <div class="flex items-center justify-between py-3 mb-2">
+      <div class="plus-jakarta-sans font-black text-lg">InRoom</div>
+      <button class="w-10 h-10 -mr-2 flex items-center justify-center rounded-full hover:bg-surface-container ir-clickable" onclick="InRoom.closeMenu()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-4 mb-2">Tous nos services</p>
+    <nav id="ir-menu-nav" class="space-y-0.5"></nav>
+    <div class="h-px bg-outline-variant/40 my-5"></div>
+    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Mon séjour</p>
+    <button class="w-full text-left py-3 px-2 rounded-xl hover:bg-surface-container-low ir-clickable flex items-center gap-3">
+      <span class="material-symbols-outlined text-on-surface-variant">event</span>
+      <span class="text-sm font-medium">Mes réservations</span>
+    </button>
+    <button class="w-full text-left py-3 px-2 rounded-xl hover:bg-surface-container-low ir-clickable flex items-center gap-3">
+      <span class="material-symbols-outlined text-on-surface-variant">receipt_long</span>
+      <span class="text-sm font-medium">Ma note</span>
+    </button>
+    <button class="w-full text-left py-3 px-2 rounded-xl hover:bg-surface-container-low ir-clickable flex items-center gap-3">
+      <span class="material-symbols-outlined text-on-surface-variant">support_agent</span>
+      <span class="text-sm font-medium">Concierge</span>
+    </button>
+  </div>
+</div>
+
+<!-- Écran liste pros -->
+<div class="ir-screen max-w-7xl mx-auto" id="ir-category-screen">
+  <header class="sticky top-0 z-30 bg-surface/90 backdrop-blur-lg ir-pt-safe">
+    <div class="flex items-center justify-between px-4 py-3 max-w-4xl mx-auto">
+      <button class="w-10 h-10 -ml-2 flex items-center justify-center rounded-full hover:bg-surface-container ir-clickable" onclick="InRoom.closeCategory()">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div class="text-center">
+        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold" id="ir-cat-overline">Service</p>
+        <h1 class="plus-jakarta-sans font-black text-base tracking-tight" id="ir-cat-title">—</h1>
+      </div>
+      <button class="w-10 h-10 -mr-2 flex items-center justify-center rounded-full hover:bg-surface-container ir-clickable">
+        <span class="material-symbols-outlined">tune</span>
+      </button>
+    </div>
+    <div class="h-px bg-outline-variant/40"></div>
+  </header>
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="py-3 overflow-x-auto ir-no-scrollbar">
+      <div class="flex gap-2 min-w-max" id="ir-cat-filters"></div>
+    </div>
+    <p class="text-xs text-on-surface-variant pb-3" id="ir-cat-count">—</p>
+    <div class="space-y-3 pb-28" id="ir-pros-list"></div>
+  </div>
+</div>
+
+<!-- Bottom sheet fiche pro -->
+<div class="ir-sheet" id="ir-sheet">
+  <div class="ir-sheet-bd" onclick="InRoom.closeSheet()"></div>
+  <div class="ir-sheet-panel" id="ir-sheet-content"></div>
+</div>
+
+<!-- Toast -->
+<div class="ir-toast" id="ir-toast">
+  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+  <span id="ir-toast-msg">Réservation confirmée</span>
+</div>
+
+<script>
+window.InRoom = (function() {
+
+  // ========== DONNÉES ==========
+  const SERVICES = {
+    'chef': {
+      label: 'Chef privé', icon: 'restaurant', duration: '3 h',
+      filters: ['Ce soir', 'Gastronomique', 'Bistronomie', 'Végétal'],
+      pros: [
+        { id: 'raphael', name: 'Raphaël Bonnet', spec: '1 étoile Michelin · Terroir moderne', price: 185, duration: '3 h · par pers.', rating: 4.94, reviews: 128, dispo: 'dispo ce soir', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80', quote: 'Un dîner inoubliable, Raphaël est un magicien.', quoteAuthor: 'Émilie D.', bio: 'Chef étoilé formé chez Troisgros, menu sur-mesure 5 services avec produits du marché d\'Avignon.', included: ['Menu 5 services', 'Accords mets-vins', 'Service à l\'assiette', 'Débarras compris'] },
+        { id: 'hugo-chef', name: 'Chef Hugo L.', spec: 'Bistronomie française', price: 140, duration: '2h30 · par pers.', rating: 4.9, reviews: 87, dispo: 'demain soir', langs: 'FR · EN', featured: false, img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80', bio: 'Cuisine française moderne, produits de saison.', included: ['Menu 4 services', 'Option végétale', 'Accords vins'] }
+      ]
+    },
+    'massage': {
+      label: 'Massage Suédois', icon: 'spa', duration: '45 min',
+      filters: ['Dispo ce soir', 'Suédois', 'Deep tissue', 'Thaï', 'Pierres chaudes'],
+      pros: [
+        { id: 'elena', name: 'Elena K.', spec: 'Suédois & deep tissue · 12 ans d\'exp', price: 120, duration: '45 min', rating: 4.9, reviews: 203, dispo: 'dispo ce soir', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&q=80', quote: 'Mains en or, je n\'ai jamais été aussi détendu.', quoteAuthor: 'Marc V.', bio: 'Diplômée de l\'école suédoise, 12 ans d\'expérience en palace.', included: ['Huiles bio', 'Table pro', 'Musique d\'ambiance'] },
+        { id: 'yuki', name: 'Yuki T.', spec: 'Shiatsu traditionnel', price: 135, duration: '60 min', rating: 4.9, reviews: 91, dispo: 'dispo dès 20h', langs: 'FR · EN · JP', featured: false, img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=80', bio: 'Shiatsu authentique appris à Kyoto.', included: ['Tenue fournie', 'Thé matcha'] }
+      ]
+    },
+    'soin-visage': {
+      label: 'Soin Signature', icon: 'face', duration: '1 h',
+      filters: ['Dispo ce soir', 'Anti-âge', 'Hydratation', 'Éclat'],
+      pros: [
+        { id: 'sophie-esth', name: 'Sophie V.', spec: 'Esthéticienne · Ex-Clarins', price: 95, duration: '60 min', rating: 4.9, reviews: 156, dispo: 'dispo dans 1h', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80', quote: 'Soin absolument parfait, peau transformée.', quoteAuthor: 'Laure M.', bio: 'Spécialiste des soins premium, protocole adapté à votre type de peau.', included: ['Diagnostic peau', 'Masque personnalisé', 'Massage du visage', 'Échantillon offert'] }
+      ]
+    },
+    'coiffeur': {
+      label: 'Coiffeur · Brushing', icon: 'content_cut', duration: '1 h',
+      filters: ['Dispo ce soir', 'Brushing', 'Coupe', 'Coloration'],
+      pros: [
+        { id: 'victor', name: 'Victor H.', spec: 'Coupe & coloration · Ex-Carita', price: 75, duration: '60 min', rating: 4.8, reviews: 112, dispo: 'dispo dès 17h', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80', bio: 'Ex-Carita, spécialiste des coupes sur-mesure.', included: ['Shampoing premium', 'Brushing', 'Produits offerts'] }
+      ]
+    },
+    'chauffeur': {
+      label: 'Chauffeur Privé', icon: 'local_taxi', duration: '15 min',
+      filters: ['Maintenant', 'Aéroport', 'Gare', 'Soirée'],
+      pros: [
+        { id: 'driver1', name: 'Service Chauffeur', spec: 'Berline Classe S · discret', price: 55, duration: 'aéroport', rating: 4.9, reviews: 412, dispo: 'dispo dans 15 min', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80', bio: 'Flotte de berlines premium, chauffeurs en costume, eau & presse offertes.', included: ['Berline haut de gamme', 'Eau & presse offertes', 'Assistance bagages', 'Wi-Fi à bord'] }
+      ]
+    },
+    'shooting': {
+      label: 'Shooting Souvenir', icon: 'photo_camera', duration: '1 h',
+      filters: ['Demain', 'Couple', 'Famille', 'Solo'],
+      pros: [
+        { id: 'julien-photo', name: 'Julien A.', spec: 'Photographe lifestyle · 8 ans', price: 220, duration: '1 h · 30 photos', rating: 4.93, reviews: 74, dispo: 'demain matin', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80', quote: 'Photos sublimes, Julien nous a mis à l\'aise immédiatement.', quoteAuthor: 'Claire et Marc', bio: 'Photographe spécialisé dans les moments intimes de voyage, style naturel et éditorial.', included: ['30 photos retouchées', 'Galerie privée en ligne', 'Livraison sous 48h', 'Tirages possibles'] }
+      ]
+    },
+    'sommelier': {
+      label: 'Sommelier Privé', icon: 'wine_bar', duration: '90 min',
+      filters: ['Ce soir', 'Dégustation', 'Accords', 'Découverte'],
+      pros: [
+        { id: 'vincent-som', name: 'Vincent P.', spec: 'WSET 3 · Ex-Plaza Athénée', price: 140, duration: '90 min · par pers.', rating: 4.98, reviews: 62, dispo: 'dispo dès 19h', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80', bio: 'Sommelier certifié WSET 3, sélection de 5 vins commentée autour de la Vallée du Rhône.', included: ['5 vins dégustés', 'Notes de dégustation', 'Conseils cave', 'Fromages d\'accompagnement'] }
+      ]
+    },
+    'babysitter': {
+      label: 'Baby-sitter FR/EN', icon: 'child_care', duration: 'à l\'heure',
+      filters: ['Ce soir', 'Vérifié', 'Bilingue', 'Petite enfance'],
+      pros: [
+        { id: 'marion-baby', name: 'Marion L.', spec: 'Diplômée petite enfance · Vérifiée', price: 22, duration: '/heure', rating: 4.9, reviews: 184, dispo: 'dispo ce soir', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80', bio: 'CAP petite enfance, 6 ans d\'expérience en hôtellerie. Références vérifiées.', included: ['Kit activités', 'Premiers secours', 'Compte-rendu soirée'] }
+      ]
+    },
+    'coach': {
+      label: 'Coach Sportif', icon: 'fitness_center', duration: '1 séance',
+      filters: ['Matin', 'Cardio', 'Musculation', 'Running'],
+      pros: [
+        { id: 'thomas-coach', name: 'Thomas R.', spec: 'Coach sportif diplômé', price: 70, duration: '60 min', rating: 4.9, reviews: 98, dispo: 'demain 7h', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80', bio: 'Coach diplômé BPJEPS, séances sur-mesure en chambre, au gym ou en extérieur.', included: ['Bilan forme', 'Matériel fourni', 'Programme à emporter'] }
+      ]
+    },
+    'pressing': {
+      label: 'Pressing Express', icon: 'dry_cleaning', duration: 'retour 2h',
+      filters: ['Express 2h', 'Normal 24h', 'Délicat'],
+      pros: [
+        { id: 'pressing', name: 'Service Pressing', spec: 'Partenaire Elyse Avignon', price: 12, duration: 'dès 12€/pièce', rating: 4.8, reviews: 523, dispo: 'retour en 2h', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=800&q=80', bio: 'Pressing partenaire, collecte et livraison en chambre, traitement délicat.', included: ['Ramassage chambre', 'Nettoyage délicat', 'Livraison en chambre', 'Garantie qualité'] }
+      ]
+    },
+    'fleuriste': {
+      label: 'Bouquet Sur-Mesure', icon: 'local_florist', duration: '2 h',
+      filters: ['Local', 'Romantique', 'Saison', 'Exotique'],
+      pros: [
+        { id: 'fleuriste', name: 'Atelier Floral Avignon', spec: 'Fleuriste local · Slow flower', price: 45, duration: 'livraison 2h', rating: 4.9, reviews: 147, dispo: 'dispo aujourd\'hui', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80', bio: 'Créations sur-mesure avec fleurs de saison et producteurs locaux de Provence.', included: ['Fleurs de saison', 'Vase offert', 'Livraison en chambre', 'Carte personnalisée'] }
+      ]
+    },
+    'dogsitter': {
+      label: 'Dog-Sitter & Balade', icon: 'pets', duration: 'à l\'heure',
+      filters: ['Ce soir', 'Balade', 'Garde chambre', 'ACACED'],
+      pros: [
+        { id: 'marion-dog', name: 'Marion D.', spec: 'ACACED · 5 ans d\'exp', price: 18, duration: '/heure', rating: 4.9, reviews: 76, dispo: 'dispo ce soir', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80', quote: 'Marion a pris soin de notre chien comme du sien.', quoteAuthor: 'Famille R.', bio: 'Formation ACACED, promenades dans les parcs d\'Avignon, garde en chambre possible.', included: ['Balade 1h', 'Photos envoyées', 'Gamelle fournie', 'Assurance incluse'] }
+      ]
+    },
+    'yoga': {
+      label: 'Yoga privé', icon: 'self_improvement', duration: '60 min',
+      filters: ['Dispo ce soir', 'Hatha', 'Vinyasa', 'Yin', 'Débutant'],
+      pros: [
+        { id: 'camille', name: 'Camille L.', spec: 'Hatha & Vinyasa · 8 ans d\'exp', price: 65, duration: '60 min', rating: 4.9, reviews: 127, dispo: 'dispo dans 45 min', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80', quote: 'Séance au réveil exceptionnelle.', quoteAuthor: 'Sophie M.', bio: 'Formée à Rishikesh puis à Paris, séances adaptées à votre énergie.', included: ['Tapis premium', 'Playlist perso', 'Infusion post-séance'] },
+        { id: 'theo', name: 'Théo R.', spec: 'Vinyasa dynamique', price: 60, duration: '60 min', rating: 4.8, reviews: 84, dispo: 'dispo dès 19h', langs: 'FR', featured: false, img: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&q=80', bio: 'Séances toniques pour relâcher la tension.', included: ['Tapis fourni'] }
+      ]
+    },
+    'manucure': {
+      label: 'Manucure', icon: 'back_hand', duration: '45 min',
+      filters: ['Dispo ce soir', 'Semi-permanent', 'Classique'],
+      pros: [
+        { id: 'laura', name: 'Laura P.', spec: 'Nail art & semi-perm', price: 55, duration: '45 min', rating: 4.9, reviews: 214, dispo: 'dispo dans 30 min', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1610992015734-8b85f1c65be9?w=800&q=80', bio: 'Formée chez OPI, spécialiste du nail art minimaliste.', included: ['Vernis premium', 'Soin cuticules', 'Massage des mains'] }
+      ]
+    },
+    'makeup': {
+      label: 'Make-up soirée', icon: 'palette', duration: '1 h',
+      filters: ['Ce soir', 'Naturel', 'Glamour', 'Mariage'],
+      pros: [
+        { id: 'mia', name: 'Mia S.', spec: 'Make-up artist · Dior trained', price: 85, duration: '60 min', rating: 4.9, reviews: 142, dispo: 'dispo dès 18h', langs: 'FR · EN · IT', featured: true, img: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&q=80', bio: 'Formation chez Dior Paris, glamour et nude sophistiqué.', included: ['Produits premium', 'Retouches', 'Photo avant/après'] }
+      ]
+    },
+    'mixologue': {
+      label: 'Mixologue', icon: 'local_bar', duration: '2 h',
+      filters: ['Ce soir', 'Classiques', 'Signature', 'Sans alcool'],
+      pros: [
+        { id: 'thomas-mixo', name: 'Thomas K.', spec: 'Ex-bar Hemingway (Ritz)', price: 160, duration: '2 h', rating: 4.9, reviews: 76, dispo: 'dispo ce soir', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80', bio: 'Créations signature et classiques revisités, spiritueux premium.', included: ['Matériel pro', 'Spiritueux premium', '3 cocktails/pers', 'Mocktails dispo'] }
+      ]
+    },
+    'billetterie': {
+      label: 'Billetterie', icon: 'confirmation_number', duration: 'instant',
+      filters: ['Ce soir', 'Festival', 'VIP'],
+      pros: [
+        { id: 'billet', name: 'Service Billetterie', spec: 'VIP & dernière minute', price: 0, duration: 'sur demande', rating: 4.8, reviews: 312, dispo: 'réponse en 5 min', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80', bio: 'Accès privilégié aux spectacles, concerts, festivals et événements sportifs.', included: ['Billets VIP', 'Transport possible', 'Boissons selon event'] }
+      ]
+    },
+    'osteo': {
+      label: 'Ostéopathe', icon: 'accessibility_new', duration: '45 min',
+      filters: ['Ce soir', 'Post-voyage', 'Cervicales', 'Lombaires'],
+      pros: [
+        { id: 'julien-osteo', name: 'Dr Julien M.', spec: 'Ostéopathe D.O. · 15 ans', price: 90, duration: '45 min', rating: 4.9, reviews: 156, dispo: 'dispo dans 1h', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80', bio: 'Spécialiste des tensions post-voyage, pratique douce et précise.', included: ['Table pro', 'Bilan postural', 'Conseils'] }
+      ]
+    },
+    'guide': {
+      label: 'Guide privé', icon: 'map', duration: '½ journée',
+      filters: ['Demain', 'Culturel', 'Gourmand', 'Insolite'],
+      pros: [
+        { id: 'claire-guide', name: 'Claire M.', spec: 'Historienne de l\'art', price: 180, duration: '½ j · 4h', rating: 4.9, reviews: 87, dispo: 'demain matin', langs: 'FR · EN · DE', featured: true, img: 'https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=800&q=80', bio: 'Docteur en histoire de l\'art, parcours sur-mesure selon vos goûts.', included: ['Transport privé', 'Entrées musées', 'Pause café'] }
+      ]
+    },
+    'barbier': {
+      label: 'Barbier', icon: 'face_6', duration: '45 min',
+      filters: ['Ce soir', 'Taille barbe', 'Rasage traditionnel'],
+      pros: [
+        { id: 'antoine', name: 'Antoine G.', spec: 'Barbier à l\'ancienne', price: 45, duration: '45 min', rating: 4.9, reviews: 198, dispo: 'dispo dans 20 min', langs: 'FR', featured: true, img: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&q=80', bio: 'Rasage au coupe-chou, serviettes chaudes, tradition anglaise.', included: ['Rasage traditionnel', 'Serviettes chaudes', 'Aftershave artisanal'] }
+      ]
+    },
+    'chasseur': {
+      label: 'Chasseur', icon: 'directions_run', duration: '30 min',
+      filters: ['Maintenant', 'Course', 'Pharmacie', 'Oubli'],
+      pros: [
+        { id: 'chasseur', name: 'Service Chasseur', spec: 'Courses, pharmacie, oublis', price: 8, duration: '30 min', rating: 4.9, reviews: 845, dispo: 'dispo maintenant', langs: 'FR · EN', featured: true, img: 'https://images.unsplash.com/photo-1587131782738-de30ea91a542?w=800&q=80', bio: 'Service express pour tout ce dont vous avez besoin hors de la chambre.', included: ['Course dans Avignon', 'Livraison chambre', 'Discrétion'] }
+      ]
+    }
+  };
+
+  // Matching des cartes existantes par leur texte/alt vers un service
+  // (parce qu'on ne veut pas modifier les <a> une par une)
+  const CARD_MATCHERS = [
+    { keywords: ['chef', 'raphaël', 'bonnet'], service: 'chef' },
+    { keywords: ['massage'], service: 'massage' },
+    { keywords: ['soin signature', 'soin visage'], service: 'soin-visage' },
+    { keywords: ['coiffeur', 'brushing'], service: 'coiffeur' },
+    { keywords: ['chauffeur'], service: 'chauffeur' },
+    { keywords: ['shooting', 'souvenir'], service: 'shooting' },
+    { keywords: ['sommelier'], service: 'sommelier' },
+    { keywords: ['baby-sitter', 'babysitter'], service: 'babysitter' },
+    { keywords: ['coach sportif', 'coach'], service: 'coach' },
+    { keywords: ['pressing'], service: 'pressing' },
+    { keywords: ['bouquet', 'fleuriste'], service: 'fleuriste' },
+    { keywords: ['dog-sitter', 'dog sitter'], service: 'dogsitter' },
+    { keywords: ['yoga'], service: 'yoga' },
+    { keywords: ['manucure'], service: 'manucure' },
+    { keywords: ['make-up', 'maquillage'], service: 'makeup' },
+    { keywords: ['mixologue'], service: 'mixologue' },
+    { keywords: ['billetterie'], service: 'billetterie' },
+    { keywords: ['ostéopathe', 'osteo'], service: 'osteo' },
+    { keywords: ['guide'], service: 'guide' },
+    { keywords: ['barbier'], service: 'barbier' },
+    { keywords: ['chasseur'], service: 'chasseur' }
+  ];
+
+  function findServiceFromCard(el) {
+    const text = (el.textContent + ' ' + (el.querySelector('img')?.alt || '')).toLowerCase();
+    for (const m of CARD_MATCHERS) {
+      if (m.keywords.some(k => text.includes(k))) return m.service;
+    }
+    return null;
+  }
+
+  // ========== MENU ==========
+  function renderMenu() {
+    const container = document.getElementById('ir-menu-nav');
+    container.innerHTML = Object.keys(SERVICES).map(key => {
+      const s = SERVICES[key];
+      return `
+        <button class="w-full text-left py-3 px-2 rounded-xl hover:bg-surface-container-low ir-clickable flex items-center gap-3" onclick="InRoom.showService('${key}'); InRoom.closeMenu()">
+          <div class="w-9 h-9 bg-primary-fixed rounded-full flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">${s.icon}</span>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-semibold leading-tight">${s.label}</p>
+            <p class="text-[11px] text-on-surface-variant">${s.pros.length} pro${s.pros.length > 1 ? 's' : ''} dispo · dès ${s.pros[0].price === 0 ? 'sur devis' : s.pros[0].price + ' €'}</p>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant text-lg">chevron_right</span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  function openMenu() {
+    document.getElementById('ir-drawer').classList.add('open');
+    document.getElementById('ir-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    document.getElementById('ir-drawer').classList.remove('open');
+    document.getElementById('ir-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ========== ÉCRAN LISTE PROS ==========
+  function showService(key) {
+    const s = SERVICES[key];
+    if (!s) return;
+    document.getElementById('ir-cat-overline').textContent = 'À la demande';
+    document.getElementById('ir-cat-title').textContent = s.label;
+    document.getElementById('ir-cat-count').textContent = `${s.pros.length} professionnel${s.pros.length > 1 ? 's sélectionnés' : ' sélectionné'}`;
+    document.getElementById('ir-cat-filters').innerHTML = s.filters.map((f, i) => `
+      <button class="px-3.5 py-1.5 ${i === 0 ? 'bg-on-surface text-surface' : 'bg-surface-container-lowest border border-outline-variant'} rounded-full text-xs font-semibold shrink-0 flex items-center gap-1.5">
+        ${i === 0 ? '<span class="material-symbols-outlined text-sm">bolt</span>' : ''}${f}
+      </button>
+    `).join('');
+    document.getElementById('ir-pros-list').innerHTML = s.pros.map(renderProCard).join('');
+    document.getElementById('ir-category-screen').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function closeCategory() {
+    document.getElementById('ir-category-screen').classList.remove('active');
+  }
+
+  function renderProCard(pro) {
+    const priceLabel = pro.price === 0 ? 'Sur devis' : pro.price + ' €';
+    if (pro.featured) {
+      return `
+        <article class="bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/50 ir-clickable active:scale-[0.99] transition" onclick="InRoom.openPro('${pro.id}')">
+          <div class="relative">
+            <img src="${pro.img}" alt="" class="w-full h-44 object-cover"/>
+            <div class="absolute top-3 left-3 bg-on-surface/85 backdrop-blur-md text-surface text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">verified</span>Sélection InRoom
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <h3 class="plus-jakarta-sans font-bold text-lg leading-tight">${pro.name}</h3>
+                <p class="text-sm text-on-surface-variant mt-0.5">${pro.spec}</p>
+              </div>
+              <div class="text-right shrink-0">
+                <p class="plus-jakarta-sans font-black text-lg leading-none">${priceLabel}</p>
+                <p class="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">${pro.duration}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-3 text-xs flex-wrap">
+              <span class="flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                ${pro.rating} <span class="text-on-surface-variant font-normal">(${pro.reviews})</span>
+              </span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="flex items-center gap-1 text-on-surface-variant">
+                <span class="material-symbols-outlined text-sm">schedule</span>${pro.dispo}
+              </span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="text-on-surface-variant">${pro.langs}</span>
+            </div>
+            ${pro.quote ? `
+            <div class="mt-3 px-3 py-2 bg-surface-container-low rounded-lg">
+              <p class="text-xs text-on-surface-variant italic leading-relaxed">« ${pro.quote} » — <span class="not-italic font-medium">${pro.quoteAuthor}</span></p>
+            </div>` : ''}
+          </div>
+        </article>
+      `;
+    }
+    return `
+      <article class="bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/50 ir-clickable active:scale-[0.99] transition" onclick="InRoom.openPro('${pro.id}')">
+        <div class="flex gap-3 p-3">
+          <img src="${pro.img}" alt="" class="w-24 h-24 rounded-xl object-cover shrink-0"/>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <h3 class="plus-jakarta-sans font-bold text-base leading-tight">${pro.name}</h3>
+                <p class="text-xs text-on-surface-variant mt-0.5">${pro.spec}</p>
+              </div>
+              <div class="text-right shrink-0">
+                <p class="plus-jakarta-sans font-black">${priceLabel}</p>
+                <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">${pro.duration}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 mt-2 text-xs flex-wrap">
+              <span class="flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                ${pro.rating} <span class="text-on-surface-variant font-normal">(${pro.reviews})</span>
+              </span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="text-on-surface-variant">${pro.dispo}</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  // ========== FICHE PRO (bottom sheet) ==========
+  function findPro(id) {
+    for (const key in SERVICES) {
+      const f = SERVICES[key].pros.find(p => p.id === id);
+      if (f) return f;
+    }
+    return null;
+  }
+
+  function openPro(id) {
+    const pro = findPro(id);
+    if (!pro) return;
+    const priceLabel = pro.price === 0 ? 'Sur devis' : pro.price + ' €';
+    const slots = ['16:00', '17:30', '19:00', '20:30'];
+    const slotsHTML = slots.map((s, i) => `
+      <label class="relative">
+        <input type="radio" name="ir-slot" class="ir-slot-radio" ${i === 0 ? 'disabled' : ''} ${i === 1 ? 'checked' : ''} value="${s}" onchange="InRoom.updateSlot('${s}')"/>
+        <div class="ir-slot-label text-center py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-sm font-semibold cursor-pointer">${s}</div>
+      </label>
+    `).join('');
+    const includedHTML = pro.included.map(i => `
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container rounded-full text-xs font-medium">
+        <span class="material-symbols-outlined text-sm text-on-surface-variant">check</span>${i}
+      </span>
+    `).join('');
+
+    document.getElementById('ir-sheet-content').innerHTML = `
+      <div class="ir-grabber"></div>
+      <div class="relative">
+        <img src="${pro.img}" alt="" class="w-full h-60 object-cover"/>
+        <button class="absolute top-3 right-3 w-10 h-10 bg-on-surface/40 backdrop-blur-md rounded-full flex items-center justify-center" onclick="InRoom.closeSheet()">
+          <span class="material-symbols-outlined text-white">close</span>
+        </button>
+        <div class="absolute bottom-3 left-3 bg-on-surface/85 backdrop-blur-md text-surface text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full flex items-center gap-1">
+          <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">verified</span>Sélection InRoom
+        </div>
+      </div>
+      <div class="px-5 pt-4 pb-2">
+        <h2 class="plus-jakarta-sans font-black text-2xl tracking-tight">${pro.name}</h2>
+        <p class="text-sm text-on-surface-variant mt-0.5">${pro.spec}</p>
+        <div class="flex items-center gap-3 mt-3 text-sm flex-wrap">
+          <span class="flex items-center gap-1 font-bold">
+            <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+            ${pro.rating} <span class="text-on-surface-variant font-normal text-xs">· ${pro.reviews} avis</span>
+          </span>
+          <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+          <span class="text-on-surface-variant text-xs">${pro.langs}</span>
+        </div>
+        <p class="text-[15px] leading-relaxed mt-4">${pro.bio}</p>
+      </div>
+      <div class="px-5 pt-3 pb-4"><div class="flex flex-wrap gap-2">${includedHTML}</div></div>
+      <div class="px-5 py-4 border-t border-outline-variant/40">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="plus-jakarta-sans font-bold text-base">Créneaux aujourd'hui</h3>
+          <button class="text-xs font-semibold text-primary">Voir demain</button>
+        </div>
+        <div class="grid grid-cols-4 gap-2">${slotsHTML}</div>
+        <p class="text-[11px] text-on-surface-variant mt-3 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">schedule</span>Arrivée en chambre 5 min avant le créneau.
+        </p>
+      </div>
+      <details class="px-5 py-4 border-t border-outline-variant/40 group">
+        <summary class="flex items-center justify-between cursor-pointer list-none">
+          <span class="plus-jakarta-sans font-bold text-base">Conditions & annulation</span>
+          <span class="material-symbols-outlined transition group-open:rotate-180">expand_more</span>
+        </summary>
+        <div class="mt-3 space-y-2 text-sm text-on-surface-variant leading-relaxed">
+          <p>• Annulation gratuite jusqu'à 2h avant le créneau.</p>
+          <p>• Prestation facturée sur la note de chambre.</p>
+          <p>• Professionnel certifié et assuré.</p>
+        </div>
+      </details>
+      <div class="h-24"></div>
+      <div class="sticky bottom-0 bg-surface/95 backdrop-blur-lg border-t border-outline-variant/40 px-5 py-3 ir-pb-safe">
+        <div class="flex items-center gap-3">
+          <div class="flex-1">
+            <p class="text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">Total · <span id="ir-slot-display">17:30</span> auj.</p>
+            <p class="plus-jakarta-sans font-black text-xl leading-none mt-0.5">${priceLabel}</p>
+          </div>
+          <button class="flex-[2] bg-on-surface text-surface plus-jakarta-sans font-bold py-3.5 rounded-2xl active:scale-[0.98] transition flex items-center justify-center gap-2" onclick="InRoom.confirmBooking('${pro.name}')">
+            Réserver <span class="material-symbols-outlined text-lg">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    `;
+    document.getElementById('ir-sheet').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateSlot(t) {
+    const el = document.getElementById('ir-slot-display');
+    if (el) el.textContent = t;
+  }
+
+  function closeSheet() {
+    document.getElementById('ir-sheet').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function confirmBooking(name) {
+    closeSheet();
+    setTimeout(() => {
+      document.getElementById('ir-toast-msg').textContent = `Réservé · ${name}`;
+      document.getElementById('ir-toast').classList.add('show');
+      setTimeout(() => document.getElementById('ir-toast').classList.remove('show'), 2800);
+    }, 350);
+  }
+
+  // ========== AUTO-BINDING des cartes existantes ==========
+  function autoBindCards() {
+    // Les cartes du bento (aspect-[16/10], aspect-square) avec img
+    document.querySelectorAll('a[href="#"], a[href="javascript:void(0)"]').forEach(el => {
+      if (!el.querySelector('img')) return;
+      const service = findServiceFromCard(el);
+      if (!service) return;
+      el.setAttribute('href', 'javascript:void(0)');
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        showService(service);
+      });
+    });
+
+    // Les chips "À la demande" (div cliquables avec cursor-pointer)
+    document.querySelectorAll('.cursor-pointer').forEach(el => {
+      if (el.dataset.irBound) return;
+      // Ignore si c'est déjà un <a> (déjà traité) ou si c'est le menu
+      if (el.tagName === 'A' || el.closest('#ir-drawer') || el.closest('header')) return;
+      if (!el.querySelector('p') && !el.querySelector('h3') && !el.querySelector('h4')) return;
+      const service = findServiceFromCard(el);
+      if (!service) return;
+      el.dataset.irBound = '1';
+      el.addEventListener('click', (e) => {
+        // Ne pas bloquer si c'est un click sur un bouton enfant
+        if (e.target.closest('button') && e.target.closest('button') !== el) return;
+        showService(service);
+      });
+    });
+  }
+
+  // Init
+  document.addEventListener('DOMContentLoaded', () => {
+    renderMenu();
+    autoBindCards();
+  });
+  // Au cas où DOMContentLoaded est déjà passé
+  if (document.readyState !== 'loading') {
+    renderMenu();
+    autoBindCards();
+  }
+
+  return { openMenu, closeMenu, showService, closeCategory, openPro, closeSheet, updateSlot, confirmBooking };
+})();
+</script>
+
 </body></html>
