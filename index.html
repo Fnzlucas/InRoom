@@ -1628,15 +1628,65 @@ window.InRoom = (function() {
     }, 350);
   }
 
-  // ========== CE SOIR CHEZ VOUS (contextuel selon l'heure) ==========
-  function renderTonightSection() {
-    const el = document.getElementById('ir-tonight-section');
-    if (!el) return;
+  // ========== CE SOIR CHEZ VOUS (contextuel selon l'heure + météo réelle) ==========
+  // Villeneuve-lès-Avignon coordinates
+  const HOTEL_COORDS = { lat: 43.9654, lon: 4.7973, name: 'Avignon' };
+  let weatherCache = null;
 
-    const h = new Date().getHours();
+  async function fetchWeather() {
+    if (weatherCache) return weatherCache;
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${HOTEL_COORDS.lat}&longitude=${HOTEL_COORDS.lon}&current=temperature_2m,weather_code,is_day&daily=sunset,sunrise,temperature_2m_max&timezone=Europe%2FParis&forecast_days=1`;
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const data = await res.json();
+      weatherCache = {
+        temp: Math.round(data.current.temperature_2m),
+        code: data.current.weather_code,
+        isDay: data.current.is_day === 1,
+        sunset: data.daily.sunset[0].slice(11, 16), // "HH:MM"
+        sunrise: data.daily.sunrise[0].slice(11, 16),
+        tempMax: Math.round(data.daily.temperature_2m_max[0])
+      };
+      return weatherCache;
+    } catch (e) {
+      console.warn('Météo indisponible:', e);
+      return null;
+    }
+  }
+
+  // Transforme un weather_code WMO en mot descriptif français
+  function weatherLabel(code, isDay) {
+    if (code === 0) return isDay ? 'grand soleil' : 'ciel dégagé';
+    if (code <= 2) return isDay ? 'beau temps' : 'ciel voilé';
+    if (code === 3) return 'temps couvert';
+    if (code >= 45 && code <= 48) return 'brouillard';
+    if (code >= 51 && code <= 57) return 'bruine';
+    if (code >= 61 && code <= 67) return 'pluie';
+    if (code >= 71 && code <= 77) return 'neige';
+    if (code >= 80 && code <= 82) return 'averses';
+    if (code >= 95) return 'orage';
+    return 'temps changeant';
+  }
+
+  // Icône Material selon code WMO
+  function weatherIcon(code, isDay) {
+    if (code === 0) return isDay ? 'wb_sunny' : 'bedtime';
+    if (code <= 2) return isDay ? 'partly_cloudy_day' : 'partly_cloudy_night';
+    if (code === 3) return 'cloud';
+    if (code >= 45 && code <= 48) return 'foggy';
+    if (code >= 51 && code <= 67) return 'rainy';
+    if (code >= 71 && code <= 77) return 'weather_snowy';
+    if (code >= 80 && code <= 82) return 'rainy';
+    if (code >= 95) return 'thunderstorm';
+    return isDay ? 'wb_sunny' : 'bedtime';
+  }
+
+  function buildScenario(hour, weather) {
+    // Scénario de base (sans météo)
     let scenario;
 
-    if (h >= 6 && h < 10) {
+    if (hour >= 6 && hour < 10) {
       scenario = {
         badge: 'Ce matin',
         title: 'Démarrez la journée en douceur',
@@ -1646,7 +1696,7 @@ window.InRoom = (function() {
         bg: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1400&q=80',
         icon: 'wb_sunny'
       };
-    } else if (h >= 10 && h < 14) {
+    } else if (hour >= 10 && hour < 14) {
       scenario = {
         badge: 'Ce midi',
         title: 'Un déjeuner qui sort de l\'ordinaire',
@@ -1656,20 +1706,20 @@ window.InRoom = (function() {
         bg: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1400&q=80',
         icon: 'restaurant'
       };
-    } else if (h >= 14 && h < 18) {
+    } else if (hour >= 14 && hour < 18) {
       scenario = {
         badge: 'Cet après-midi',
-        title: 'Il fait 22° à Avignon — profitez-en',
+        title: 'Profitez d\'Avignon',
         subtitle: 'Soin visage en terrasse ou balade guidée dans le Palais des Papes',
         cta: 'Explorer',
         service: 'guide',
         bg: 'https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=1400&q=80',
         icon: 'wb_twilight'
       };
-    } else if (h >= 18 && h < 22) {
+    } else if (hour >= 18 && hour < 22) {
       scenario = {
         badge: 'Ce soir',
-        title: 'Le soleil se couche à 20h47',
+        title: 'La soirée commence',
         subtitle: 'Chef Raphaël est disponible, terrasse dressée en 45 min',
         cta: 'Réserver un dîner',
         service: 'chef',
@@ -1688,6 +1738,52 @@ window.InRoom = (function() {
       };
     }
 
+    // Enrichissement avec météo réelle si dispo
+    if (weather) {
+      const label = weatherLabel(weather.code, weather.isDay);
+      scenario.icon = weatherIcon(weather.code, weather.isDay);
+      const isPluvieux = weather.code >= 51 && weather.code <= 82;
+      const isEnsoleille = weather.code <= 2 && weather.isDay;
+
+      if (hour >= 6 && hour < 10) {
+        scenario.title = `${weather.temp}° à Avignon, lever à ${weather.sunrise}`;
+        scenario.subtitle = isPluvieux
+          ? 'Pluie annoncée — yoga en chambre avec Camille, tapis et infusion fournis'
+          : `Yoga privé sur la terrasse au soleil levant, ${weather.temp}° idéal`;
+      } else if (hour >= 10 && hour < 14) {
+        scenario.subtitle = isEnsoleille
+          ? `Grand soleil sur Avignon, ${weather.temp}° — Chef Raphaël peut dresser en terrasse`
+          : `${weather.temp}° à Avignon — Chef Raphaël dresse une table en chambre dans 90 min`;
+      } else if (hour >= 14 && hour < 18) {
+        if (isPluvieux) {
+          scenario.title = `Pluie sur Avignon, ${weather.temp}°`;
+          scenario.subtitle = 'Massage détente ou soin visage en chambre, Elena disponible';
+          scenario.service = 'massage';
+          scenario.cta = 'Réserver un massage';
+          scenario.bg = 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=1400&q=80';
+        } else {
+          scenario.title = `Il fait ${weather.temp}° à Avignon`;
+          scenario.subtitle = isEnsoleille
+            ? `${label} jusqu'au coucher à ${weather.sunset} — profitez-en`
+            : `${label}, idéal pour une balade guidée au Palais des Papes`;
+        }
+      } else if (hour >= 18 && hour < 22) {
+        scenario.title = `Coucher du soleil à ${weather.sunset}`;
+        scenario.subtitle = isPluvieux
+          ? `${weather.temp}°, pluie — dîner intimiste en chambre avec Chef Raphaël`
+          : `${weather.temp}° ce soir — Chef Raphaël dispo, terrasse dressée en 45 min`;
+      } else {
+        scenario.title = `${weather.temp}° cette nuit à Avignon`;
+        scenario.subtitle = `Massage relaxant 45 min pour clôturer la journée, Elena disponible`;
+      }
+    }
+
+    return scenario;
+  }
+
+  function renderScenario(scenario) {
+    const el = document.getElementById('ir-tonight-section');
+    if (!el) return;
     el.innerHTML = `
       <div class="relative rounded-3xl overflow-hidden cursor-pointer group" onclick="InRoom.showService('${scenario.service}')">
         <div class="aspect-[16/9] md:aspect-[21/9]">
@@ -1713,6 +1809,17 @@ window.InRoom = (function() {
         </div>
       </div>
     `;
+  }
+
+  async function renderTonightSection() {
+    const hour = new Date().getHours();
+    // 1. Affichage immédiat avec scénario de base (zero latence)
+    renderScenario(buildScenario(hour, null));
+    // 2. Fetch météo en arrière-plan, puis raffine
+    const weather = await fetchWeather();
+    if (weather) {
+      renderScenario(buildScenario(hour, weather));
+    }
   }
 
   function dismissTonight() {
