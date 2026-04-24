@@ -120,11 +120,161 @@
 </header>
 <main class="max-w-7xl mx-auto px-4 md:px-6">
 
-<!-- Hero / Welcome -->
-<section class="mt-6 mb-6">
-<span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-2 block">Chambre 312</span>
-<h1 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]">Bonsoir M. Lucas,<br class="sm:hidden"/> <span class="italic font-light">à votre service.</span></h1>
+<!-- Hero / Welcome — Version animée -->
+<section class="mt-6 mb-6 relative" id="ir-hero">
+
+  <!-- Grain texture animée -->
+  <canvas id="ir-grain" aria-hidden="true" style="
+    position:absolute;
+    inset:-20px;
+    width:calc(100% + 40px);
+    height:calc(100% + 40px);
+    pointer-events:none;
+    opacity:0.028;
+    z-index:0;
+    border-radius:1rem;
+  "></canvas>
+
+  <!-- Ambient glow selon l'heure -->
+  <div id="ir-glow" aria-hidden="true" style="
+    position:absolute;
+    top:-40px; left:-60px;
+    width:340px; height:220px;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:0.13;
+    pointer-events:none;
+    z-index:0;
+    transition: background 2s ease;
+  "></div>
+
+  <!-- Contenu hero -->
+  <div class="relative z-10" id="ir-hero-content">
+    <span id="ir-hero-overline" class="text-[10px] font-bold uppercase tracking-widest text-primary mb-2 block" style="opacity:0;transform:translateY(10px);transition:opacity 0.6s ease, transform 0.6s ease;">Chambre 312</span>
+    <h1 class="text-3xl md:text-5xl font-black plus-jakarta-sans text-on-surface tracking-tighter leading-[1.05]" style="opacity:0;transform:translateY(16px);transition:opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;">
+      <span id="ir-hero-greeting">Bonsoir</span> M. Lucas,<br class="sm:hidden"/>
+      <span class="italic font-light" id="ir-hero-tagline"> à votre service.</span>
+    </h1>
+  </div>
 </section>
+
+<style>
+
+
+/* ── Tagline cycling ── */
+#ir-hero-tagline {
+  display: inline-block;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#ir-hero-tagline.fade-out {
+  opacity: 0;
+  transform: translateY(6px);
+}
+#ir-hero-tagline.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+
+<script>
+(function() {
+
+  // ── 1. GRAIN CANVAS ──
+  const canvas = document.getElementById('ir-grain');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    function resizeGrain() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resizeGrain();
+    window.addEventListener('resize', resizeGrain);
+
+    let grainFrame = 0;
+    function drawGrain() {
+      grainFrame++;
+      if (grainFrame % 2 !== 0) { requestAnimationFrame(drawGrain); return; } // 30fps
+      const w = canvas.width, h = canvas.height;
+      const img = ctx.createImageData(w, h);
+      const d = img.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const v = Math.random() * 255 | 0;
+        d[i] = d[i+1] = d[i+2] = v;
+        d[i+3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      requestAnimationFrame(drawGrain);
+    }
+    drawGrain();
+  }
+
+  // ── 3. GLOW AMBIANCE selon l'heure ──
+  const glow = document.getElementById('ir-glow');
+  if (glow) {
+    const h = new Date().getHours();
+    let color;
+    if (h >= 6 && h < 10)       color = '#f59e0b'; // matin doré
+    else if (h >= 10 && h < 17) color = '#60a5fa'; // jour bleu clair
+    else if (h >= 17 && h < 20) color = '#f97316'; // coucher orange
+    else                         color = '#b52330'; // nuit rose/rouge InRoom
+    glow.style.background = color;
+  }
+
+  // ── 4. GREETING selon l'heure ──
+  const greetingEl = document.getElementById('ir-hero-greeting');
+  if (greetingEl) {
+    const h = new Date().getHours();
+    greetingEl.textContent = h >= 18 ? 'Bonsoir' : h >= 12 ? 'Bon après-midi' : 'Bonjour';
+  }
+
+  // ── 5. PARALLAX au scroll ──
+  const heroContent = document.getElementById('ir-hero-content');
+  function onScroll() {
+    if (!heroContent) return;
+    const y = window.scrollY;
+    heroContent.style.transform = `translateY(${y * 0.22}px)`;
+    heroContent.style.opacity = Math.max(0, 1 - y / 220);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── 6. TAGLINE CYCLING ──
+  const taglines = [
+    '\u00a0à votre service.',
+    '\u00a0votre soirée commence.',
+    '\u00a0tout est possible.',
+    '\u00a0pour vous ce soir.',
+    '\u00a0bienvenue chez vous.',
+  ];
+  let tagIdx = 0;
+  const tagEl = document.getElementById('ir-hero-tagline');
+  if (tagEl) {
+    setInterval(() => {
+      tagEl.classList.add('fade-out');
+      setTimeout(() => {
+        tagIdx = (tagIdx + 1) % taglines.length;
+        tagEl.textContent = taglines[tagIdx];
+        tagEl.classList.remove('fade-out');
+        tagEl.classList.add('fade-in');
+      }, 420);
+    }, 3200);
+  }
+
+  // ── 7. ENTRÉE animée au load ──
+  window.addEventListener('DOMContentLoaded', () => {
+    const ol = document.getElementById('ir-hero-overline');
+    const h1 = ol?.nextElementSibling || document.querySelector('#ir-hero-content h1');
+    if (ol) { ol.style.opacity = '1'; ol.style.transform = 'translateY(0)'; }
+    if (h1) { h1.style.opacity = '1'; h1.style.transform = 'translateY(0)'; }
+  });
+  if (document.readyState !== 'loading') {
+    const ol = document.getElementById('ir-hero-overline');
+    const h1 = document.querySelector('#ir-hero-content h1');
+    if (ol) { ol.style.opacity = '1'; ol.style.transform = 'translateY(0)'; }
+    if (h1) { h1.style.opacity = '1'; h1.style.transform = 'translateY(0)'; }
+  }
+
+})();
+</script>
 
 <!-- ============================================ -->
 <!-- CE SOIR CHEZ VOUS (contextuel dynamique)    -->
@@ -249,153 +399,218 @@
 </div>
 </section>
 
-<!-- Main Services Grid : Bento asymétrique -->
+<!-- Main Services Grid : Bento éditorial -->
+<style>
+.ir-bento { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Rangée 1 : grande carte + petite carte haute */
+.ir-bento .b-chef   { grid-column: 1; grid-row: 1; height: 260px; }
+.ir-bento .b-massage { grid-column: 2; grid-row: 1; height: 260px; }
+
+/* Rangée 2 : carte texte seule (fond foncé) + carte horizontale */
+.ir-bento .b-stat   { grid-column: 1; grid-row: 2; height: 120px; }
+.ir-bento .b-soin   { grid-column: 2; grid-row: 2; height: 120px; }
+
+/* Rangée 3 : pleine largeur courte */
+.ir-bento .b-shooting { grid-column: 1 / -1; height: 180px; }
+
+/* Rangée 4 : trio asymétrique */
+.ir-bento .b-coiffeur  { grid-column: 1; grid-row: 4; height: 200px; }
+.ir-bento .b-chauffeur { grid-column: 2; grid-row: 4; height: 200px; }
+
+/* Rangée 5 : petite + grande */
+.ir-bento .b-pressing { grid-column: 1; grid-row: 5; height: 150px; }
+.ir-bento .b-sommelier { grid-column: 2; grid-row: 5 / 7; height: 310px; }
+
+/* Rangée 6 : carte texte édito */
+.ir-bento .b-edito  { grid-column: 1; grid-row: 6; height: 150px; }
+
+/* Rangée 7 : deux moyennes */
+.ir-bento .b-baby   { grid-column: 1; grid-row: 7; height: 190px; }
+.ir-bento .b-coach  { grid-column: 2; grid-row: 7; height: 190px; }
+
+.ir-card {
+  position: relative; overflow: hidden; border-radius: 16px;
+  display: block; width: 100%;
+  transition: transform 0.3s ease;
+}
+.ir-card:active { transform: scale(0.97); }
+.ir-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.ir-card:active img { transform: scale(1.04); }
+</style>
+
 <section class="mb-6 md:mb-10">
-<div class="grid grid-cols-2 gap-2 md:gap-3 lg:grid-cols-3">
+<div class="ir-bento">
 
-<!-- BLOC 1 -->
-<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
-<img alt="Chef Privé" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-on-surface text-surface text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">★ Signature</div>
-<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold text-on-surface">4.94</span>
-</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Raphaël Bonnet · 1 étoile</p>
-<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Chef Privé</h3>
-<p class="text-sm font-bold mt-1">185 €<span class="text-xs font-normal text-white/80"> / pers.</span></p>
-</div>
-</a>
+  <!-- Chef Privé — grande verticale -->
+  <a href="#" class="ir-card b-chef">
+    <img alt="Chef Privé" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=600&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-white text-on-surface text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">★ Signature</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <p class="text-[9px] font-semibold uppercase tracking-widest text-white/70 mb-0.5">Raphaël Bonnet · 1 étoile</p>
+      <h3 class="text-base font-black plus-jakarta-sans tracking-tighter leading-tight">Chef Privé</h3>
+      <p class="text-sm font-bold mt-1">185 €<span class="text-xs font-normal text-white/70"> / pers.</span></p>
+    </div>
+  </a>
 
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Massage" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">45 min</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Massage Suédois</h3>
-<p class="text-xs font-bold mt-0.5">120 €<span class="text-[10px] font-normal text-white/80"> / séance</span></p>
-</div>
-</a>
+  <!-- Massage — verticale même hauteur -->
+  <a href="#" class="ir-card b-massage">
+    <img alt="Massage" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=400&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">45 min</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <h3 class="text-sm font-bold leading-tight">Massage Suédois</h3>
+      <p class="text-xs font-bold mt-0.5">120 €<span class="text-[10px] font-normal text-white/70"> / séance</span></p>
+    </div>
+  </a>
 
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Soin visage" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Top</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Soin Signature</h3>
-<p class="text-xs font-bold mt-0.5">95 €<span class="text-[10px] font-normal text-white/80"> / séance</span></p>
-</div>
-</a>
+  <!-- Carte stat — fond noir, texte seul, pas d'image -->
+  <div class="ir-card b-stat bg-on-surface flex flex-col justify-between p-4" style="border-radius:16px;">
+    <span class="text-[9px] font-bold uppercase tracking-widest text-white/40">Ce soir disponible</span>
+    <div>
+      <p class="text-3xl font-black text-white plus-jakarta-sans tracking-tighter leading-none">12</p>
+      <p class="text-xs text-white/60 mt-1">prestataires · dès 30 min</p>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 rounded-full bg-tertiary-container animate-pulse"></span>
+      <span class="text-[10px] text-white/50 font-medium">En ligne maintenant</span>
+    </div>
+  </div>
 
-<!-- BLOC 2 -->
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Coiffeur" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">1h</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Coiffeur · Brushing</h3>
-<p class="text-xs font-bold mt-0.5">75 €<span class="text-[10px] font-normal text-white/80"> / presta.</span></p>
-</div>
-</a>
+  <!-- Soin Signature — petite horizontale -->
+  <a href="#" class="ir-card b-soin">
+    <img alt="Soin visage" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div class="absolute top-2 left-2 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Top</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <h3 class="text-sm font-bold leading-tight">Soin Signature</h3>
+      <p class="text-xs font-bold mt-0.5">95 €<span class="text-[10px] font-normal text-white/70"> / séance</span></p>
+    </div>
+  </a>
 
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Chauffeur" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">15 min</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Chauffeur Privé</h3>
-<p class="text-xs font-bold mt-0.5">55 €<span class="text-[10px] font-normal text-white/80"> · aéroport</span></p>
-</div>
-</a>
+  <!-- Shooting — pleine largeur -->
+  <a href="#" class="ir-card b-shooting">
+    <img alt="Shooting" src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80" style="object-position: center 30%;"/>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-white text-on-surface text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">★ Signature</div>
+    <div class="absolute top-1/2 -translate-y-1/2 left-4 text-white">
+      <p class="text-[9px] font-semibold uppercase tracking-widest text-white/70 mb-0.5">Julien A. · 1h · 30 photos</p>
+      <h3 class="text-xl font-black plus-jakarta-sans tracking-tighter">Shooting Souvenir</h3>
+      <p class="text-sm font-bold mt-1">220 €<span class="text-xs font-normal text-white/70"> / séance</span></p>
+    </div>
+  </a>
 
-<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
-<img alt="Shooting Souvenir" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-on-surface text-surface text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">★ Signature</div>
-<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold text-on-surface">4.93</span>
-</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Julien A. · 1h · 30 photos</p>
-<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Shooting Souvenir</h3>
-<p class="text-sm font-bold mt-1">220 €<span class="text-xs font-normal text-white/80"> / séance</span></p>
-</div>
-</a>
+  <!-- Coiffeur -->
+  <a href="#" class="ir-card b-coiffeur">
+    <img alt="Coiffeur" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">1h</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <h3 class="text-sm font-bold leading-tight">Coiffeur · Brushing</h3>
+      <p class="text-xs font-bold mt-0.5">75 €<span class="text-[10px] font-normal text-white/70"> / presta.</span></p>
+    </div>
+  </a>
 
-<!-- BLOC 3 -->
-<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
-<img alt="Sommelier Privé" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Nouveau</div>
-<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold text-on-surface">4.98</span>
-</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Vincent P. · WSET 3 · 5 vins</p>
-<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Sommelier Privé</h3>
-<p class="text-sm font-bold mt-1">140 €<span class="text-xs font-normal text-white/80"> / pers.</span></p>
-</div>
-</a>
+  <!-- Chauffeur -->
+  <a href="#" class="ir-card b-chauffeur">
+    <img alt="Chauffeur" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">15 min</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <h3 class="text-sm font-bold leading-tight">Chauffeur Privé</h3>
+      <p class="text-xs font-bold mt-0.5">55 €<span class="text-[10px] font-normal text-white/70"> · aéroport</span></p>
+    </div>
+  </a>
 
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Baby-sitter" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Vérifié</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Baby-sitter FR/EN</h3>
-<p class="text-xs font-bold mt-0.5">22 €<span class="text-[10px] font-normal text-white/80"> / heure</span></p>
-</div>
-</a>
+  <!-- Pressing — petite -->
+  <a href="#" class="ir-card b-pressing">
+    <img alt="Pressing" src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div class="absolute top-2 left-2 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Retour 2h</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <h3 class="text-sm font-bold leading-tight">Pressing Express</h3>
+      <p class="text-xs font-bold mt-0.5">dès 12 €<span class="text-[10px] font-normal text-white/70"> / pièce</span></p>
+    </div>
+  </a>
 
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Coach" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">Matin</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Coach Sportif</h3>
-<p class="text-xs font-bold mt-0.5">70 €<span class="text-[10px] font-normal text-white/80"> / séance</span></p>
-</div>
-</a>
+  <!-- Sommelier — grande verticale à droite sur 2 rangées -->
+  <a href="#" class="ir-card b-sommelier">
+    <img alt="Sommelier" src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80" style="object-position: center top;"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Nouveau</div>
+    <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
+      <span class="material-symbols-outlined text-[13px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
+      <span class="text-xs font-bold text-on-surface">4.98</span>
+    </div>
+    <div class="absolute bottom-4 left-3 right-3 text-white">
+      <p class="text-[9px] font-semibold uppercase tracking-widest text-white/70 mb-0.5">Vincent P. · WSET 3</p>
+      <h3 class="text-lg font-black plus-jakarta-sans tracking-tighter leading-tight">Sommelier Privé</h3>
+      <p class="text-sm font-bold mt-1.5">140 €<span class="text-xs font-normal text-white/70"> / pers.</span></p>
+      <p class="text-[10px] text-white/60 mt-1">Dégustation 5 vins · 1h30</p>
+    </div>
+  </a>
 
-<!-- BLOC 4 -->
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Pressing" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Retour 2h</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Pressing Express</h3>
-<p class="text-xs font-bold mt-0.5">dès 12 €<span class="text-[10px] font-normal text-white/80"> / pièce</span></p>
-</div>
-</a>
+  <!-- Carte édito — fond rouge InRoom -->
+  <div class="ir-card b-edito flex flex-col justify-between p-4" style="border-radius:16px; background: #b52330;">
+    <span class="text-[9px] font-bold uppercase tracking-widest text-white/60">Le Carnet InRoom</span>
+    <div>
+      <h3 class="text-sm font-bold text-white leading-snug">"L'art du soin à domicile, éloge de l'intimité retrouvée"</h3>
+    </div>
+    <div class="flex items-center justify-between">
+      <span class="text-[10px] text-white/50">Bien-être · 3 min</span>
+      <span class="material-symbols-outlined text-white/70 text-base">arrow_forward</span>
+    </div>
+  </div>
 
-<a href="#" class="col-span-1 relative aspect-square overflow-hidden rounded-2xl cursor-pointer group block bg-surface-container-lowest">
-<img alt="Fleuriste" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Local</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<h3 class="text-sm font-bold leading-tight">Bouquet Sur-Mesure</h3>
+  <!-- Baby-sitter -->
+  <a href="#" class="ir-card b-baby">
+    <img alt="Baby-sitter" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold px-1.5 py-0.5 rounded-full">Vérifié</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <h3 class="text-sm font-bold leading-tight">Baby-sitter FR/EN</h3>
+      <p class="text-xs font-bold mt-0.5">22 €<span class="text-[10px] font-normal text-white/70"> / heure</span></p>
+    </div>
+  </a>
+
+  <!-- Coach -->
+  <a href="#" class="ir-card b-coach">
+    <img alt="Coach" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded-full">Matin</div>
+    <div class="absolute bottom-3 left-3 right-3 text-white">
+      <h3 class="text-sm font-bold leading-tight">Coach Sportif</h3>
+      <p class="text-xs font-bold mt-0.5">70 €<span class="text-[10px] font-normal text-white/70"> / séance</span></p>
+    </div>
+  </a>
+
+  <!-- Fleuriste — placeholder pour fermer le bloc 4 original -->
+  <a href="#" class="ir-card" style="grid-column:1/-1; height:160px;">
+    <img alt="Fleuriste" src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80" style="object-position: center 60%;"/>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-primary-fixed text-on-primary-fixed text-[9px] font-bold px-1.5 py-0.5 rounded-full">Local</div>
+    <div class="absolute top-1/2 -translate-y-1/2 left-4 text-white">
+      <h3 class="text-lg font-black plus-jakarta-sans tracking-tighter">Bouquet Sur-Mesure</h3>
 <p class="text-xs font-bold mt-0.5">dès 45 €</p>
 </div>
 </a>
 
-<a href="#" class="col-span-2 lg:col-span-2 relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer group block">
-<img alt="Dog-Sitter" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
-<div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Ce soir</div>
-<div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold text-on-surface">4.90</span>
-</div>
-<div class="absolute bottom-3 left-3 right-3 text-white">
-<p class="text-[10px] font-semibold uppercase tracking-widest text-white/80">Marion D. · ACACED</p>
-<h3 class="text-lg md:text-2xl font-black plus-jakarta-sans tracking-tighter leading-tight mt-0.5">Dog-Sitter & Balade</h3>
-<p class="text-sm font-bold mt-1">18 €<span class="text-xs font-normal text-white/80"> / heure</span></p>
-</div>
-</a>
+  <!-- Dog-Sitter pleine largeur finale -->
+  <a href="#" class="ir-card" style="grid-column:1/-1; height:170px;">
+    <img alt="Dog-Sitter" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" style="object-position: center 40%;"/>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/30 to-transparent"></div>
+    <div class="absolute top-3 left-3 bg-tertiary-container text-on-tertiary-container text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">Ce soir</div>
+    <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md flex items-center gap-0.5 px-2 py-0.5 rounded-full">
+      <span class="material-symbols-outlined text-[13px] text-on-surface" style="font-variation-settings: 'FILL' 1;">star</span>
+      <span class="text-xs font-bold text-on-surface">4.90</span>
+    </div>
+    <div class="absolute top-1/2 -translate-y-1/2 left-4 text-white">
+      <p class="text-[9px] font-semibold uppercase tracking-widest text-white/70 mb-0.5">Marion D. · ACACED</p>
+      <h3 class="text-xl font-black plus-jakarta-sans tracking-tighter">Dog-Sitter & Balade</h3>
+      <p class="text-sm font-bold mt-1">18 €<span class="text-xs font-normal text-white/70"> / heure</span></p>
+    </div>
+  </a>
 
 </div>
 </section>
