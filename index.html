@@ -1898,13 +1898,115 @@ window.InRoom = (function() {
     document.body.style.overflow = '';
   }
 
-  function confirmBooking(name) {
+  // ========== MOLLIE PAYMENT ==========
+  const MOLLIE_CONFIG = {
+    apiKey: 'live_tjPJt5hrkby9tARBynkCpFVQhDaaDT',
+    // En production: appeler ton backend pour créer le payment (ne jamais exposer la clé live en frontend)
+    // Pour la démo/MVP: proxy via Vercel serverless function recommandé
+    proxyUrl: '/api/mollie-payment' // ton endpoint Vercel
+  };
+
+  // Données de réservation en cours
+  let currentBooking = null;
+
+  async function confirmBooking(proName) {
+    const pro = findProByName(proName);
+    const slot = document.getElementById('ir-slot-display')?.textContent || '17:30';
     closeSheet();
-    setTimeout(() => {
-      document.getElementById('ir-toast-msg').textContent = `Réservé · ${name}`;
-      document.getElementById('ir-toast').classList.add('show');
-      setTimeout(() => document.getElementById('ir-toast').classList.remove('show'), 2800);
-    }, 350);
+
+    // Afficher l'écran de chargement paiement
+    showPaymentLoader(proName);
+
+    try {
+      const amount = pro ? pro.price : 0;
+      const description = `InRoom · ${proName} · ${slot} · Ch. 312`;
+
+      currentBooking = { proName, slot, amount, description };
+
+      // Appel au proxy backend Vercel pour créer le payment Mollie
+      const res = await fetch(MOLLIE_CONFIG.proxyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amount.toFixed(2),
+          description,
+          redirectUrl: window.location.origin + window.location.pathname + '?payment=success&pro=' + encodeURIComponent(proName),
+          cancelUrl: window.location.origin + window.location.pathname + '?payment=cancel'
+        })
+      });
+
+      if (!res.ok) throw new Error('Erreur création paiement');
+      const data = await res.json();
+
+      if (data.checkoutUrl) {
+        // Redirection vers Mollie checkout
+        window.location.href = data.checkoutUrl;
+      } else {
+        throw new Error('Pas d\'URL de paiement');
+      }
+    } catch (err) {
+      console.error('Mollie error:', err);
+      hidePaymentLoader();
+      // Fallback toast en cas d'erreur
+      setTimeout(() => {
+        document.getElementById('ir-toast-msg').textContent = `Erreur paiement — réessayez`;
+        document.getElementById('ir-toast').classList.add('show');
+        setTimeout(() => document.getElementById('ir-toast').classList.remove('show'), 3000);
+      }, 200);
+    }
+  }
+
+  function findProByName(name) {
+    for (const key in SERVICES) {
+      const p = SERVICES[key].pros.find(p => p.name === name);
+      if (p) return p;
+    }
+    return null;
+  }
+
+  function showPaymentLoader(proName) {
+    const overlay = document.getElementById('ir-payment-overlay');
+    if (overlay) {
+      document.getElementById('ir-payment-pro-name').textContent = proName;
+      overlay.classList.add('active');
+    }
+  }
+
+  function hidePaymentLoader() {
+    const overlay = document.getElementById('ir-payment-overlay');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  // Gestion retour Mollie (success/cancel)
+  function handlePaymentReturn() {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('payment');
+    const pro = params.get('pro');
+    if (!status) return;
+
+    // Nettoyer l'URL
+    window.history.replaceState({}, '', window.location.pathname);
+
+    if (status === 'success') {
+      setTimeout(() => {
+        showPaymentSuccess(pro || 'votre service');
+      }, 400);
+    } else if (status === 'cancel') {
+      setTimeout(() => {
+        document.getElementById('ir-toast-msg').textContent = `Paiement annulé`;
+        document.getElementById('ir-toast').classList.add('show');
+        setTimeout(() => document.getElementById('ir-toast').classList.remove('show'), 3000);
+      }, 400);
+    }
+  }
+
+  function showPaymentSuccess(proName) {
+    const overlay = document.getElementById('ir-success-overlay');
+    if (overlay) {
+      document.getElementById('ir-success-pro-name').textContent = proName;
+      overlay.classList.add('active');
+      setTimeout(() => overlay.classList.remove('active'), 5000);
+    }
   }
 
   // ========== CE SOIR CHEZ VOUS (contextuel selon l'heure + météo réelle) ==========
@@ -2317,8 +2419,100 @@ window.InRoom = (function() {
     bindIntentChips();
   }
 
-  return { openMenu, closeMenu, showService, closeCategory, openPro, closeSheet, updateSlot, confirmBooking, dismissTonight };
+  return { openMenu, closeMenu, showService, closeCategory, openPro, closeSheet, updateSlot, confirmBooking, dismissTonight, handlePaymentReturn, showPaymentSuccess };
 })();
+</script>
+
+<!-- ========== PAYMENT LOADER OVERLAY ========== -->
+<div id="ir-payment-overlay" style="
+  position:fixed; inset:0; z-index:9999;
+  background: rgba(252,249,248,0.97);
+  backdrop-filter: blur(20px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition: opacity 0.3s ease;
+">
+  <div style="text-align:center; max-width:320px; padding:0 24px;">
+    <!-- Spinner -->
+    <div style="
+      width:56px; height:56px; border-radius:50%;
+      border:3px solid #e5e2e1;
+      border-top-color:#b52330;
+      animation: ir-spin 0.8s linear infinite;
+      margin:0 auto 24px;
+    "></div>
+    <p class="plus-jakarta-sans font-black text-2xl text-on-surface tracking-tight" style="margin-bottom:8px;">Paiement sécurisé</p>
+    <p class="text-sm text-on-surface-variant" style="line-height:1.5;">Redirection vers Mollie pour régler votre réservation avec <strong id="ir-payment-pro-name" class="text-on-surface"></strong>…</p>
+    <div style="margin-top:28px; display:flex; align-items:center; justify-content:center; gap:8px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z" fill="#5a403f" opacity=".5"/></svg>
+      <span class="text-xs text-on-surface-variant">Paiement 100% sécurisé · SSL</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAYMENT SUCCESS OVERLAY ========== -->
+<div id="ir-success-overlay" style="
+  position:fixed; inset:0; z-index:9999;
+  background: rgba(252,249,248,0.97);
+  backdrop-filter: blur(20px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition: opacity 0.4s ease;
+">
+  <div style="text-align:center; max-width:340px; padding:0 24px;">
+    <!-- Check animé -->
+    <div style="
+      width:72px; height:72px; border-radius:50%;
+      background:#f0eded;
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 24px;
+      animation: ir-pop 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    ">
+      <span class="material-symbols-outlined text-4xl" style="color:#006c4c; font-variation-settings:'FILL' 1;">check_circle</span>
+    </div>
+    <p class="plus-jakarta-sans font-black text-3xl text-on-surface tracking-tight" style="margin-bottom:8px;">Réservé !</p>
+    <p class="text-base text-on-surface-variant" style="line-height:1.5; margin-bottom:4px;"><strong id="ir-success-pro-name" class="text-on-surface"></strong> a bien reçu votre réservation.</p>
+    <p class="text-sm text-on-surface-variant" style="line-height:1.5;">Vous recevrez une confirmation dès validation du professionnel. Profitez de votre séjour ✨</p>
+    <!-- Chambre -->
+    <div style="
+      margin-top:28px;
+      background:#f0eded;
+      border-radius:16px;
+      padding:14px 20px;
+      display:flex; align-items:center; gap:12px;
+    ">
+      <span class="material-symbols-outlined text-2xl" style="color:#b52330; font-variation-settings:'FILL' 1;">bed</span>
+      <div style="text-align:left;">
+        <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Chambre</p>
+        <p class="plus-jakarta-sans font-black text-xl text-on-surface">312</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #ir-payment-overlay.active,
+  #ir-success-overlay.active {
+    opacity: 1 !important;
+    pointer-events: all !important;
+  }
+  @keyframes ir-spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes ir-pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+</style>
+
+<script>
+  // Vérifier retour paiement Mollie au chargement
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof InRoom !== 'undefined') InRoom.handlePaymentReturn?.();
+  });
+  if (document.readyState !== 'loading') {
+    if (typeof InRoom !== 'undefined') InRoom.handlePaymentReturn?.();
+  }
 </script>
 
 </body></html>
