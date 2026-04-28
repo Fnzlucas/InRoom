@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InRoom Pro | Espace Prestataire</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Fraunces:ital,wght@0,400;0,600;0,900;1,400;1,900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary-fixed": "#ffdad8",
+          "on-secondary-fixed": "#400107",
+          "on-secondary": "#ffffff",
+          "surface-container-highest": "#e5e2e1",
+          "on-tertiary-container": "#003423",
+          "on-tertiary-fixed": "#002115",
+          "surface-variant": "#e5e2e1",
+          "primary": "#b52330",
+          "on-primary-container": "#61000e",
+          "surface-container-low": "#f6f3f2",
+          "tertiary-fixed-dim": "#59ddaa",
+          "surface-dim": "#dcd9d9",
+          "secondary-fixed-dim": "#ffb3b0",
+          "secondary": "#994444",
+          "surface": "#fcf9f8",
+          "inverse-surface": "#303030",
+          "on-surface-variant": "#5a403f",
+          "primary-fixed-dim": "#ffb3b0",
+          "surface-container-lowest": "#ffffff",
+          "surface-bright": "#fcf9f8",
+          "inverse-primary": "#ffb3b0",
+          "on-primary": "#ffffff",
+          "on-tertiary": "#ffffff",
+          "on-secondary-container": "#762a2b",
+          "on-error-container": "#93000a",
+          "background": "#fcf9f8",
+          "inverse-on-surface": "#f3f0ef",
+          "surface-container-high": "#eae7e7",
+          "surface-container": "#f0eded",
+          "primary-container": "#ff5a5f",
+          "tertiary-container": "#00a879",
+          "error-container": "#ffdad6",
+          "on-primary-fixed": "#410007",
+          "on-error": "#ffffff",
+          "secondary-fixed": "#ffdad8",
+          "surface-tint": "#b52330",
+          "on-secondary-fixed-variant": "#7b2d2e",
+          "on-surface": "#1b1c1c",
+          "on-background": "#1b1c1c",
+          "secondary-container": "#fd9391",
+          "on-primary-fixed-variant": "#92001b",
+          "tertiary": "#006c4d",
+          "error": "#ba1a1a",
+          "outline": "#84746f",
+          "outline-variant": "#d6c2bf"
+        },
+        fontFamily: {
+          body: ["Inter", "sans-serif"],
+          display: ["Plus Jakarta Sans", "sans-serif"],
+          serif: ["Fraunces", "serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .plus-jakarta-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .fraunces { font-family: 'Fraunces', serif; font-feature-settings: "ss01"; }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+  .tonal-shift { background-color: #f6f3f2; }
+  .tonal-shift-2 { background-color: #f0eded; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .nav-item.active { background-color: #b52330; color: #ffffff; }
+  .nav-item.active .material-symbols-outlined { color: #ffffff; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn 0.3s ease-out; }
+  .pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+
+<!-- ========== TOP BAR ========== -->
+<header class="bg-surface-container-lowest border-b border-outline-variant/40 sticky top-0 z-40">
+  <div class="px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center">
+        <span class="text-2xl plus-jakarta-sans font-black text-on-surface tracking-[-0.04em]">InRoom</span>
+        <span class="w-2 h-2 rounded-full bg-primary ml-1 self-center"></span>
+      </div>
+      <span class="text-xs uppercase tracking-widest text-on-surface-variant border-l border-outline-variant pl-3">Pro · Prestataire</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="relative p-2 rounded-full hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-on-surface">notifications</span>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full pulse-dot"></span>
+      </button>
+      <div class="flex items-center gap-3 border-l border-outline-variant pl-4">
+        <div class="text-right hidden sm:block">
+          <p class="text-sm font-semibold text-on-surface">Raphaël Bonnet</p>
+          <p class="text-xs text-on-surface-variant">Chef Privé · ★ 1 étoile Michelin</p>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">RB</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="flex">
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="w-64 min-h-[calc(100vh-73px)] bg-surface-container-lowest border-r border-outline-variant/40 px-4 py-6 hidden lg:block">
+    <nav class="space-y-1">
+      <button onclick="showSection('dashboard')" id="nav-dashboard" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition">
+        <span class="material-symbols-outlined text-xl">space_dashboard</span>
+        <span>Vue d'ensemble</span>
+      </button>
+      <button onclick="showSection('requests')" id="nav-requests" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">inbox</span>
+        <span>Demandes</span>
+        <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+      </button>
+      <button onclick="showSection('agenda')" id="nav-agenda" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">calendar_month</span>
+        <span>Mon agenda</span>
+      </button>
+      <button onclick="showSection('history')" id="nav-history" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">history</span>
+        <span>Historique</span>
+      </button>
+      <button onclick="showSection('payments')" id="nav-payments" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">payments</span>
+        <span>Paiements</span>
+      </button>
+      <button onclick="showSection('profile')" id="nav-profile" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">tune</span>
+        <span>Profil & Tarifs</span>
+      </button>
+    </nav>
+
+    <div class="mt-8 p-4 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-lg">workspace_premium</span>
+        <span class="text-xs uppercase tracking-widest font-semibold">Statut</span>
+      </div>
+      <p class="plus-jakarta-sans text-2xl font-bold mb-1">Signature</p>
+      <p class="text-xs opacity-90 mb-3">Vos prestations apparaissent en priorité chez les clients premium.</p>
+      <div class="flex items-center justify-between text-xs">
+        <span class="opacity-80">Note moyenne</span>
+        <span class="font-bold">★ 4.96</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN ========== -->
+  <main class="flex-1 px-4 sm:px-8 py-8 pb-32 lg:pb-8 max-w-7xl mx-auto w-full">
+
+    <!-- ===== SECTION DASHBOARD ===== -->
+    <section id="section-dashboard" class="fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Bonjour</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-bold text-on-surface mb-2">Raphaël,</h1>
+        <p class="text-on-surface-variant">Voici un aperçu de votre activité aujourd'hui.</p>
+      </div>
+
+      <!-- Stats cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">euro</span>
+            <span class="text-xs text-tertiary font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">trending_up</span>
+              +18%
+            </span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">CA ce mois</p>
+          <p class="plus-jakarta-sans text-3xl font-bold text-on-surface">3 240 €</p>
+          <p class="text-xs text-on-surface-variant mt-1">vs 2 745 € le mois dernier</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">restaurant</span>
+            <span class="text-xs text-tertiary font-semibold">+5</span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Prestations</p>
+          <p class="plus-jakarta-sans text-3xl font-bold text-on-surface">17</p>
+          <p class="text-xs text-on-surface-variant mt-1">ce mois-ci</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">star</span>
+            <span class="text-xs text-tertiary font-semibold">12 avis</span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Note moyenne</p>
+          <p class="plus-jakarta-sans text-3xl font-bold text-on-surface">4.96</p>
+          <p class="text-xs text-on-surface-variant mt-1">★★★★★ excellent</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">schedule</span>
+            <span class="w-2 h-2 bg-primary rounded-full pulse-dot"></span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">À venir</p>
+          <p class="plus-jakarta-sans text-3xl font-bold text-on-surface">4</p>
+          <p class="text-xs text-on-surface-variant mt-1">prestations cette semaine</p>
+        </div>
+      </div>
+
+      <!-- Quick access -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Demandes en attente -->
+        <div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-5">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-primary font-semibold">À traiter</p>
+              <h2 class="plus-jakarta-sans text-2xl font-bold text-on-surface">Nouvelles demandes</h2>
+            </div>
+            <button onclick="showSection('requests')" class="text-sm text-primary hover:underline flex items-center gap-1">
+              Voir tout <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+          </div>
+
+          <div class="space-y-3">
+            <div class="border border-outline-variant/40 rounded-xl p-4 hover:bg-surface-container-low transition">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-semibold">Nouveau</span>
+                    <span class="text-xs text-on-surface-variant">il y a 12 min</span>
+                  </div>
+                  <p class="font-semibold text-on-surface">Hôtel La Mirande · Suite 14</p>
+                  <p class="text-sm text-on-surface-variant mt-1">Dîner gastronomique · 4 personnes · Ce soir 20h</p>
+                </div>
+                <p class="plus-jakarta-sans text-xl font-bold text-on-surface">740 €</p>
+              </div>
+              <div class="flex gap-2">
+                <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm font-semibold hover:bg-secondary transition">Accepter</button>
+                <button class="flex-1 border border-outline-variant text-on-surface py-2 rounded-lg text-sm font-semibold hover:bg-surface-container transition">Refuser</button>
+              </div>
+            </div>
+
+            <div class="border border-outline-variant/40 rounded-xl p-4 hover:bg-surface-container-low transition">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-semibold">Nouveau</span>
+                    <span class="text-xs text-on-surface-variant">il y a 1h</span>
+                  </div>
+                  <p class="font-semibold text-on-surface">Hôtel d'Europe · Ch. 312</p>
+                  <p class="text-sm text-on-surface-variant mt-1">Menu signature · 2 personnes · Demain 19h30</p>
+                </div>
+                <p class="plus-jakarta-sans text-xl font-bold text-on-surface">370 €</p>
+              </div>
+              <div class="flex gap-2">
+                <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm font-semibold hover:bg-secondary transition">Accepter</button>
+                <button class="flex-1 border border-outline-variant text-on-surface py-2 rounded-lg text-sm font-semibold hover:bg-surface-container transition">Refuser</button>
+              </div>
+            </div>
+
+            <div class="border border-outline-variant/40 rounded-xl p-4 hover:bg-surface-container-low transition opacity-90">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-semibold">À confirmer</span>
+                    <span class="text-xs text-on-surface-variant">il y a 3h</span>
+                  </div>
+                  <p class="font-semibold text-on-surface">Cloître Saint-Louis · Suite jardin</p>
+                  <p class="text-sm text-on-surface-variant mt-1">Brunch privé · 6 personnes · Samedi 11h</p>
+                </div>
+                <p class="plus-jakarta-sans text-xl font-bold text-on-surface">620 €</p>
+              </div>
+              <div class="flex gap-2">
+                <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm font-semibold hover:bg-secondary transition">Accepter</button>
+                <button class="flex-1 border border-outline-variant text-on-surface py-2 rounded-lg text-sm font-semibold hover:bg-surface-container transition">Refuser</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prochain RDV -->
+        <div class="bg-gradient-to-br from-primary to-secondary text-white rounded-2xl p-6 flex flex-col">
+          <p class="text-xs uppercase tracking-widest opacity-80 font-semibold mb-2">Prochaine prestation</p>
+          <p class="plus-jakarta-sans text-3xl font-bold mb-1">Ce soir</p>
+          <p class="text-sm opacity-90 mb-6">Jeudi 30 avril · 19h30</p>
+
+          <div class="bg-white/10 backdrop-blur rounded-xl p-4 mb-4">
+            <p class="font-semibold mb-1">Hôtel d'Europe</p>
+            <p class="text-sm opacity-90">Suite Présidentielle · Ch. 401</p>
+            <div class="border-t border-white/20 my-3"></div>
+            <p class="text-sm opacity-90">Menu Signature · 2 pers.</p>
+            <p class="text-xs opacity-70 mt-1">Allergies : fruits de mer (M. Lucas)</p>
+          </div>
+
+          <div class="mt-auto">
+            <p class="text-2xl plus-jakarta-sans font-bold mb-3">370 €</p>
+            <button class="w-full bg-white text-primary py-2.5 rounded-lg text-sm font-bold hover:bg-opacity-90 transition flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-base">map</span>
+              Voir l'itinéraire
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graphique CA -->
+      <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-primary font-semibold">Performance</p>
+            <h2 class="plus-jakarta-sans text-2xl font-bold text-on-surface">CA des 6 derniers mois</h2>
+          </div>
+          <select class="text-sm border border-outline-variant rounded-lg px-3 py-2 bg-surface-container-lowest">
+            <option>6 derniers mois</option>
+            <option>12 derniers mois</option>
+            <option>Année en cours</option>
+          </select>
+        </div>
+        <div class="flex items-end justify-between gap-3 h-48">
+          <div class="flex-1 flex flex-col items-center gap-2">
+            <div class="w-full bg-primary/20 rounded-t-lg relative group" style="height: 45%;">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold text-on-surface opacity-0 group-hover:opacity-100 transition">1.4k€</span>
+            </div>
+            <span class="text-xs text-on-surface-variant">Nov</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2">
+            <div class="w-full bg-primary/30 rounded-t-lg relative group" style="height: 60%;">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold text-on-surface opacity-0 group-hover:opacity-100 transition">1.9k€</span>
+            </div>
+            <span class="text-xs text-on-surface-variant">Déc</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2">
+            <div class="w-full bg-primary/40 rounded-t-lg relative group" style="height: 70%;">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold text-on-surface opacity-0 group-hover:opacity-100 transition">2.3k€</span>
+            </div>
+            <span class="text-xs text-on-surface-variant">Jan</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2">
+            <div class="w-full bg-primary/60 rounded-t-lg relative group" style="height: 65%;">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold text-on-surface opacity-0 group-hover:opacity-100 transition">2.1k€</span>
+            </div>
+            <span class="text-xs text-on-surface-variant">Fév</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2">
+            <div class="w-full bg-primary/80 rounded-t-lg relative group" style="height: 85%;">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold text-on-surface opacity-0 group-hover:opacity-100 transition">2.7k€</span>
+            </div>
+            <span class="text-xs text-on-surface-variant">Mars</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2">
+            <div class="w-full bg-primary rounded-t-lg relative group" style="height: 100%;">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-100 transition">3.2k€</span>
+            </div>
+            <span class="text-xs text-primary font-semibold">Avril</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION REQUESTS ===== -->
+    <section id="section-requests" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">À traiter</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-bold text-on-surface">Demandes en attente</h1>
+        <p class="text-on-surface-variant mt-2">3 nouvelles demandes nécessitent votre validation.</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex gap-2 mb-6 overflow-x-auto scrollbar-hide pb-2">
+        <button class="px-4 py-2 bg-primary text-white rounded-full text-sm font-semibold whitespace-nowrap">Toutes (3)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Aujourd'hui (1)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Cette semaine (2)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Plus tard (0)</button>
+      </div>
+
+      <!-- Liste demandes détaillées -->
+      <div class="space-y-4">
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">restaurant</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-semibold">Nouveau</span>
+                  <span class="text-xs text-on-surface-variant">Reçue il y a 12 min</span>
+                </div>
+                <h3 class="plus-jakarta-sans text-xl font-bold text-on-surface">Dîner gastronomique pour 4</h3>
+                <p class="text-sm text-on-surface-variant">Hôtel La Mirande · Suite 14 · M. & Mme Dubois</p>
+              </div>
+            </div>
+            <p class="plus-jakarta-sans text-2xl font-bold text-on-surface">740 €</p>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y border-outline-variant/40 mb-4">
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Date</p>
+              <p class="text-sm font-semibold">Aujourd'hui</p>
+              <p class="text-xs text-on-surface-variant">Jeudi 30 avril</p>
+            </div>
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Heure</p>
+              <p class="text-sm font-semibold">20h00</p>
+              <p class="text-xs text-on-surface-variant">durée ~3h</p>
+            </div>
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Convives</p>
+              <p class="text-sm font-semibold">4 personnes</p>
+              <p class="text-xs text-on-surface-variant">2 menus végé</p>
+            </div>
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Lieu</p>
+              <p class="text-sm font-semibold">La Mirande</p>
+              <p class="text-xs text-on-surface-variant">Avignon centre</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-low rounded-xl p-4 mb-4">
+            <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-2 font-semibold">Notes du client</p>
+            <p class="text-sm text-on-surface italic">« Anniversaire de mariage. Mme Dubois est végétarienne. M. Dubois adore les vins de la vallée du Rhône. Nous comptons sur vous pour faire de cette soirée un moment mémorable. »</p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-secondary transition flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-base">check_circle</span>
+              Accepter cette mission
+            </button>
+            <button class="flex-1 border border-outline-variant text-on-surface py-3 rounded-xl font-semibold hover:bg-surface-container transition flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-base">chat</span>
+              Demander plus d'infos
+            </button>
+            <button class="sm:w-auto px-4 py-3 border border-outline-variant text-on-surface-variant rounded-xl text-sm hover:bg-surface-container transition">
+              Refuser
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">restaurant</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-semibold">Nouveau</span>
+                  <span class="text-xs text-on-surface-variant">Reçue il y a 1h</span>
+                </div>
+                <h3 class="plus-jakarta-sans text-xl font-bold text-on-surface">Menu signature · Couple</h3>
+                <p class="text-sm text-on-surface-variant">Hôtel d'Europe · Ch. 312 · M. Lucas</p>
+              </div>
+            </div>
+            <p class="plus-jakarta-sans text-2xl font-bold text-on-surface">370 €</p>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y border-outline-variant/40 mb-4">
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Date</p><p class="text-sm font-semibold">Demain</p></div>
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Heure</p><p class="text-sm font-semibold">19h30</p></div>
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Convives</p><p class="text-sm font-semibold">2 personnes</p></div>
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Lieu</p><p class="text-sm font-semibold">Hôtel d'Europe</p></div>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-secondary transition">Accepter</button>
+            <button class="flex-1 border border-outline-variant text-on-surface py-3 rounded-xl font-semibold hover:bg-surface-container transition">Plus d'infos</button>
+            <button class="sm:w-auto px-4 py-3 border border-outline-variant text-on-surface-variant rounded-xl text-sm hover:bg-surface-container transition">Refuser</button>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">family_restroom</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-semibold">Brunch</span>
+                  <span class="text-xs text-on-surface-variant">Reçue il y a 3h</span>
+                </div>
+                <h3 class="plus-jakarta-sans text-xl font-bold text-on-surface">Brunch privé · Famille</h3>
+                <p class="text-sm text-on-surface-variant">Cloître Saint-Louis · Suite jardin · Famille Bernard</p>
+              </div>
+            </div>
+            <p class="plus-jakarta-sans text-2xl font-bold text-on-surface">620 €</p>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y border-outline-variant/40 mb-4">
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Date</p><p class="text-sm font-semibold">Samedi</p></div>
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Heure</p><p class="text-sm font-semibold">11h00</p></div>
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Convives</p><p class="text-sm font-semibold">6 personnes</p></div>
+            <div><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Lieu</p><p class="text-sm font-semibold">Cloître St-Louis</p></div>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-secondary transition">Accepter</button>
+            <button class="flex-1 border border-outline-variant text-on-surface py-3 rounded-xl font-semibold hover:bg-surface-container transition">Plus d'infos</button>
+            <button class="sm:w-auto px-4 py-3 border border-outline-variant text-on-surface-variant rounded-xl text-sm hover:bg-surface-container transition">Refuser</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION AGENDA ===== -->
+    <section id="section-agenda" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Planning</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-bold text-on-surface">Mon agenda</h1>
+        <p class="text-on-surface-variant mt-2">4 prestations confirmées cette semaine.</p>
+      </div>
+
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-2">
+          <button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+          <h3 class="plus-jakarta-sans text-xl font-bold px-4">Avril 2026</h3>
+          <button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+        <div class="flex gap-1 bg-surface-container rounded-lg p-1">
+          <button class="px-3 py-1.5 bg-surface-container-lowest rounded-md text-sm font-semibold">Semaine</button>
+          <button class="px-3 py-1.5 text-sm text-on-surface-variant">Mois</button>
+        </div>
+      </div>
+
+      <!-- Calendrier semaine -->
+      <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl overflow-hidden">
+        <div class="grid grid-cols-7 border-b border-outline-variant/40">
+          <div class="p-4 text-center border-r border-outline-variant/40">
+            <p class="text-xs text-on-surface-variant uppercase">Lun</p>
+            <p class="plus-jakarta-sans text-xl font-bold">28</p>
+          </div>
+          <div class="p-4 text-center border-r border-outline-variant/40">
+            <p class="text-xs text-on-surface-variant uppercase">Mar</p>
+            <p class="plus-jakarta-sans text-xl font-bold">29</p>
+          </div>
+          <div class="p-4 text-center border-r border-outline-variant/40 bg-primary-fixed/30">
+            <p class="text-xs text-primary uppercase font-semibold">Mer · Aujourd'hui</p>
+            <p class="plus-jakarta-sans text-xl font-bold text-primary">30</p>
+          </div>
+          <div class="p-4 text-center border-r border-outline-variant/40">
+            <p class="text-xs text-on-surface-variant uppercase">Jeu</p>
+            <p class="plus-jakarta-sans text-xl font-bold">1</p>
+          </div>
+          <div class="p-4 text-center border-r border-outline-variant/40">
+            <p class="text-xs text-on-surface-variant uppercase">Ven</p>
+            <p class="plus-jakarta-sans text-xl font-bold">2</p>
+          </div>
+          <div class="p-4 text-center border-r border-outline-variant/40">
+            <p class="text-xs text-on-surface-variant uppercase">Sam</p>
+            <p class="plus-jakarta-sans text-xl font-bold">3</p>
+          </div>
+          <div class="p-4 text-center">
+            <p class="text-xs text-on-surface-variant uppercase">Dim</p>
+            <p class="plus-jakarta-sans text-xl font-bold">4</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-7 min-h-[300px]">
+          <div class="p-2 border-r border-outline-variant/40"></div>
+          <div class="p-2 border-r border-outline-variant/40">
+            <div class="bg-tertiary-container/30 border-l-4 border-tertiary rounded-r-lg p-2 mb-1">
+              <p class="text-xs font-bold text-on-tertiary-container">12h30</p>
+              <p class="text-xs text-on-surface">Déjeuner privé</p>
+              <p class="text-xs text-on-surface-variant">La Mirande</p>
+            </div>
+          </div>
+          <div class="p-2 border-r border-outline-variant/40 bg-primary-fixed/10">
+            <div class="bg-primary text-white rounded-lg p-2">
+              <p class="text-xs font-bold">19h30</p>
+              <p class="text-xs">Menu Signature</p>
+              <p class="text-xs opacity-80">Hôtel d'Europe</p>
+            </div>
+          </div>
+          <div class="p-2 border-r border-outline-variant/40">
+            <div class="bg-tertiary-container/30 border-l-4 border-tertiary rounded-r-lg p-2 mb-1">
+              <p class="text-xs font-bold text-on-tertiary-container">20h00</p>
+              <p class="text-xs text-on-surface">Dîner anniversaire</p>
+              <p class="text-xs text-on-surface-variant">La Mirande · 4p</p>
+            </div>
+          </div>
+          <div class="p-2 border-r border-outline-variant/40"></div>
+          <div class="p-2 border-r border-outline-variant/40">
+            <div class="bg-tertiary-container/30 border-l-4 border-tertiary rounded-r-lg p-2 mb-1">
+              <p class="text-xs font-bold text-on-tertiary-container">11h00</p>
+              <p class="text-xs text-on-surface">Brunch famille</p>
+              <p class="text-xs text-on-surface-variant">Cloître St-Louis</p>
+            </div>
+          </div>
+          <div class="p-2"></div>
+        </div>
+      </div>
+
+      <!-- Disponibilités rapides -->
+      <div class="mt-8 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-primary font-semibold">Réglage rapide</p>
+            <h2 class="plus-jakarta-sans text-2xl font-bold text-on-surface">Mes disponibilités</h2>
+          </div>
+          <button class="text-sm text-primary hover:underline">Modifier en détail</button>
+        </div>
+        <div class="grid grid-cols-7 gap-2">
+          <div class="text-center">
+            <p class="text-xs text-on-surface-variant mb-2">Lun</p>
+            <button class="w-full py-2 bg-tertiary-container/30 rounded-lg text-xs font-semibold text-on-tertiary-container">Dispo</button>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-on-surface-variant mb-2">Mar</p>
+            <button class="w-full py-2 bg-tertiary-container/30 rounded-lg text-xs font-semibold text-on-tertiary-container">Dispo</button>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-on-surface-variant mb-2">Mer</p>
+            <button class="w-full py-2 bg-tertiary-container/30 rounded-lg text-xs font-semibold text-on-tertiary-container">Dispo</button>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-on-surface-variant mb-2">Jeu</p>
+            <button class="w-full py-2 bg-tertiary-container/30 rounded-lg text-xs font-semibold text-on-tertiary-container">Dispo</button>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-on-surface-variant mb-2">Ven</p>
+            <button class="w-full py-2 bg-tertiary-container/30 rounded-lg text-xs font-semibold text-on-tertiary-container">Dispo</button>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-on-surface-variant mb-2">Sam</p>
+            <button class="w-full py-2 bg-tertiary-container/30 rounded-lg text-xs font-semibold text-on-tertiary-container">Dispo</button>
+          </div>
+          <div class="text-center">
+            <p class="text-xs text-on-surface-variant mb-2">Dim</p>
+            <button class="w-full py-2 bg-error-container rounded-lg text-xs font-semibold text-on-error-container">Off</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION HISTORY ===== -->
+    <section id="section-history" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Archives</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-bold text-on-surface">Historique</h1>
+        <p class="text-on-surface-variant mt-2">Toutes vos prestations passées.</p>
+      </div>
+
+      <!-- Filtres -->
+      <div class="flex flex-wrap gap-3 mb-6">
+        <select class="text-sm border border-outline-variant rounded-lg px-3 py-2 bg-surface-container-lowest">
+          <option>Toutes les périodes</option>
+          <option>Ce mois</option>
+          <option>Mois dernier</option>
+          <option>3 derniers mois</option>
+        </select>
+        <select class="text-sm border border-outline-variant rounded-lg px-3 py-2 bg-surface-container-lowest">
+          <option>Tous les hôtels</option>
+          <option>Hôtel d'Europe</option>
+          <option>La Mirande</option>
+          <option>Cloître Saint-Louis</option>
+        </select>
+        <button class="ml-auto text-sm border border-outline-variant rounded-lg px-3 py-2 bg-surface-container-lowest hover:bg-surface-container flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">download</span>
+          Exporter
+        </button>
+      </div>
+
+      <!-- Liste -->
+      <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-surface-container-low border-b border-outline-variant/40">
+            <tr>
+              <th class="text-left text-xs uppercase tracking-wider text-on-surface-variant font-semibold px-6 py-4">Date</th>
+              <th class="text-left text-xs uppercase tracking-wider text-on-surface-variant font-semibold px-6 py-4">Prestation</th>
+              <th class="text-left text-xs uppercase tracking-wider text-on-surface-variant font-semibold px-6 py-4 hidden md:table-cell">Hôtel</th>
+              <th class="text-left text-xs uppercase tracking-wider text-on-surface-variant font-semibold px-6 py-4 hidden lg:table-cell">Note</th>
+              <th class="text-right text-xs uppercase tracking-wider text-on-surface-variant font-semibold px-6 py-4">Montant</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-outline-variant/40">
+            <tr class="hover:bg-surface-container-low transition">
+              <td class="px-6 py-4 text-sm">28 avril</td>
+              <td class="px-6 py-4">
+                <p class="text-sm font-semibold">Menu Signature</p>
+                <p class="text-xs text-on-surface-variant">2 pers.</p>
+              </td>
+              <td class="px-6 py-4 text-sm hidden md:table-cell">Hôtel d'Europe</td>
+              <td class="px-6 py-4 hidden lg:table-cell">
+                <span class="text-sm font-semibold">★ 5.0</span>
+              </td>
+              <td class="px-6 py-4 text-right plus-jakarta-sans font-bold">370 €</td>
+            </tr>
+            <tr class="hover:bg-surface-container-low transition">
+              <td class="px-6 py-4 text-sm">25 avril</td>
+              <td class="px-6 py-4">
+                <p class="text-sm font-semibold">Dîner gastronomique</p>
+                <p class="text-xs text-on-surface-variant">6 pers.</p>
+              </td>
+              <td class="px-6 py-4 text-sm hidden md:table-cell">La Mirande</td>
+              <td class="px-6 py-4 hidden lg:table-cell">
+                <span class="text-sm font-semibold">★ 4.9</span>
+              </td>
+              <td class="px-6 py-4 text-right plus-jakarta-sans font-bold">1 110 €</td>
+            </tr>
+            <tr class="hover:bg-surface-container-low transition">
+              <td class="px-6 py-4 text-sm">22 avril</td>
+              <td class="px-6 py-4">
+                <p class="text-sm font-semibold">Brunch privé</p>
+                <p class="text-xs text-on-surface-variant">4 pers.</p>
+              </td>
+              <td class="px-6 py-4 text-sm hidden md:table-cell">Cloître Saint-Louis</td>
+              <td class="px-6 py-4 hidden lg:table-cell">
+                <span class="text-sm font-semibold">★ 5.0</span>
+              </td>
+              <td class="px-6 py-4 text-right plus-jakarta-sans font-bold">410 €</td>
+            </tr>
+            <tr class="hover:bg-surface-container-low transition">
+              <td class="px-6 py-4 text-sm">19 avril</td>
+              <td class="px-6 py-4">
+                <p class="text-sm font-semibold">Menu dégustation</p>
+                <p class="text-xs text-on-surface-variant">2 pers.</p>
+              </td>
+              <td class="px-6 py-4 text-sm hidden md:table-cell">Hôtel d'Europe</td>
+              <td class="px-6 py-4 hidden lg:table-cell">
+                <span class="text-sm font-semibold">★ 5.0</span>
+              </td>
+              <td class="px-6 py-4 text-right plus-jakarta-sans font-bold">370 €</td>
+            </tr>
+            <tr class="hover:bg-surface-container-low transition">
+              <td class="px-6 py-4 text-sm">15 avril</td>
+              <td class="px-6 py-4">
+                <p class="text-sm font-semibold">Dîner romantique</p>
+                <p class="text-xs text-on-surface-variant">2 pers.</p>
+              </td>
+              <td class="px-6 py-4 text-sm hidden md:table-cell">Auberge de Cassagne</td>
+              <td class="px-6 py-4 hidden lg:table-cell">
+                <span class="text-sm font-semibold">★ 4.8</span>
+              </td>
+              <td class="px-6 py-4 text-right plus-jakarta-sans font-bold">370 €</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== SECTION PAYMENTS ===== -->
+    <section id="section-payments" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Finances</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-bold text-on-surface">Paiements</h1>
+        <p class="text-on-surface-variant mt-2">Suivi de vos revenus et factures.</p>
+      </div>
+
+      <!-- Stats financières -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-gradient-to-br from-primary to-secondary text-white rounded-2xl p-6">
+          <p class="text-xs uppercase tracking-widest opacity-80 font-semibold mb-2">À recevoir</p>
+          <p class="plus-jakarta-sans text-4xl font-bold mb-2">2 470 €</p>
+          <p class="text-sm opacity-90">Sera versé le 5 mai</p>
+        </div>
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <p class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold mb-2">Reçu ce mois</p>
+          <p class="plus-jakarta-sans text-4xl font-bold text-on-surface mb-2">770 €</p>
+          <p class="text-sm text-on-surface-variant">2 versements</p>
+        </div>
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <p class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold mb-2">Total 2026</p>
+          <p class="plus-jakarta-sans text-4xl font-bold text-on-surface mb-2">12 880 €</p>
+          <p class="text-sm text-tertiary font-semibold">↗ +24% vs 2025</p>
+        </div>
+      </div>
+
+      <!-- Détail commission -->
+      <div class="bg-surface-container-low border border-outline-variant/40 rounded-2xl p-6 mb-6">
+        <h3 class="plus-jakarta-sans text-xl font-bold text-on-surface mb-4">Détail de votre rémunération</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center pb-3 border-b border-outline-variant/40">
+            <div>
+              <p class="text-sm font-semibold">CA brut généré ce mois</p>
+              <p class="text-xs text-on-surface-variant">17 prestations facturées via InRoom</p>
+            </div>
+            <p class="plus-jakarta-sans text-xl font-bold">3 240 €</p>
+          </div>
+          <div class="flex justify-between items-center pb-3 border-b border-outline-variant/40">
+            <div>
+              <p class="text-sm">Commission InRoom (15%)</p>
+              <p class="text-xs text-on-surface-variant">Prélevée automatiquement</p>
+            </div>
+            <p class="plus-jakarta-sans text-on-surface-variant">- 486 €</p>
+          </div>
+          <div class="flex justify-between items-center pb-3 border-b border-outline-variant/40">
+            <div>
+              <p class="text-sm">Abonnement mensuel</p>
+              <p class="text-xs text-on-surface-variant">Plan Signature</p>
+            </div>
+            <p class="plus-jakarta-sans text-on-surface-variant">- 50 €</p>
+          </div>
+          <div class="flex justify-between items-center pt-2">
+            <div>
+              <p class="text-sm font-bold">Net à percevoir</p>
+              <p class="text-xs text-on-surface-variant">Versé le 5 mai sur votre IBAN</p>
+            </div>
+            <p class="plus-jakarta-sans text-2xl font-bold text-primary">2 704 €</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factures -->
+      <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/40">
+          <h3 class="plus-jakarta-sans text-xl font-bold text-on-surface">Mes factures</h3>
+        </div>
+        <div class="divide-y divide-outline-variant/40">
+          <div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">description</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Facture INR-2026-04</p>
+                <p class="text-xs text-on-surface-variant">Avril 2026 · 17 prestations</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs bg-tertiary-container/30 text-on-tertiary-container px-2 py-1 rounded-full font-semibold">En cours</span>
+              <p class="plus-jakarta-sans font-bold">2 704 €</p>
+              <button class="p-2 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined text-on-surface-variant">download</span>
+              </button>
+            </div>
+          </div>
+          <div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">description</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Facture INR-2026-03</p>
+                <p class="text-xs text-on-surface-variant">Mars 2026 · 14 prestations</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-semibold">Payée</span>
+              <p class="plus-jakarta-sans font-bold">2 245 €</p>
+              <button class="p-2 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined text-on-surface-variant">download</span>
+              </button>
+            </div>
+          </div>
+          <div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">description</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Facture INR-2026-02</p>
+                <p class="text-xs text-on-surface-variant">Février 2026 · 11 prestations</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-semibold">Payée</span>
+              <p class="plus-jakarta-sans font-bold">1 760 €</p>
+              <button class="p-2 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined text-on-surface-variant">download</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION PROFILE ===== -->
+    <section id="section-profile" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Mon compte</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-bold text-on-surface">Profil & Tarifs</h1>
+        <p class="text-on-surface-variant mt-2">Gérez votre fiche prestataire et votre offre.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Profil -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+            <h3 class="plus-jakarta-sans text-xl font-bold mb-5">Informations publiques</h3>
+            <div class="flex items-center gap-4 mb-6 pb-6 border-b border-outline-variant/40">
+              <div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-2xl">RB</div>
+              <div>
+                <button class="text-sm text-primary hover:underline font-semibold">Changer la photo</button>
+                <p class="text-xs text-on-surface-variant mt-1">Format carré, min. 400x400px</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1 block">Nom affiché</label>
+                <input type="text" value="Raphaël Bonnet" class="w-full border border-outline-variant rounded-lg px-4 py-2.5 text-sm bg-surface-container-lowest focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none">
+              </div>
+              <div>
+                <label class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1 block">Métier</label>
+                <input type="text" value="Chef Privé · 1 étoile Michelin" class="w-full border border-outline-variant rounded-lg px-4 py-2.5 text-sm bg-surface-container-lowest focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none">
+              </div>
+              <div class="md:col-span-2">
+                <label class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1 block">Bio courte</label>
+                <textarea class="w-full border border-outline-variant rounded-lg px-4 py-2.5 text-sm bg-surface-container-lowest focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none" rows="3">Cuisine du marché, produits AOP de la Vallée du Rhône, dressage en direct dans votre suite. Au service de vos plus belles soirées.</textarea>
+              </div>
+              <div>
+                <label class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1 block">Téléphone</label>
+                <input type="tel" value="06 12 34 56 78" class="w-full border border-outline-variant rounded-lg px-4 py-2.5 text-sm bg-surface-container-lowest focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none">
+              </div>
+              <div>
+                <label class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1 block">Email</label>
+                <input type="email" value="raphael.bonnet@example.com" class="w-full border border-outline-variant rounded-lg px-4 py-2.5 text-sm bg-surface-container-lowest focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- Prestations & tarifs -->
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-5">
+              <h3 class="plus-jakarta-sans text-xl font-bold">Mes prestations</h3>
+              <button class="text-sm text-primary hover:underline flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-base">add</span> Ajouter
+              </button>
+            </div>
+            <div class="space-y-3">
+              <div class="border border-outline-variant/40 rounded-xl p-4 flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-semibold">★ Signature</span>
+                    <p class="font-semibold">Menu Signature</p>
+                  </div>
+                  <p class="text-xs text-on-surface-variant">7 services · accord mets-vins · 3h sur place</p>
+                </div>
+                <div class="flex items-center gap-3">
+                  <p class="plus-jakarta-sans text-lg font-bold">185 €<span class="text-xs text-on-surface-variant">/pers</span></p>
+                  <button class="p-2 hover:bg-surface-container rounded-lg">
+                    <span class="material-symbols-outlined text-on-surface-variant text-base">edit</span>
+                  </button>
+                </div>
+              </div>
+              <div class="border border-outline-variant/40 rounded-xl p-4 flex items-center justify-between">
+                <div>
+                  <p class="font-semibold mb-1">Menu dégustation</p>
+                  <p class="text-xs text-on-surface-variant">5 services · 2h sur place</p>
+                </div>
+                <div class="flex items-center gap-3">
+                  <p class="plus-jakarta-sans text-lg font-bold">135 €<span class="text-xs text-on-surface-variant">/pers</span></p>
+                  <button class="p-2 hover:bg-surface-container rounded-lg">
+                    <span class="material-symbols-outlined text-on-surface-variant text-base">edit</span>
+                  </button>
+                </div>
+              </div>
+              <div class="border border-outline-variant/40 rounded-xl p-4 flex items-center justify-between">
+                <div>
+                  <p class="font-semibold mb-1">Brunch privé</p>
+                  <p class="text-xs text-on-surface-variant">Buffet froid + chaud · 2h sur place</p>
+                </div>
+                <div class="flex items-center gap-3">
+                  <p class="plus-jakarta-sans text-lg font-bold">95 €<span class="text-xs text-on-surface-variant">/pers</span></p>
+                  <button class="p-2 hover:bg-surface-container rounded-lg">
+                    <span class="material-symbols-outlined text-on-surface-variant text-base">edit</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-secondary transition">
+            Enregistrer les modifications
+          </button>
+        </div>
+
+        <!-- Side: certifs & badges -->
+        <div class="space-y-6">
+          <div class="bg-gradient-to-br from-primary to-secondary text-white rounded-2xl p-6">
+            <span class="material-symbols-outlined text-3xl mb-3">workspace_premium</span>
+            <p class="plus-jakarta-sans text-2xl font-bold mb-2">Plan Signature</p>
+            <p class="text-sm opacity-90 mb-4">50 €/mois · Visibilité prioritaire et badge ★ sur vos prestations.</p>
+            <button class="text-xs underline opacity-80 hover:opacity-100">Gérer mon abonnement</button>
+          </div>
+
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+            <h3 class="plus-jakarta-sans text-lg font-bold mb-4">Certifications</h3>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary">verified</span>
+                <div>
+                  <p class="text-sm font-semibold">Identité vérifiée</p>
+                  <p class="text-xs text-on-surface-variant">Pièce d'identité validée</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary">verified</span>
+                <div>
+                  <p class="text-sm font-semibold">SIRET enregistré</p>
+                  <p class="text-xs text-on-surface-variant">N° 123 456 789 00012</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary">verified</span>
+                <div>
+                  <p class="text-sm font-semibold">RC Pro à jour</p>
+                  <p class="text-xs text-on-surface-variant">Valide jusqu'au 31/12/2026</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 opacity-60">
+                <span class="material-symbols-outlined text-on-surface-variant">pending</span>
+                <div>
+                  <p class="text-sm font-semibold">HACCP</p>
+                  <p class="text-xs text-on-surface-variant">À téléverser</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+            <h3 class="plus-jakarta-sans text-lg font-bold mb-4">Coordonnées bancaires</h3>
+            <div class="bg-surface-container-low rounded-xl p-3 mb-3">
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">IBAN</p>
+              <p class="text-sm font-mono">FR76 •••• •••• •••• •••• 4321</p>
+            </div>
+            <button class="text-sm text-primary hover:underline font-semibold">Modifier mes coordonnées</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ========== MOBILE BOTTOM NAV ========== -->
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/40 px-2 py-2 z-40">
+  <div class="flex justify-around">
+    <button onclick="showSection('dashboard')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="dashboard">
+      <span class="material-symbols-outlined">space_dashboard</span>
+      <span class="text-xs">Accueil</span>
+    </button>
+    <button onclick="showSection('requests')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg relative" data-section="requests">
+      <span class="material-symbols-outlined">inbox</span>
+      <span class="text-xs">Demandes</span>
+      <span class="absolute top-1 right-2 w-2 h-2 bg-primary rounded-full"></span>
+    </button>
+    <button onclick="showSection('agenda')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="agenda">
+      <span class="material-symbols-outlined">calendar_month</span>
+      <span class="text-xs">Agenda</span>
+    </button>
+    <button onclick="showSection('payments')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="payments">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="text-xs">Paiements</span>
+    </button>
+    <button onclick="showSection('profile')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="profile">
+      <span class="material-symbols-outlined">tune</span>
+      <span class="text-xs">Profil</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  function showSection(name) {
+    // hide all
+    ['dashboard', 'requests', 'agenda', 'history', 'payments', 'profile'].forEach(s => {
+      const el = document.getElementById('section-' + s);
+      if (el) el.classList.add('hidden');
+      const nav = document.getElementById('nav-' + s);
+      if (nav) nav.classList.remove('active');
+    });
+    // show selected
+    const target = document.getElementById('section-' + name);
+    if (target) {
+      target.classList.remove('hidden');
+      target.classList.add('fade-in');
+      setTimeout(() => target.classList.remove('fade-in'), 300);
+    }
+    const navItem = document.getElementById('nav-' + name);
+    if (navItem) navItem.classList.add('active');
+    // mobile
+    document.querySelectorAll('.mobile-nav-item').forEach(b => {
+      b.classList.remove('text-primary');
+      b.classList.add('text-on-surface-variant');
+    });
+    const mobile = document.querySelector(`.mobile-nav-item[data-section="${name}"]`);
+    if (mobile) {
+      mobile.classList.remove('text-on-surface-variant');
+      mobile.classList.add('text-primary');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
