@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InRoom Pro | Espace Hôtel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Fraunces:ital,wght@0,400;0,600;0,900;1,400;1,900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary-fixed": "#ffdad8",
+          "on-secondary-fixed": "#400107",
+          "on-secondary": "#ffffff",
+          "surface-container-highest": "#e5e2e1",
+          "on-tertiary-container": "#003423",
+          "on-tertiary-fixed": "#002115",
+          "surface-variant": "#e5e2e1",
+          "primary": "#b52330",
+          "on-primary-container": "#61000e",
+          "surface-container-low": "#f6f3f2",
+          "tertiary-fixed-dim": "#59ddaa",
+          "surface-dim": "#dcd9d9",
+          "secondary-fixed-dim": "#ffb3b0",
+          "secondary": "#994444",
+          "surface": "#fcf9f8",
+          "inverse-surface": "#303030",
+          "on-surface-variant": "#5a403f",
+          "primary-fixed-dim": "#ffb3b0",
+          "surface-container-lowest": "#ffffff",
+          "surface-bright": "#fcf9f8",
+          "inverse-primary": "#ffb3b0",
+          "on-primary": "#ffffff",
+          "on-tertiary": "#ffffff",
+          "on-secondary-container": "#762a2b",
+          "on-error-container": "#93000a",
+          "background": "#fcf9f8",
+          "inverse-on-surface": "#f3f0ef",
+          "surface-container-high": "#eae7e7",
+          "surface-container": "#f0eded",
+          "primary-container": "#ff5a5f",
+          "tertiary-container": "#00a879",
+          "error-container": "#ffdad6",
+          "on-primary-fixed": "#410007",
+          "on-error": "#ffffff",
+          "secondary-fixed": "#ffdad8",
+          "surface-tint": "#b52330",
+          "on-secondary-fixed-variant": "#7b2d2e",
+          "on-surface": "#1b1c1c",
+          "on-background": "#1b1c1c",
+          "secondary-container": "#fd9391",
+          "on-primary-fixed-variant": "#92001b",
+          "tertiary": "#006c4d",
+          "error": "#ba1a1a",
+          "outline": "#84746f",
+          "outline-variant": "#d6c2bf"
+        },
+        fontFamily: {
+          body: ["Inter", "sans-serif"],
+          display: ["Plus Jakarta Sans", "sans-serif"],
+          serif: ["Fraunces", "serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .plus-jakarta-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .fraunces { font-family: 'Fraunces', serif; font-feature-settings: "ss01"; }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .nav-item.active { background-color: #b52330; color: #ffffff; }
+  .nav-item.active .material-symbols-outlined { color: #ffffff; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn 0.3s ease-out; }
+  .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes pulse-live { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.5); } }
+  .pulse-live { animation: pulse-live 1.5s ease-in-out infinite; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+
+<!-- ========== TOP BAR ========== -->
+<header class="bg-surface-container-lowest border-b border-outline-variant/40 sticky top-0 z-40">
+  <div class="px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center">
+        <span class="text-2xl plus-jakarta-sans font-black text-on-surface tracking-[-0.04em]">InRoom</span>
+        <span class="w-2 h-2 rounded-full bg-primary ml-1 self-center"></span>
+      </div>
+      <span class="text-xs uppercase tracking-widest text-on-surface-variant border-l border-outline-variant pl-3 hidden sm:inline">Pro · Hôtel</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="relative p-2 rounded-full hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-on-surface">notifications</span>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full pulse-dot"></span>
+      </button>
+      <div class="flex items-center gap-3 border-l border-outline-variant pl-4">
+        <div class="text-right hidden sm:block">
+          <p class="text-sm font-semibold text-on-surface">Hôtel La Mirande</p>
+          <p class="text-xs text-on-surface-variant">★★★★★ · Avignon</p>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">LM</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="flex">
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="w-64 min-h-[calc(100vh-73px)] bg-surface-container-lowest border-r border-outline-variant/40 px-4 py-6 hidden lg:block">
+    <nav class="space-y-1">
+      <button onclick="showSection('dashboard')" id="nav-dashboard" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition">
+        <span class="material-symbols-outlined text-xl">space_dashboard</span>
+        <span>Vue d'ensemble</span>
+      </button>
+      <button onclick="showSection('activity')" id="nav-activity" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">live_tv</span>
+        <span>Activité en cours</span>
+        <span class="ml-auto flex items-center gap-1">
+          <span class="w-1.5 h-1.5 bg-tertiary rounded-full pulse-live"></span>
+          <span class="text-xs text-tertiary font-bold">3</span>
+        </span>
+      </button>
+      <button onclick="showSection('commissions')" id="nav-commissions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">payments</span>
+        <span>Mes commissions</span>
+      </button>
+      <button onclick="showSection('reviews')" id="nav-reviews" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">reviews</span>
+        <span>Avis clients</span>
+      </button>
+      <button onclick="showSection('providers')" id="nav-providers" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-xl">groups</span>
+        <span>Mes prestataires</span>
+      </button>
+    </nav>
+
+    <div class="mt-8 p-4 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-lg">verified</span>
+        <span class="text-xs uppercase tracking-widest font-semibold">Partenaire</span>
+      </div>
+      <p class="plus-jakarta-sans text-2xl font-black mb-1">Pilote</p>
+      <p class="text-xs opacity-90 mb-3">Hôtel partenaire de lancement à Avignon. Conditions privilégiées.</p>
+      <div class="flex items-center justify-between text-xs pt-2 border-t border-white/20">
+        <span class="opacity-80">Note moyenne</span>
+        <span class="font-bold">★ 4.92</span>
+      </div>
+    </div>
+
+    <div class="mt-6 p-3 rounded-xl bg-surface-container-low border border-outline-variant/40">
+      <p class="text-xs text-on-surface-variant mb-2">Besoin d'aide ?</p>
+      <a class="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">support_agent</span>
+        Contacter votre référent
+      </a>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN ========== -->
+  <main class="flex-1 px-4 sm:px-6 lg:px-10 py-8 pb-32 lg:pb-10 max-w-[1600px] mx-auto w-full">
+
+    <!-- ===== SECTION DASHBOARD ===== -->
+    <section id="section-dashboard" class="fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Tableau de bord</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-black text-on-surface mb-2 tracking-[-0.03em]">Bonjour Mme Bernard,</h1>
+        <p class="text-on-surface-variant">Voici l'activité InRoom de votre hôtel ce mois-ci.</p>
+      </div>
+
+      <!-- Hero stat : CA additionnel -->
+      <div class="bg-gradient-to-br from-primary to-secondary text-white rounded-3xl p-8 md:p-10 lg:p-12 mb-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-16 -mb-16"></div>
+        <div class="relative">
+          <p class="text-xs uppercase tracking-widest opacity-80 font-semibold mb-2">CA additionnel généré ce mois</p>
+          <p class="plus-jakarta-sans text-6xl md:text-7xl lg:text-8xl font-black mb-2 tracking-[-0.03em]">8 740 €</p>
+          <div class="flex flex-wrap items-center gap-3 mb-6">
+            <span class="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">trending_up</span>
+              +24% vs mois dernier
+            </span>
+            <span class="text-sm opacity-80">42 prestations facturées</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/20">
+            <div>
+              <p class="text-xs opacity-80 uppercase tracking-wider mb-1">Votre commission</p>
+              <p class="plus-jakarta-sans text-2xl md:text-3xl font-black">437 €</p>
+              <p class="text-xs opacity-70">5% reversés</p>
+            </div>
+            <div>
+              <p class="text-xs opacity-80 uppercase tracking-wider mb-1">Coût InRoom</p>
+              <p class="plus-jakarta-sans text-2xl md:text-3xl font-black">250 €</p>
+              <p class="text-xs opacity-70">50 ch. × 5€</p>
+            </div>
+            <div>
+              <p class="text-xs opacity-80 uppercase tracking-wider mb-1">Bénéfice net</p>
+              <p class="plus-jakarta-sans text-2xl md:text-3xl font-black">+187 €</p>
+              <p class="text-xs opacity-70">+ image premium</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPIs secondaires -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 md:p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">bed</span>
+            <span class="text-xs text-tertiary font-semibold">68%</span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Taux d'engagement</p>
+          <p class="plus-jakarta-sans text-3xl md:text-4xl font-black text-on-surface">34<span class="text-lg text-on-surface-variant">/50</span></p>
+          <p class="text-xs text-on-surface-variant mt-1">chambres ayant utilisé</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 md:p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">euro</span>
+            <span class="text-xs text-tertiary font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">trending_up</span>
+              +18%
+            </span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Panier moyen</p>
+          <p class="plus-jakarta-sans text-3xl md:text-4xl font-black text-on-surface">208 €</p>
+          <p class="text-xs text-on-surface-variant mt-1">par prestation</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 md:p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">star</span>
+            <span class="text-xs text-tertiary font-semibold">38 avis</span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Satisfaction</p>
+          <p class="plus-jakarta-sans text-3xl md:text-4xl font-black text-on-surface">4.92</p>
+          <p class="text-xs text-on-surface-variant mt-1">★★★★★ excellent</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 md:p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="material-symbols-outlined text-primary">trending_up</span>
+            <span class="text-xs text-tertiary font-semibold">+0.3pt</span>
+          </div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Note Booking</p>
+          <p class="plus-jakarta-sans text-3xl md:text-4xl font-black text-on-surface">9.4</p>
+          <p class="text-xs text-on-surface-variant mt-1">depuis InRoom</p>
+        </div>
+      </div>
+
+      <!-- En cours + Top services -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- En cours maintenant -->
+        <div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-5">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 bg-tertiary rounded-full pulse-live"></span>
+                <p class="text-xs uppercase tracking-widest text-tertiary font-semibold">En direct</p>
+              </div>
+              <h2 class="plus-jakarta-sans text-2xl font-black text-on-surface mt-1">Activité en cours</h2>
+            </div>
+            <button onclick="showSection('activity')" class="text-sm text-primary hover:underline flex items-center gap-1">
+              Tout voir <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+          </div>
+
+          <div class="space-y-3">
+            <div class="border-l-4 border-tertiary bg-tertiary-container/20 rounded-r-xl p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-tertiary/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-tertiary">spa</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <p class="font-semibold">Massage Suédois</p>
+                      <span class="text-xs bg-tertiary text-white px-2 py-0.5 rounded-full font-bold">EN COURS</span>
+                    </div>
+                    <p class="text-sm text-on-surface-variant">Suite 218 · Camille L. · démarré à 14h30</p>
+                  </div>
+                </div>
+                <p class="plus-jakarta-sans text-xl font-black">120 €</p>
+              </div>
+            </div>
+
+            <div class="border border-outline-variant/40 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">restaurant</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <p class="font-semibold">Menu Signature · Chef Bonnet</p>
+                      <span class="text-xs bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-bold">À 19h30</span>
+                    </div>
+                    <p class="text-sm text-on-surface-variant">Suite 14 · M. & Mme Dubois · 4 pers.</p>
+                  </div>
+                </div>
+                <p class="plus-jakarta-sans text-xl font-black">740 €</p>
+              </div>
+            </div>
+
+            <div class="border border-outline-variant/40 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">child_care</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <p class="font-semibold">Baby-sitter FR/EN</p>
+                      <span class="text-xs bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-bold">À 20h</span>
+                    </div>
+                    <p class="text-sm text-on-surface-variant">Ch. 207 · Famille Lopez · 3h</p>
+                  </div>
+                </div>
+                <p class="plus-jakarta-sans text-xl font-black">66 €</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top services -->
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-1">Ce mois-ci</p>
+          <h2 class="plus-jakarta-sans text-xl font-black text-on-surface mb-5">Top services</h2>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between mb-1.5">
+                <p class="text-sm font-semibold">Gastronomie</p>
+                <p class="text-sm font-bold">14</p>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2">
+                <div class="bg-primary h-2 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1.5">
+                <p class="text-sm font-semibold">Bien-être</p>
+                <p class="text-sm font-bold">11</p>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2">
+                <div class="bg-primary h-2 rounded-full" style="width: 78%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1.5">
+                <p class="text-sm font-semibold">Beauté</p>
+                <p class="text-sm font-bold">8</p>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2">
+                <div class="bg-primary h-2 rounded-full" style="width: 57%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1.5">
+                <p class="text-sm font-semibold">Famille</p>
+                <p class="text-sm font-bold">5</p>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2">
+                <div class="bg-primary h-2 rounded-full" style="width: 36%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1.5">
+                <p class="text-sm font-semibold">Transport</p>
+                <p class="text-sm font-bold">4</p>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2">
+                <div class="bg-primary h-2 rounded-full" style="width: 28%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Évolution sur 6 mois -->
+      <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-primary font-semibold">Évolution</p>
+            <h2 class="plus-jakarta-sans text-2xl font-black text-on-surface">CA généré · 6 derniers mois</h2>
+          </div>
+          <select class="text-sm border border-outline-variant rounded-lg px-3 py-2 bg-surface-container-lowest">
+            <option>6 derniers mois</option>
+            <option>12 derniers mois</option>
+          </select>
+        </div>
+        <div class="flex items-end justify-between gap-3 h-56">
+          <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+            <div class="w-full rounded-t-lg" style="height: 32%; background-color: #ffdad8;"></div>
+            <span class="text-xs text-on-surface-variant">Nov</span>
+            <span class="text-xs font-bold">2.8k€</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+            <div class="w-full rounded-t-lg" style="height: 48%; background-color: #ffb3b0;"></div>
+            <span class="text-xs text-on-surface-variant">Déc</span>
+            <span class="text-xs font-bold">4.2k€</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+            <div class="w-full rounded-t-lg" style="height: 58%; background-color: #fd9391;"></div>
+            <span class="text-xs text-on-surface-variant">Jan</span>
+            <span class="text-xs font-bold">5.1k€</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+            <div class="w-full rounded-t-lg" style="height: 67%; background-color: #ff5a5f;"></div>
+            <span class="text-xs text-on-surface-variant">Fév</span>
+            <span class="text-xs font-bold">5.9k€</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+            <div class="w-full rounded-t-lg" style="height: 80%; background-color: #d62a37;"></div>
+            <span class="text-xs text-on-surface-variant">Mars</span>
+            <span class="text-xs font-bold">7.0k€</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+            <div class="w-full rounded-t-lg" style="height: 100%; background-color: #b52330;"></div>
+            <span class="text-xs text-primary font-semibold">Avril</span>
+            <span class="text-xs font-bold text-primary">8.7k€</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION ACTIVITY ===== -->
+    <section id="section-activity" class="hidden fade-in">
+      <div class="mb-8">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-2 h-2 bg-tertiary rounded-full pulse-live"></span>
+          <p class="text-xs uppercase tracking-widest text-tertiary font-semibold">Mise à jour en temps réel</p>
+        </div>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-black text-on-surface tracking-[-0.03em]">Activité en cours</h1>
+        <p class="text-on-surface-variant mt-2">Toutes les prestations en cours et à venir dans votre hôtel.</p>
+      </div>
+
+      <!-- Filtres -->
+      <div class="flex gap-2 mb-6 overflow-x-auto scrollbar-hide pb-2">
+        <button class="px-4 py-2 bg-primary text-white rounded-full text-sm font-semibold whitespace-nowrap">Toutes (8)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">En cours (1)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Aujourd'hui (4)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Demain (3)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Cette semaine (8)</button>
+      </div>
+
+      <!-- En cours -->
+      <div class="mb-8">
+        <h3 class="plus-jakarta-sans text-lg font-bold text-on-surface mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 bg-tertiary rounded-full pulse-live"></span>
+          Maintenant
+        </h3>
+        <div class="bg-tertiary-container/20 border-2 border-tertiary/30 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-start gap-4">
+              <div class="w-14 h-14 rounded-xl bg-tertiary/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-tertiary text-3xl">spa</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs bg-tertiary text-white px-2 py-1 rounded-full font-bold">EN COURS</span>
+                  <span class="text-xs text-on-surface-variant">Démarré il y a 22 min</span>
+                </div>
+                <h3 class="plus-jakarta-sans text-2xl font-black text-on-surface">Massage Suédois</h3>
+                <p class="text-sm text-on-surface-variant">Camille Lefranc · Praticienne diplômée</p>
+              </div>
+            </div>
+            <p class="plus-jakarta-sans text-2xl font-black">120 €</p>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y border-tertiary/30">
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Chambre</p>
+              <p class="text-sm font-bold">Suite 218</p>
+            </div>
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Client</p>
+              <p class="text-sm font-bold">Mme Henderson</p>
+            </div>
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Démarré</p>
+              <p class="text-sm font-bold">14h30</p>
+            </div>
+            <div>
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Fin prévue</p>
+              <p class="text-sm font-bold">15h45</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aujourd'hui -->
+      <div class="mb-8">
+        <h3 class="plus-jakarta-sans text-lg font-bold text-on-surface mb-3">Plus tard aujourd'hui</h3>
+        <div class="space-y-3">
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4">
+            <div class="flex items-center gap-4">
+              <div class="text-center min-w-[60px]">
+                <p class="plus-jakarta-sans text-2xl font-black text-primary">19h30</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">restaurant</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold">Menu Signature · Chef Bonnet</p>
+                <p class="text-sm text-on-surface-variant">Suite 14 · M. & Mme Dubois · 4 pers.</p>
+              </div>
+              <p class="plus-jakarta-sans text-lg font-black hidden sm:block">740 €</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4">
+            <div class="flex items-center gap-4">
+              <div class="text-center min-w-[60px]">
+                <p class="plus-jakarta-sans text-2xl font-black text-primary">20h00</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">child_care</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold">Baby-sitter FR/EN</p>
+                <p class="text-sm text-on-surface-variant">Ch. 207 · Famille Lopez · 3h</p>
+              </div>
+              <p class="plus-jakarta-sans text-lg font-black hidden sm:block">66 €</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4">
+            <div class="flex items-center gap-4">
+              <div class="text-center min-w-[60px]">
+                <p class="plus-jakarta-sans text-2xl font-black text-primary">21h00</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">wine_bar</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold">Sommelier privé</p>
+                <p class="text-sm text-on-surface-variant">Suite 305 · M. Vincent · dégustation 2h</p>
+              </div>
+              <p class="plus-jakarta-sans text-lg font-black hidden sm:block">280 €</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demain -->
+      <div class="mb-8">
+        <h3 class="plus-jakarta-sans text-lg font-bold text-on-surface mb-3">Demain · Vendredi 1er mai</h3>
+        <div class="space-y-3">
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4 opacity-95">
+            <div class="flex items-center gap-4">
+              <div class="text-center min-w-[60px]">
+                <p class="plus-jakarta-sans text-2xl font-black text-on-surface-variant">09h00</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">self_improvement</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold">Yoga privé en terrasse</p>
+                <p class="text-sm text-on-surface-variant">Suite jardin · Mme Klein · 1h</p>
+              </div>
+              <p class="plus-jakarta-sans text-lg font-black hidden sm:block">65 €</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4 opacity-95">
+            <div class="flex items-center gap-4">
+              <div class="text-center min-w-[60px]">
+                <p class="plus-jakarta-sans text-2xl font-black text-on-surface-variant">11h30</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">content_cut</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold">Coiffeur · Brushing</p>
+                <p class="text-sm text-on-surface-variant">Ch. 312 · Mme Dubois</p>
+              </div>
+              <p class="plus-jakarta-sans text-lg font-black hidden sm:block">75 €</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4 opacity-95">
+            <div class="flex items-center gap-4">
+              <div class="text-center min-w-[60px]">
+                <p class="plus-jakarta-sans text-2xl font-black text-on-surface-variant">19h00</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">restaurant</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold">Menu dégustation</p>
+                <p class="text-sm text-on-surface-variant">Suite 401 · Couple Tanaka · 2 pers.</p>
+              </div>
+              <p class="plus-jakarta-sans text-lg font-black hidden sm:block">370 €</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Note -->
+      <div class="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/40 flex items-start gap-3">
+        <span class="material-symbols-outlined text-primary mt-0.5">info</span>
+        <div>
+          <p class="text-sm font-semibold mb-1">Vue en consultation</p>
+          <p class="text-xs text-on-surface-variant">Vous n'avez rien à valider ou gérer. Toutes les réservations sont automatiquement confirmées par les prestataires et facturées sur la note du client. Vous êtes informé en temps réel, c'est tout.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION COMMISSIONS ===== -->
+    <section id="section-commissions" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Mes revenus</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-black text-on-surface tracking-[-0.03em]">Mes commissions</h1>
+        <p class="text-on-surface-variant mt-2">5% reversés par InRoom sur chaque prestation réservée par vos clients.</p>
+      </div>
+
+      <!-- Stats financières -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-gradient-to-br from-primary to-secondary text-white rounded-2xl p-6">
+          <p class="text-xs uppercase tracking-widest opacity-80 font-semibold mb-2">À recevoir ce mois</p>
+          <p class="plus-jakarta-sans text-5xl font-black mb-2 tracking-[-0.03em]">437 €</p>
+          <p class="text-sm opacity-90">Versement le 5 mai</p>
+          <p class="text-xs opacity-70 mt-3">Sur 8 740 € de CA généré</p>
+        </div>
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <p class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold mb-2">Reçu cumulé 2026</p>
+          <p class="plus-jakarta-sans text-5xl font-black text-on-surface mb-2 tracking-[-0.03em]">1 805 €</p>
+          <p class="text-sm text-on-surface-variant">Janvier → avril</p>
+          <p class="text-xs text-tertiary font-semibold mt-3">↗ progression constante</p>
+        </div>
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <p class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold mb-2">Projection annuelle</p>
+          <p class="plus-jakarta-sans text-5xl font-black text-on-surface mb-2 tracking-[-0.03em]">~5 800 €</p>
+          <p class="text-sm text-on-surface-variant">Estimation fin 2026</p>
+          <p class="text-xs text-tertiary font-semibold mt-3">basé sur tendance actuelle</p>
+        </div>
+      </div>
+
+      <!-- Calcul détaillé -->
+      <div class="bg-surface-container-low border border-outline-variant/40 rounded-2xl p-6 mb-6">
+        <h3 class="plus-jakarta-sans text-xl font-bold text-on-surface mb-1">Détail du calcul · Avril 2026</h3>
+        <p class="text-xs text-on-surface-variant mb-5">Voici comment vos 437 € sont calculés.</p>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center pb-3 border-b border-outline-variant/40">
+            <div>
+              <p class="text-sm font-semibold">CA total généré par InRoom dans votre hôtel</p>
+              <p class="text-xs text-on-surface-variant">42 prestations facturées sur la note client</p>
+            </div>
+            <p class="plus-jakarta-sans text-xl font-black">8 740 €</p>
+          </div>
+          <div class="flex justify-between items-center pb-3 border-b border-outline-variant/40">
+            <div>
+              <p class="text-sm font-semibold text-tertiary">Votre commission (5%)</p>
+              <p class="text-xs text-on-surface-variant">Reversée par InRoom sur chaque prestation</p>
+            </div>
+            <p class="plus-jakarta-sans text-xl font-black text-tertiary">+ 437 €</p>
+          </div>
+          <div class="flex justify-between items-center pb-3 border-b border-outline-variant/40">
+            <div>
+              <p class="text-sm font-semibold">Coût abonnement InRoom</p>
+              <p class="text-xs text-on-surface-variant">50 chambres × 5 €/mois (mode Pilote)</p>
+            </div>
+            <p class="plus-jakarta-sans text-xl font-black text-on-surface-variant">- 250 €</p>
+          </div>
+          <div class="flex justify-between items-center pt-2">
+            <div>
+              <p class="text-sm font-bold">Bénéfice net pour l'hôtel</p>
+              <p class="text-xs text-on-surface-variant">Versé sur votre compte le 5 mai</p>
+            </div>
+            <p class="plus-jakarta-sans text-3xl font-black text-primary">+ 187 €</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Versements passés -->
+      <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/40">
+          <h3 class="plus-jakarta-sans text-xl font-bold text-on-surface">Historique des versements</h3>
+        </div>
+        <div class="divide-y divide-outline-variant/40">
+          <div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">schedule</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Avril 2026</p>
+                <p class="text-xs text-on-surface-variant">42 prestations · 8 740 € de CA</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs bg-tertiary-container/30 text-on-tertiary-container px-2 py-1 rounded-full font-semibold">À venir 5 mai</span>
+              <p class="plus-jakarta-sans font-black">+ 187 €</p>
+            </div>
+          </div>
+
+          <div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">check_circle</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Mars 2026</p>
+                <p class="text-xs text-on-surface-variant">35 prestations · 7 040 € de CA</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-semibold">Versé</span>
+              <p class="plus-jakarta-sans font-black">+ 102 €</p>
+            </div>
+          </div>
+
+          <div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">check_circle</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Février 2026</p>
+                <p class="text-xs text-on-surface-variant">29 prestations · 5 880 € de CA</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-semibold">Versé</span>
+              <p class="plus-jakarta-sans font-black">+ 44 €</p>
+            </div>
+          </div>
+
+          <div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant">check_circle</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Janvier 2026</p>
+                <p class="text-xs text-on-surface-variant">25 prestations · 5 060 € de CA</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-semibold">Versé</span>
+              <p class="plus-jakarta-sans font-black">+ 3 €</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION REVIEWS ===== -->
+    <section id="section-reviews" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Satisfaction</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-black text-on-surface tracking-[-0.03em]">Avis clients</h1>
+        <p class="text-on-surface-variant mt-2">Retours de vos clients sur les prestations InRoom.</p>
+      </div>
+
+      <!-- Hero satisfaction -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="md:col-span-1 bg-gradient-to-br from-primary to-secondary text-white rounded-2xl p-6 text-center flex flex-col justify-center">
+          <p class="text-xs uppercase tracking-widest opacity-80 font-semibold mb-2">Note moyenne</p>
+          <p class="plus-jakarta-sans text-7xl font-black mb-1 tracking-[-0.03em]">4.92</p>
+          <p class="text-2xl mb-2">★ ★ ★ ★ ★</p>
+          <p class="text-sm opacity-90">Sur 38 avis vérifiés</p>
+        </div>
+        <div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <h3 class="plus-jakarta-sans text-lg font-bold text-on-surface mb-4">Distribution des notes</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-bold w-8">5★</span>
+              <div class="flex-1 h-3 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-3 bg-tertiary rounded-full" style="width: 89%"></div>
+              </div>
+              <span class="text-sm font-bold w-12 text-right">34</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-bold w-8">4★</span>
+              <div class="flex-1 h-3 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-3 bg-tertiary rounded-full" style="width: 8%"></div>
+              </div>
+              <span class="text-sm font-bold w-12 text-right">3</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-bold w-8">3★</span>
+              <div class="flex-1 h-3 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-3 bg-secondary-fixed-dim rounded-full" style="width: 3%"></div>
+              </div>
+              <span class="text-sm font-bold w-12 text-right">1</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-bold w-8">2★</span>
+              <div class="flex-1 h-3 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-3 rounded-full" style="width: 0%"></div>
+              </div>
+              <span class="text-sm font-bold w-12 text-right">0</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-bold w-8">1★</span>
+              <div class="flex-1 h-3 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-3 rounded-full" style="width: 0%"></div>
+              </div>
+              <span class="text-sm font-bold w-12 text-right">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Impact sur Booking -->
+      <div class="bg-tertiary-container/20 border border-tertiary/30 rounded-2xl p-6 mb-8 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-xl bg-tertiary/20 flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-tertiary text-3xl">trending_up</span>
+        </div>
+        <div class="flex-1">
+          <p class="plus-jakarta-sans text-lg font-bold text-on-surface">Impact sur votre note Booking</p>
+          <p class="text-sm text-on-surface-variant">Depuis le déploiement d'InRoom, votre note moyenne est passée de <span class="font-bold text-on-surface">9.1</span> à <span class="font-bold text-tertiary">9.4</span> (+0.3 pt en 4 mois). La mention « service » est citée dans 78% des avis positifs.</p>
+        </div>
+      </div>
+
+      <!-- Liste des avis -->
+      <div class="space-y-4">
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">EH</div>
+              <div>
+                <p class="font-semibold">Emma Henderson</p>
+                <p class="text-xs text-on-surface-variant">Suite 218 · UK · il y a 2 jours</p>
+              </div>
+            </div>
+            <p class="text-lg font-bold">★ 5.0</p>
+          </div>
+          <p class="text-sm text-on-surface-variant mb-3">Service massage en chambre · Camille L.</p>
+          <p class="text-on-surface italic">« Une expérience incroyable. Je n'ai pas eu à sortir de ma suite, le service est arrivé à l'heure pile, qualité exceptionnelle. La Mirande pense vraiment à tout. »</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">JD</div>
+              <div>
+                <p class="font-semibold">Jean Dubois</p>
+                <p class="text-xs text-on-surface-variant">Suite 14 · France · il y a 4 jours</p>
+              </div>
+            </div>
+            <p class="text-lg font-bold">★ 5.0</p>
+          </div>
+          <p class="text-sm text-on-surface-variant mb-3">Dîner gastronomique · Chef Bonnet</p>
+          <p class="text-on-surface italic">« Anniversaire de mariage parfait. Le chef Bonnet a réalisé un menu sur-mesure, dressé en direct dans notre suite. Ma femme végétarienne a été aux petits soins. Inoubliable. »</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">SK</div>
+              <div>
+                <p class="font-semibold">Sarah Klein</p>
+                <p class="text-xs text-on-surface-variant">Suite jardin · Allemagne · il y a 1 semaine</p>
+              </div>
+            </div>
+            <p class="text-lg font-bold">★ 5.0</p>
+          </div>
+          <p class="text-sm text-on-surface-variant mb-3">Yoga privé en terrasse</p>
+          <p class="text-on-surface italic">« Le yoga à l'aube sur la terrasse a transformé mon séjour. Je recommanderai La Mirande à toutes mes amies. Quelle classe, quelle attention au détail. »</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">ML</div>
+              <div>
+                <p class="font-semibold">Marco Lopez</p>
+                <p class="text-xs text-on-surface-variant">Ch. 207 · Espagne · il y a 1 semaine</p>
+              </div>
+            </div>
+            <p class="text-lg font-bold">★ 4.0</p>
+          </div>
+          <p class="text-sm text-on-surface-variant mb-3">Baby-sitter FR/EN</p>
+          <p class="text-on-surface italic">« Très bonne baby-sitter, parfaitement bilingue. Nos enfants l'ont adorée. Petite réserve sur l'horaire d'arrivée (15 min de retard). Sinon impeccable. »</p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">YT</div>
+              <div>
+                <p class="font-semibold">Yuki Tanaka</p>
+                <p class="text-xs text-on-surface-variant">Suite 401 · Japon · il y a 2 semaines</p>
+              </div>
+            </div>
+            <p class="text-lg font-bold">★ 5.0</p>
+          </div>
+          <p class="text-sm text-on-surface-variant mb-3">Sommelier privé · Vincent P.</p>
+          <p class="text-on-surface italic">« Vincent nous a fait découvrir la vallée du Rhône avec une passion communicative. Service hôtelier d'exception, La Mirande mérite ses 5 étoiles. »</p>
+        </div>
+      </div>
+
+      <button class="w-full mt-6 border border-outline-variant text-on-surface py-3 rounded-xl font-semibold hover:bg-surface-container transition">
+        Voir tous les avis (38)
+      </button>
+    </section>
+
+    <!-- ===== SECTION PROVIDERS ===== -->
+    <section id="section-providers" class="hidden fade-in">
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">Catalogue affrété</p>
+        <h1 class="plus-jakarta-sans text-4xl md:text-5xl font-black text-on-surface tracking-[-0.03em]">Mes prestataires</h1>
+        <p class="text-on-surface-variant mt-2">Les professionnels InRoom disponibles pour vos clients à La Mirande.</p>
+      </div>
+
+      <!-- Info banner -->
+      <div class="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/40 flex items-start gap-3 mb-6">
+        <span class="material-symbols-outlined text-primary mt-0.5">verified</span>
+        <div>
+          <p class="text-sm font-semibold mb-1">Tous nos prestataires sont sourcés, audités et notés par InRoom</p>
+          <p class="text-xs text-on-surface-variant">Identité vérifiée, SIRET, RC Pro, certifications professionnelles. Vous n'avez aucune démarche à effectuer — nous gérons tout.</p>
+        </div>
+      </div>
+
+      <!-- Filtres catégories -->
+      <div class="flex gap-2 mb-6 overflow-x-auto scrollbar-hide pb-2">
+        <button class="px-4 py-2 bg-primary text-white rounded-full text-sm font-semibold whitespace-nowrap">Tous (24)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Gastronomie (5)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Bien-être (6)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Beauté (4)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Famille (3)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Transport (2)</button>
+        <button class="px-4 py-2 border border-outline-variant rounded-full text-sm whitespace-nowrap hover:bg-surface-container">Autres (4)</button>
+      </div>
+
+      <!-- Grid prestataires (rendu dynamiquement) -->
+      <div id="providers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Cards générées en JS -->
+      </div>
+
+      <button id="toggle-providers-btn" onclick="toggleAllProviders()" class="w-full mt-6 border border-outline-variant text-on-surface py-3 rounded-xl font-semibold hover:bg-surface-container transition flex items-center justify-center gap-2">
+        <span id="toggle-providers-label">Voir tous les prestataires (24)</span>
+        <span id="toggle-providers-icon" class="material-symbols-outlined text-base">expand_more</span>
+      </button>
+    </section>
+
+  </main>
+</div>
+
+<!-- ========== MOBILE BOTTOM NAV ========== -->
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/40 px-2 py-2 z-40">
+  <div class="flex justify-around">
+    <button onclick="showSection('dashboard')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="dashboard">
+      <span class="material-symbols-outlined">space_dashboard</span>
+      <span class="text-xs">Accueil</span>
+    </button>
+    <button onclick="showSection('activity')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg relative" data-section="activity">
+      <span class="material-symbols-outlined">live_tv</span>
+      <span class="text-xs">Activité</span>
+      <span class="absolute top-1 right-2 w-2 h-2 bg-tertiary rounded-full pulse-live"></span>
+    </button>
+    <button onclick="showSection('commissions')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="commissions">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="text-xs">Revenus</span>
+    </button>
+    <button onclick="showSection('reviews')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="reviews">
+      <span class="material-symbols-outlined">reviews</span>
+      <span class="text-xs">Avis</span>
+    </button>
+    <button onclick="showSection('providers')" class="mobile-nav-item flex flex-col items-center gap-1 px-3 py-2 rounded-lg" data-section="providers">
+      <span class="material-symbols-outlined">groups</span>
+      <span class="text-xs">Équipe</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+// =============================================
+// DONNEES DES PRESTATAIRES INROOM
+// =============================================
+const providers = [
+  { id: 1, initials: "RB", name: "Raphaël Bonnet", title: "Chef · 1 étoile Michelin", category: "Gastronomie", rating: 4.96, count: 47, status: "Disponible", certs: "Identité, SIRET, RC Pro vérifiés", tag: "Signature", gradient: "from-primary to-secondary",
+    bio: "Chef étoilé Michelin formé à l'École Ducasse, ancien second du restaurant Le Cinq à Paris. Cuisine du marché ancrée dans la Vallée du Rhône, dressage en direct dans votre suite, accord mets-vins sur mesure.",
+    services: [
+      { name: "Menu Signature 7 services", desc: "Accord mets-vins inclus · 3h sur place", price: "185 €/pers" },
+      { name: "Menu dégustation", desc: "5 services · 2h sur place", price: "135 €/pers" },
+      { name: "Brunch privé", desc: "Buffet froid + chaud · 2h sur place", price: "95 €/pers" }
+    ],
+    reviews: [
+      { author: "Mme Dubois", text: "Anniversaire de mariage parfait. Inoubliable.", rating: 5 },
+      { author: "M. Tanaka", text: "Service hôtelier d'exception. La Mirande au sommet.", rating: 5 }
+    ],
+    siret: "823 451 029 00018", since: "Mars 2024" },
+
+  { id: 2, initials: "CL", name: "Camille Lefranc", title: "Praticienne bien-être", category: "Bien-être", rating: 4.95, count: 38, status: "En cours", certs: "Diplôme bien-être · RC Pro", tag: null, gradient: "from-tertiary to-tertiary-container",
+    bio: "Praticienne diplômée formée à l'École de massage de Genève. Spécialisée en massages suédois, californien et thaï traditionnel. Matériel haut de gamme apporté en chambre.",
+    services: [
+      { name: "Massage Suédois", desc: "60 min · décontractant", price: "120 €" },
+      { name: "Massage Californien", desc: "75 min · relaxation profonde", price: "145 €" },
+      { name: "Rituel duo", desc: "60 min × 2 praticiennes", price: "240 €" }
+    ],
+    reviews: [
+      { author: "Mme Henderson", text: "Une expérience incroyable. Qualité exceptionnelle.", rating: 5 }
+    ],
+    siret: "891 023 456 00012", since: "Janvier 2025" },
+
+  { id: 3, initials: "VP", name: "Vincent Perrin", title: "Sommelier · WSET 3", category: "Gastronomie", rating: 4.90, count: 12, status: "Disponible", certs: "WSET 3 · SIRET · RC Pro", tag: "Nouveau", gradient: "from-secondary to-primary",
+    bio: "Sommelier certifié WSET niveau 3, ancien chef sommelier du restaurant L'Atelier. Spécialiste des vins de la Vallée du Rhône et de Bourgogne. Cave personnelle de 2 000 bouteilles.",
+    services: [
+      { name: "Dégustation découverte", desc: "5 vins commentés · 2h", price: "280 €" },
+      { name: "Soirée accord mets-vins", desc: "Accompagnement repas · 3h", price: "350 €" }
+    ],
+    reviews: [
+      { author: "M. Tanaka", text: "Vincent nous a fait découvrir la vallée du Rhône avec passion.", rating: 5 }
+    ],
+    siret: "907 456 123 00021", since: "Avril 2025" },
+
+  { id: 4, initials: "JA", name: "Julien Aubry", title: "Photographe pro", category: "Autres", rating: 4.88, count: 23, status: "Disponible", certs: "Maison des Artistes · RC Pro", tag: null, gradient: "from-primary to-secondary",
+    bio: "Photographe professionnel spécialisé portrait, événementiel et lifestyle. 10 ans d'expérience, publié dans plusieurs magazines luxe.",
+    services: [
+      { name: "Séance portrait privée", desc: "1h en suite ou hôtel · 30 photos retouchées", price: "320 €" },
+      { name: "Couverture événement", desc: "Demi-journée · 100 photos retouchées", price: "650 €" }
+    ],
+    reviews: [
+      { author: "Mme Klein", text: "Photos magnifiques de notre séjour, un vrai pro.", rating: 5 }
+    ],
+    siret: "812 345 678 00010", since: "Mars 2024" },
+
+  { id: 5, initials: "SM", name: "Sophie Martinez", title: "Coiffeuse à domicile", category: "Beauté", rating: 4.92, count: 31, status: "Demain", certs: "CAP Coiffure · RC Pro", tag: null, gradient: "from-tertiary to-secondary",
+    bio: "Coiffeuse certifiée formée chez Dessange Paris. Spécialiste coupe femme, brushing, coiffure mariage. Matériel professionnel apporté.",
+    services: [
+      { name: "Brushing", desc: "45 min · sur place", price: "75 €" },
+      { name: "Coupe + brushing", desc: "1h30 · sur place", price: "120 €" },
+      { name: "Coiffure mariage/soirée", desc: "1h30 · sur place", price: "150 €" }
+    ],
+    reviews: [
+      { author: "Mme Dubois", text: "Brushing parfait, très pro.", rating: 5 }
+    ],
+    siret: "856 789 012 00015", since: "Mai 2024" },
+
+  { id: 6, initials: "AT", name: "Aïcha Touré", title: "Baby-sitter FR/EN", category: "Famille", rating: 5.00, count: 19, status: "Disponible", certs: "CAP Petite Enfance · BAFA", tag: null, gradient: "from-primary to-tertiary",
+    bio: "Diplômée CAP Petite Enfance et BAFA. Parfaitement bilingue français-anglais. Spécialisée 0-12 ans, activités créatives et éducatives.",
+    services: [
+      { name: "Garde en chambre 1 enfant", desc: "Tarif horaire · min 2h", price: "22 €/h" },
+      { name: "Garde en chambre 2 enfants", desc: "Tarif horaire · min 2h", price: "28 €/h" },
+      { name: "Garde de nuit", desc: "Forfait 22h-7h", price: "180 €" }
+    ],
+    reviews: [
+      { author: "Famille Lopez", text: "Nos enfants l'ont adorée. Parfaitement bilingue.", rating: 5 }
+    ],
+    siret: "789 012 345 00019", since: "Juin 2024" },
+
+  { id: 7, initials: "MD", name: "Marc Delcourt", title: "Chef pâtissier", category: "Gastronomie", rating: 4.85, count: 18, status: "Disponible", certs: "CAP Pâtissier · MOF finaliste", tag: null, gradient: "from-secondary to-primary",
+    bio: "Pâtissier finaliste Meilleur Ouvrier de France 2022. Création de pièces montées, desserts à l'assiette en chambre, ateliers privés.",
+    services: [
+      { name: "Dessert signature", desc: "À l'assiette · dressage en chambre", price: "45 €/pers" },
+      { name: "Atelier pâtisserie privé", desc: "2h · pour 2-4 pers.", price: "280 €" }
+    ],
+    reviews: [], siret: "934 567 890 00013", since: "Septembre 2024" },
+
+  { id: 8, initials: "EM", name: "Élodie Moreau", title: "Praticienne Reiki", category: "Bien-être", rating: 4.91, count: 26, status: "Disponible", certs: "Maître Reiki Usui · 12 ans pratique", tag: null, gradient: "from-tertiary to-primary",
+    bio: "Maître Reiki niveau 3 (Usui), formée au Japon. Soins énergétiques, méditation guidée, harmonisation des chakras.",
+    services: [
+      { name: "Soin Reiki", desc: "75 min · soin complet", price: "110 €" },
+      { name: "Méditation guidée", desc: "45 min · individuelle", price: "70 €" }
+    ],
+    reviews: [], siret: "678 901 234 00017", since: "Février 2025" },
+
+  { id: 9, initials: "TG", name: "Thomas Garnier", title: "Coach sportif", category: "Bien-être", rating: 4.78, count: 15, status: "Disponible", certs: "BPJEPS AGFF · CrossFit Lvl 2", tag: null, gradient: "from-primary to-secondary",
+    bio: "Coach sportif diplômé d'État. Spécialiste musculation, HIIT, running. Programmes personnalisés en chambre, salle de sport ou extérieur.",
+    services: [
+      { name: "Séance individuelle", desc: "1h · matériel fourni", price: "85 €" },
+      { name: "Forfait 5 séances", desc: "Pendant le séjour", price: "380 €" }
+    ],
+    reviews: [], siret: "456 789 012 00014", since: "Janvier 2025" },
+
+  { id: 10, initials: "LB", name: "Léa Bonnet", title: "Esthéticienne", category: "Beauté", rating: 4.94, count: 28, status: "Disponible", certs: "CAP Esthétique · BTS · RC Pro", tag: null, gradient: "from-tertiary to-secondary",
+    bio: "Esthéticienne diplômée BTS. Spécialiste soins du visage, manucure, pédicure, épilation. Produits bio et haut de gamme uniquement.",
+    services: [
+      { name: "Soin du visage", desc: "60 min · produits bio", price: "95 €" },
+      { name: "Manucure complète", desc: "45 min · pose vernis", price: "55 €" },
+      { name: "Pédicure spa", desc: "60 min · gommage + soin", price: "75 €" }
+    ],
+    reviews: [], siret: "234 567 890 00011", since: "Avril 2024" },
+
+  { id: 11, initials: "PC", name: "Pierre Carrière", title: "Chauffeur privé", category: "Transport", rating: 4.89, count: 22, status: "Disponible", certs: "VTC professionnel · Berline Mercedes", tag: null, gradient: "from-primary to-tertiary",
+    bio: "Chauffeur VTC professionnel, Mercedes Classe E récente. Connaissance fine d'Avignon, Provence, Côte d'Azur. Disponible 7j/7.",
+    services: [
+      { name: "Course unique Avignon", desc: "Berline · 1-3 pers.", price: "Sur devis" },
+      { name: "Mise à disposition 4h", desc: "Berline · chauffeur dédié", price: "280 €" },
+      { name: "Excursion journée", desc: "Vignobles, Pont du Gard, Lubéron", price: "650 €" }
+    ],
+    reviews: [], siret: "345 678 901 00016", since: "Mars 2024" },
+
+  { id: 12, initials: "NF", name: "Nadia Falcone", title: "Maquilleuse pro", category: "Beauté", rating: 4.97, count: 21, status: "Disponible", certs: "Make-up Forever Academy", tag: null, gradient: "from-secondary to-primary",
+    bio: "Maquilleuse professionnelle formée Make-up Forever. Spécialiste maquillage soirée, mariage, photos. Marques pro uniquement.",
+    services: [
+      { name: "Maquillage soirée", desc: "45 min · sur place", price: "85 €" },
+      { name: "Maquillage mariage", desc: "1h30 · essai inclus", price: "180 €" }
+    ],
+    reviews: [], siret: "567 890 123 00018", since: "Juin 2024" },
+
+  { id: 13, initials: "FK", name: "François Klein", title: "Guide privé", category: "Autres", rating: 4.86, count: 17, status: "Disponible", certs: "Diplôme Guide-Conférencier", tag: null, gradient: "from-tertiary to-tertiary-container",
+    bio: "Guide-conférencier diplômé d'État. Spécialiste Avignon papale, Pont du Gard, Châteauneuf-du-Pape. Trilingue FR/EN/IT.",
+    services: [
+      { name: "Visite Avignon privée", desc: "3h · groupe jusqu'à 6 pers.", price: "240 €" },
+      { name: "Excursion vignobles", desc: "Demi-journée · transport inclus", price: "420 €" }
+    ],
+    reviews: [], siret: "890 123 456 00012", since: "Septembre 2024" },
+
+  { id: 14, initials: "OD", name: "Ophélie Diaz", title: "Yoga & Pilates", category: "Bien-être", rating: 4.93, count: 24, status: "Disponible", certs: "RYT 500 · Pilates STOTT", tag: null, gradient: "from-primary to-secondary",
+    bio: "Professeure certifiée Yoga Alliance RYT 500 et Pilates STOTT. Cours sur mesure en chambre, en terrasse ou en extérieur.",
+    services: [
+      { name: "Yoga privé", desc: "60 min · niveau adapté", price: "75 €" },
+      { name: "Pilates privé", desc: "60 min · matériel apporté", price: "85 €" }
+    ],
+    reviews: [
+      { author: "Mme Klein", text: "Le yoga à l'aube sur la terrasse a transformé mon séjour.", rating: 5 }
+    ],
+    siret: "123 456 789 00019", since: "Mai 2024" },
+
+  { id: 15, initials: "RH", name: "Romain Hardouin", title: "Barbier vintage", category: "Beauté", rating: 4.82, count: 14, status: "Disponible", certs: "CAP Barbier · 8 ans expérience", tag: null, gradient: "from-secondary to-primary",
+    bio: "Barbier formé à la Schorem Academy de Rotterdam. Rasage traditionnel au coupe-chou, taille de barbe sur mesure.",
+    services: [
+      { name: "Rasage traditionnel", desc: "45 min · serviette chaude", price: "55 €" },
+      { name: "Coupe + barbe", desc: "1h · prestation complète", price: "90 €" }
+    ],
+    reviews: [], siret: "456 123 789 00010", since: "Octobre 2024" },
+
+  { id: 16, initials: "SL", name: "Sarah Lefèvre", title: "Naturopathe", category: "Bien-être", rating: 4.88, count: 11, status: "Disponible", certs: "FENA · 5 ans pratique", tag: null, gradient: "from-tertiary to-primary",
+    bio: "Naturopathe certifiée FENA. Bilan vitalité, conseils personnalisés alimentation, sommeil, gestion du stress.",
+    services: [
+      { name: "Consultation bilan", desc: "1h30 · plan personnalisé inclus", price: "120 €" }
+    ],
+    reviews: [], siret: "789 456 123 00015", since: "Février 2025" },
+
+  { id: 17, initials: "AG", name: "Antoine Garnier", title: "Pet-sitter", category: "Famille", rating: 4.95, count: 9, status: "Disponible", certs: "ACACED · Assurance Pro", tag: null, gradient: "from-primary to-tertiary",
+    bio: "Pet-sitter certifié ACACED. Promenades, gardes, soins. Spécialiste petits et grands chiens, chats.",
+    services: [
+      { name: "Promenade 1h", desc: "Chien petit ou grand", price: "25 €" },
+      { name: "Garde en chambre", desc: "Tarif horaire", price: "15 €/h" }
+    ],
+    reviews: [], siret: "234 789 456 00012", since: "Mars 2025" },
+
+  { id: 18, initials: "VC", name: "Valentine Caron", title: "Chef à domicile", category: "Gastronomie", rating: 4.84, count: 16, status: "Disponible", certs: "CAP Cuisine · Bocuse Académie", tag: null, gradient: "from-primary to-secondary",
+    bio: "Cheffe formée à l'Institut Paul Bocuse. Cuisine méditerranéenne, produits AOP, options végétariennes/végan.",
+    services: [
+      { name: "Menu 4 services", desc: "2h sur place · marché du jour", price: "120 €/pers" },
+      { name: "Brunch 2 services", desc: "1h30 · max 8 pers.", price: "65 €/pers" }
+    ],
+    reviews: [], siret: "345 234 567 00018", since: "Janvier 2025" },
+
+  { id: 19, initials: "BM", name: "Bertrand Martin", title: "DJ & musicien", category: "Autres", rating: 4.79, count: 8, status: "Disponible", certs: "SACEM · 12 ans expérience", tag: null, gradient: "from-secondary to-primary",
+    bio: "DJ et musicien (violoncelle, piano). Animation soirée privée, mariage, événement entreprise.",
+    services: [
+      { name: "Set DJ 3h", desc: "Soirée privée · matériel fourni", price: "550 €" },
+      { name: "Violoncelle au réveil", desc: "30 min · expérience signature", price: "180 €" }
+    ],
+    reviews: [], siret: "678 345 234 00011", since: "Avril 2025" },
+
+  { id: 20, initials: "MC", name: "Mathilde Collin", title: "Tatoueuse éphémère", category: "Beauté", rating: 4.91, count: 10, status: "Disponible", certs: "Hygiène pro · Encres bio", tag: null, gradient: "from-tertiary to-secondary",
+    bio: "Tatouages éphémères haute qualité (durée 1-2 semaines). Encres végétales bio, motifs sur mesure.",
+    services: [
+      { name: "Tatouage éphémère petit", desc: "30 min · motif simple", price: "50 €" },
+      { name: "Tatouage éphémère grand", desc: "1h · motif élaboré", price: "120 €" }
+    ],
+    reviews: [], siret: "456 678 345 00013", since: "Mars 2025" },
+
+  { id: 21, initials: "DR", name: "David Rousseau", title: "Chasseur express", category: "Autres", rating: 4.87, count: 32, status: "Disponible", certs: "InRoom Verified · 2 ans", tag: null, gradient: "from-primary to-tertiary",
+    bio: "Service de courses express en chambre : pharmacie, tabac, vêtements oubliés, livraisons urgentes. Disponible 7j/7 de 7h à 23h.",
+    services: [
+      { name: "Course express < 30 min", desc: "Avignon centre", price: "25 €" },
+      { name: "Course standard", desc: "1h max", price: "35 €" }
+    ],
+    reviews: [], siret: "789 678 901 00014", since: "Septembre 2024" },
+
+  { id: 22, initials: "IR", name: "Isabelle Roy", title: "Conseillère shopping", category: "Autres", rating: 4.83, count: 7, status: "Disponible", certs: "Personal shopper certifiée", tag: "Nouveau", gradient: "from-secondary to-tertiary",
+    bio: "Personal shopper, ancienne acheteuse Galeries Lafayette. Sélection sur mesure, livraison en chambre, retours inclus.",
+    services: [
+      { name: "Conseil + shopping 2h", desc: "En chambre, sélection sur mesure", price: "190 €" }
+    ],
+    reviews: [], siret: "901 234 567 00010", since: "Avril 2025" },
+
+  { id: 23, initials: "NV", name: "Noémie Vidal", title: "Fleuriste", category: "Autres", rating: 4.96, count: 13, status: "Disponible", certs: "CAP Fleuriste · Meilleur Apprenti 2020", tag: null, gradient: "from-tertiary to-primary",
+    bio: "Fleuriste créatrice. Bouquets sur mesure, décoration de chambre, compositions événementielles.",
+    services: [
+      { name: "Bouquet signature", desc: "Composition fraîche du jour", price: "85 €" },
+      { name: "Décoration chambre romantique", desc: "Pétales + bouquet + bougies", price: "150 €" }
+    ],
+    reviews: [], siret: "234 901 678 00012", since: "Juin 2024" },
+
+  { id: 24, initials: "EB", name: "Émilie Bernardi", title: "Baby-sitter italienne", category: "Famille", rating: 4.94, count: 6, status: "Disponible", certs: "BAFA · Trilingue FR/EN/IT", tag: "Nouveau", gradient: "from-primary to-secondary",
+    bio: "Baby-sitter trilingue français-anglais-italien. BAFA, expérience confirmée petite enfance.",
+    services: [
+      { name: "Garde 1 enfant", desc: "Tarif horaire", price: "22 €/h" },
+      { name: "Garde 2 enfants", desc: "Tarif horaire", price: "28 €/h" }
+    ],
+    reviews: [], siret: "567 234 890 00015", since: "Avril 2025" }
+];
+
+// =============================================
+// RENDU DES PRESTATAIRES
+// =============================================
+let allProvidersShown = false;
+
+function renderProviderCard(p, hidden) {
+  const tagBadge = p.tag ? `<div class="flex items-center gap-1 mb-1"><span class="text-xs bg-${p.tag === 'Signature' ? 'primary-fixed text-on-primary-fixed' : 'secondary-fixed text-on-secondary-fixed'} px-2 py-0.5 rounded-full font-semibold">${p.tag === 'Signature' ? '★ Signature' : 'Nouveau'}</span></div>` : '';
+  const statusBg = p.status === 'En cours' || p.status === 'Disponible' ? 'bg-tertiary-container/30 text-on-tertiary-container' : 'bg-secondary-fixed text-on-secondary-fixed';
+
+  return `
+    <div onclick="openProviderModal(${p.id})" class="provider-card ${hidden ? 'hidden' : ''} bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 hover:shadow-lg hover:border-primary/30 transition cursor-pointer">
+      <div class="flex items-start gap-3 mb-4">
+        <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${p.gradient} flex items-center justify-center text-white font-bold flex-shrink-0">${p.initials}</div>
+        <div class="flex-1 min-w-0">
+          ${tagBadge}
+          <p class="font-semibold text-sm truncate">${p.name}</p>
+          <p class="text-xs text-on-surface-variant truncate">${p.title}</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs mb-3 gap-2">
+        <span class="text-on-surface-variant">★ ${p.rating.toFixed(2)} · ${p.count} prestas</span>
+        <span class="${statusBg} px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">${p.status}</span>
+      </div>
+      <div class="border-t border-outline-variant/40 pt-3 flex items-center gap-2">
+        <span class="material-symbols-outlined text-base text-tertiary">verified</span>
+        <span class="text-xs text-on-surface-variant truncate">${p.certs}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderProviders() {
+  const grid = document.getElementById('providers-grid');
+  if (!grid) return;
+  grid.innerHTML = providers.map((p, i) => renderProviderCard(p, !allProvidersShown && i >= 6)).join('');
+}
+
+function toggleAllProviders() {
+  allProvidersShown = !allProvidersShown;
+  const label = document.getElementById('toggle-providers-label');
+  const icon = document.getElementById('toggle-providers-icon');
+  if (label) label.textContent = allProvidersShown ? 'Voir moins' : 'Voir tous les prestataires (24)';
+  if (icon) icon.textContent = allProvidersShown ? 'expand_less' : 'expand_more';
+  renderProviders();
+}
+
+// =============================================
+// MODALE FICHE PRESTATAIRE
+// =============================================
+function openProviderModal(id) {
+  const p = providers.find(x => x.id === id);
+  if (!p) return;
+
+  const tagBadge = p.tag ? `<span class="text-xs bg-${p.tag === 'Signature' ? 'primary-fixed text-on-primary-fixed' : 'secondary-fixed text-on-secondary-fixed'} px-2 py-1 rounded-full font-semibold">${p.tag === 'Signature' ? '★ Signature' : 'Nouveau'}</span>` : '';
+
+  const servicesHTML = p.services.map(s => `
+    <div class="border border-outline-variant/40 rounded-xl p-4 flex items-start justify-between gap-3">
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-sm mb-1">${s.name}</p>
+        <p class="text-xs text-on-surface-variant">${s.desc}</p>
+      </div>
+      <p class="plus-jakarta-sans text-base font-black whitespace-nowrap">${s.price}</p>
+    </div>
+  `).join('');
+
+  const reviewsHTML = p.reviews.length > 0
+    ? p.reviews.map(r => `
+        <div class="border border-outline-variant/40 rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <p class="text-sm font-semibold">${r.author}</p>
+            <p class="text-sm font-bold">★ ${r.rating}.0</p>
+          </div>
+          <p class="text-sm text-on-surface italic">« ${r.text} »</p>
+        </div>
+      `).join('')
+    : '<p class="text-sm text-on-surface-variant italic">Pas encore d\'avis publiés.</p>';
+
+  const html = `
+    <div id="provider-modal-overlay" onclick="closeProviderModal(event)" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end md:items-center justify-center p-0 md:p-6 overflow-y-auto">
+      <div onclick="event.stopPropagation()" class="bg-background w-full md:max-w-3xl rounded-t-3xl md:rounded-3xl shadow-2xl max-h-[95vh] flex flex-col fade-in">
+        <!-- Header avec photo -->
+        <div class="relative bg-gradient-to-br ${p.gradient} text-white p-6 md:p-8 rounded-t-3xl">
+          <button onclick="closeProviderModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur hover:bg-white/30 transition flex items-center justify-center">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <div class="flex items-start gap-4 pr-12">
+            <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-white font-bold text-2xl md:text-3xl flex-shrink-0">${p.initials}</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-2 flex-wrap">${tagBadge}<span class="text-xs bg-white/20 backdrop-blur px-2 py-1 rounded-full font-semibold">${p.category}</span></div>
+              <h2 class="plus-jakarta-sans text-2xl md:text-3xl font-black mb-1 tracking-[-0.02em]">${p.name}</h2>
+              <p class="text-sm opacity-90">${p.title}</p>
+              <div class="flex items-center gap-3 mt-3 text-sm">
+                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">star</span><strong>${p.rating.toFixed(2)}</strong></span>
+                <span class="opacity-50">·</span>
+                <span>${p.count} prestations</span>
+                <span class="opacity-50">·</span>
+                <span class="hidden sm:inline">Depuis ${p.since}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contenu scrollable -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+          <!-- Bio -->
+          <section>
+            <h3 class="text-xs uppercase tracking-widest text-primary font-semibold mb-2">À propos</h3>
+            <p class="text-sm text-on-surface leading-relaxed">${p.bio}</p>
+          </section>
+
+          <!-- Statut -->
+          <section class="grid grid-cols-3 gap-3">
+            <div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-3">
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Statut</p>
+              <p class="text-sm font-bold text-tertiary">${p.status}</p>
+            </div>
+            <div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-3">
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Note</p>
+              <p class="text-sm font-bold">★ ${p.rating.toFixed(2)}</p>
+            </div>
+            <div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-3">
+              <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Total</p>
+              <p class="text-sm font-bold">${p.count} pres.</p>
+            </div>
+          </section>
+
+          <!-- Prestations -->
+          <section>
+            <h3 class="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Prestations proposées</h3>
+            <div class="space-y-2">${servicesHTML}</div>
+          </section>
+
+          <!-- Certifications -->
+          <section>
+            <h3 class="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Certifications & vérifications</h3>
+            <div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-4 space-y-2">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary">verified</span>
+                <div class="flex-1"><p class="text-sm font-semibold">Identité vérifiée</p><p class="text-xs text-on-surface-variant">Pièce d'identité validée par InRoom</p></div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary">verified</span>
+                <div class="flex-1"><p class="text-sm font-semibold">SIRET enregistré</p><p class="text-xs text-on-surface-variant">N° ${p.siret}</p></div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary">verified</span>
+                <div class="flex-1"><p class="text-sm font-semibold">${p.certs}</p></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Avis -->
+          <section>
+            <h3 class="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Derniers avis clients</h3>
+            <div class="space-y-2">${reviewsHTML}</div>
+          </section>
+
+          <!-- Note info -->
+          <div class="bg-primary-fixed/30 rounded-xl p-4 flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary mt-0.5">info</span>
+            <p class="text-xs text-on-surface-variant">Ce prestataire fait partie du catalogue InRoom affrété à votre hôtel. Vos clients peuvent le réserver directement depuis leur chambre. Vous n'avez aucune démarche à effectuer.</p>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="border-t border-outline-variant/40 p-4 md:p-6 flex flex-col sm:flex-row gap-3 bg-surface-container-lowest rounded-b-3xl">
+          <button onclick="closeProviderModal()" class="flex-1 border border-outline-variant text-on-surface py-3 rounded-xl font-semibold hover:bg-surface-container transition">Fermer</button>
+          <button class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-secondary transition flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-base">chat</span>
+            Contacter via InRoom
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const container = document.createElement('div');
+  container.innerHTML = html;
+  document.body.appendChild(container.firstElementChild);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProviderModal(event) {
+  if (event && event.target.id !== 'provider-modal-overlay') return;
+  const modal = document.getElementById('provider-modal-overlay');
+  if (modal) modal.remove();
+  document.body.style.overflow = '';
+}
+
+// Fermer avec Escape
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProviderModal(); });
+
+// Init au chargement
+renderProviders();
+</script>
+
+<script>
+  function showSection(name) {
+    ['dashboard', 'activity', 'commissions', 'reviews', 'providers'].forEach(s => {
+      const el = document.getElementById('section-' + s);
+      if (el) el.classList.add('hidden');
+      const nav = document.getElementById('nav-' + s);
+      if (nav) nav.classList.remove('active');
+    });
+    const target = document.getElementById('section-' + name);
+    if (target) {
+      target.classList.remove('hidden');
+      target.classList.add('fade-in');
+      setTimeout(() => target.classList.remove('fade-in'), 300);
+    }
+    const navItem = document.getElementById('nav-' + name);
+    if (navItem) navItem.classList.add('active');
+    // Si on va sur la section prestataires, on rend les cards
+    if (name === 'providers') renderProviders();
+    document.querySelectorAll('.mobile-nav-item').forEach(b => {
+      b.classList.remove('text-primary');
+      b.classList.add('text-on-surface-variant');
+    });
+    const mobile = document.querySelector(`.mobile-nav-item[data-section="${name}"]`);
+    if (mobile) {
+      mobile.classList.remove('text-on-surface-variant');
+      mobile.classList.add('text-primary');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
